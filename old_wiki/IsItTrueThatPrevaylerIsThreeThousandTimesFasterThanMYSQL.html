@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>IsItTrueThatPrevaylerIsThreeThousandTimesFasterThanMYSQL (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>IsItTrueThatPrevaylerIsThreeThousandTimesFasterThanMYSQL</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Yes.<br />
+<br />
+Although MySQL is about 2.8 times faster for transaction processing, Prevayler retrieves 100 objects among one million <i>3251 TIMES FASTER</i> than MySQL via JDBC, even when MySQL has all data cached in RAM!<br />
+<br />
+Many people have a hard time believing that. Take a look at the <a href='ScalabilityTestResults.html'>ScalabilityTestResults</a>. Examine and run the <a href='ScalabilityTest.html'>ScalabilityTest</a> for yourself.<br />
+<br />
+<hr />
+Back to: <a href='ObjectPrevalenceSkepticalFAQ.html'>ObjectPrevalenceSkepticalFAQ</a>.<br />
+</div>
+        <div class='txt'>Not really. Your Scalability Test Results show that SQL Server (glup!) is faster. Also on the retrieval part of the test, <a href='MySQL.html'>MySQL</a> used a SQL query, where as <a href='Prevayler.html'>Prevayler</a> just tranversed a set of objects. Since <a href='Prevayler.html'>Prevayler</a> doesn't include a query language, that's comparing apples to oranges.<br />
+<br />
+Although that would be silly, <i>WE CAN</i> even write a <a href='Prevayler.html'>Prevayler</a> test implementation using SQL. Your problem is that <i>YOU CANNOT</i> write a <a href='MySQL.html'>MySQL</a> test implementation without using SQL. @;) --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+See: <a href='NoMorePorridge.html'>NoMorePorridge</a>.<br />
+<br />
+The test was run by different people on different configurations. This is what gives it credibility. Therefore, it cannot be used as a comparison between <a href='MySQL.html'>MySQL</a>, <a href='SQLServer.html'>SQLServer</a> and ORACLE, though. If you have different results, you are free to post them here. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+See: <a href='ButWhatIfIAmEmotionallyAttachedToMyDatabase.html'>ButWhatIfIAmEmotionallyAttachedToMyDatabase</a>?<br />
+<br />
+<hr />
+</div>
+    </body>
+</html>

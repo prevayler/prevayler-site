@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>Deterministic (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Deterministic</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'><a href='BusinessObjects.html'>BusinessObjects</a> in a <a href='PrevalentSystem.html'>PrevalentSystem</a> must be deterministic.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>What does that mean?</i></b>&nbsp;&nbsp; <br />
+That means they must always produce the same results given the same commands.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>Isn't most source code deterministic anyway?</i></b>&nbsp;&nbsp; <br />
+Yes, it is.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>Could you give an example of non-deterministic code?</i></b>&nbsp;&nbsp; <br />
+There are very few things that would make your code non-deterministic:&nbsp;&nbsp; <br />
+ -Using multiple threads to modify the same variables without proper synchronization. This is not an issue with Prevayler commands because only one command is executed at a time.<br />
+ -Accessing external devices (files, sockets, the system clock, etc).&nbsp; <br />
+ -Using the default Java hashCode() value for something other than a short-cut to avoid identity comparisons.<br />
+&nbsp; <br />
+<b><i>What about using a java.util.Random instance without giving it a seed?</i></b>&nbsp;&nbsp; <br />
+That is the same as accessing the system clock.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>Does that mean my systems can no longer access files or sockets?</i></b>&nbsp;&nbsp; <br />
+No. This restriction applies only to your <a href='BusinessObjects.html'>BusinessObjects</a>.<br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>What if I have an object that reads a file, for example?</i></b>&nbsp;&nbsp; <br />
+That is OK, of course. Your object is just not a <i><a href='BusinessObject.html'>BusinessObject</a></i>. It can be a <i>client</i> to the <a href='BusinessObjects.html'>BusinessObjects</a>.&nbsp; <br />
+<br />
+<br />
+<b><i>How can I write <a href='BusinessClasses.html'>BusinessClasses</a> without accessing the system clock?</i></b>&nbsp;&nbsp; <br />
+Prevayler provides an interface (and implementation) called <a href='AlarmClock.html'>AlarmClock</a> to be used for all your <a href='BusinessObjects.html'>BusinessObjects</a>' date/time related functions. Prevayler will control the <a href='AlarmClock.html'>AlarmClock</a> so that when each command is restored from the log file and re-executed, the clock will "show" the exact same time it did when the command was first executed.&nbsp;&nbsp; <br />
+ <br />
+---- <br />
+See: <a href='ObjectPrevalenceSkepticalFAQ.html'>ObjectPrevalenceSkepticalFAQ</a>. <br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

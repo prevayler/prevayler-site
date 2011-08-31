@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>PalmPilot (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>PalmPilot</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'></div>
+        <div class='txt'>I've been thinking about persistence solutions for devices such as the Palm Pilot that will not have the overheads of a database. With the Palm Pilot, everything is in RAM, in any way. Do you think that Prevalyer is an appropriate solution for this type of thing ? Is is lightweight enough ? For a 'perfect fit', will anything in the <a href='Prevayler.html'>Prevayler</a> design have to be changed ? If so, what ?<br />
+<br />
+Can you run Java on the Palm? How much RAM do you have? Does it have fast volatile RAM and slow non-volatile RAM, or is all slow non-volatile?<br />
+<br />
+<br />
+I've been thinking about the same thing and it just makes perfect sense to me. With the current solutions you always end up using much more RAM than you should. <br />
+The only thing you'll probably want to do is to disable the flush-to-disk feature.<br />
+<a href='RodrigoOliveira.html'>RodrigoOliveira</a><br />
+Hmm, I'm not too sure about the Palm architecture because I do not own one and<br />
+have not actually done any development work on it. I've done some research on<br />
+the issue and here's what I have found out ...<br />
+<br />
+There is an API called PDB (Palm Database) and this does persistence for you,<br />
+I guess. I don't want to tie my application to the Palm so this is something<br />
+that will have to be abstracted away. But more to the point, the implication<br />
+is that is is most likely slow non-volatile RAM. Then again, if you take out<br />
+the batteries from the Palm, it loses data after a while. So my guess is that<br />
+there will be a combination of volatile and 'non-volatile' battery powered RAM.<br />
+<br />
+The Palm also supports flash memory expansion with some models so details vary.<br />
+<br />
+The Palm runs Java, yes. A limited subset of Java. For example, it does not<br />
+support Vector ... Take a look at http://www.suberwaba.org. It's a VM that<br />
+runs on both Palm and WinCE. Not sure what architectures are available.<br />
+<br />
+SuperWaba is a strict subset of Java. I don't know what overlap it has with<br />
+J2ME but generally speaking, I think this is a better development strategy<br />
+than going native, considering the number of architectures that are likely<br />
+to emerge with low cost handheld devices; I think portability is even more <br />
+key than it is now otherwise you will lose whole big segments of the market.<br />
+<br />
+I got started on this because I was trying to think about how to do persistence<br />
+on handheld devices without using an object database or SQL database in a high<br />
+performance portable kind of way.<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> seems just the right size and the right fit. I am sure it could be<br />
+hacked in such a way as to Do The Right Thing (store data to slow, expandable,<br />
+secondary memory store).<br />
+<br />
+<a href='GuidoSohne.html'>GuidoSohne</a> - guido@sohne.net<br />
+<br />
+</div>
+    </body>
+</html>

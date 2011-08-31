@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>LogYourCommands (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>LogYourCommands</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>If you're going to write a heavy prevalent system, or are trying to debug one, an interesting thing to implement is a good logging system. This can be accomplished very easily with <a href='Prevayler.html'>Prevayler</a> if you implement a descriptive toString() for your commands and log them directly into a text file, with a timestamp. An example:<br />
+<br />
+[2002-08-25 14:38:24] AddList: Adding list '<a href='Prevayler.html'>Prevayler</a> Team'<br />
+[2002-08-25 14:38:24] AddUser: Adding user 'Carlos' to '<a href='Prevayler.html'>Prevayler</a> Team' list<br />
+[2002-08-25 14:38:26] AddUser: Adding user 'Klaus' to '<a href='Prevayler.html'>Prevayler</a> Team' list<br />
+[2002-08-26 17:21:43] AddList: Adding list '<a href='Prevayler.html'>Prevayler</a> Users'<br />
+[2002-08-26 17:25:12] AddUser: Adding user 'John Doe' to '<a href='Prevayler.html'>Prevayler</a> Users' list<br />
+<br />
+If command-logging and snapshot callbacks are implemented in the main <a href='Prevayler.html'>Prevayler</a> tree (see <a href='HistoryLogging.html'>HistoryLogging</a>), you'll also be able to track on what command-logs are your commands. Then, it will be possible to create a log file like this:<br />
+<br />
+[2002-08-25 14:38:24] 000000000015: AddList: Adding list '<a href='Prevayler.html'>Prevayler</a> Team'<br />
+[2002-08-25 14:38:24] 000000000016: AddUser: Adding user 'Carlos' to '<a href='Prevayler.html'>Prevayler</a> Team' list<br />
+[2002-08-25 14:38:26] 000000000017: AddUser: Adding user 'Klaus' to '<a href='Prevayler.html'>Prevayler</a> Team' list<br />
+[2002-08-26 17:21:43] 000000000018: AddList: Adding list '<a href='Prevayler.html'>Prevayler</a> Users'<br />
+[2002-08-26 17:25:12] 000000000018: AddUser: Adding user 'John Doe' to '<a href='Prevayler.html'>Prevayler</a> Users' list<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+[Back to <a href='TipsAndTricks.html'>TipsAndTricks</a>]</div>
+        <div class='txt'></div>
+    </body>
+</html>

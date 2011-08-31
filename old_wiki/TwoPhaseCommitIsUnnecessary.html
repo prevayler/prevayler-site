@@ -1,0 +1,146 @@
+<html>
+    <head>
+        <title>TwoPhaseCommitIsUnnecessary (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>TwoPhaseCommitIsUnnecessary</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'> &gt; <a href='JoelShprentz.html'>JoelShprentz</a> by eMail:<br />
+ &gt; How do prevalent systems control the world?&nbsp; How do they send email,<br />
+ &gt; validate credit cards, print pick lists, order goods, etc?<br />
+<br />
+I will answer the question and also show that two-phase-commits, a common feature in <a href='DBMSs.html'>DBMSs</a>, are unnecessary. I am not saying they are USELESS, I'm just saying they are unnecessary.<br />
+<br />
+Let's take the eMail sending example.<br />
+ <br />
+Objects in a prevalent systems are divided into two big categories:<br />
+ #<a href='BusinessObjects.html'>BusinessObjects</a> (including Commands/Transactions).<br />
+ #<a href='CommunicationObjects.html'>CommunicationObjects</a> (Anyone suggest a better name?) <br />
+<br />
+Business objects have transparent persistence provided to them by <a href='Prevayler.html'>Prevayler</a>. They must be deterministic and therefore cannot depend on anything that accesses external devices (machine clock, files, mouse, keyboard, network, etc) not even indirectly.<br />
+<br />
+Remember transactions are business objects too (Command will be renamed to Transaction in release 2.0). It is a common mistake to query or modify other systems from within Transaction.executeOn(). <br />
+<br />
+It is the communication objects that talk to external devices and other systems. It will be a communication object, a DonutOrderEMailSender for example, that will send our eMails, therefore.<br />
+<br />
+ &gt; I assume that one goal of <a href='Prevayler.html'>Prevayler</a> is to consolidate in&nbsp; the business<br />
+ &gt; objects the logic for initiating these actions.&nbsp; The business objects'<br />
+ &gt; response to a particular clock tick transaction could be to transmit an<br />
+ &gt; order for tomorrows donuts.<br />
+<br />
+This business object shall notify listeners. Our DonutOrderEMailSender (communication object) can register as a listener and transmit the donut order eMails.<br />
+<br />
+ &gt; The example code shows one way to do this using the Listener<br />
+ &gt; pattern.&nbsp; Various X windows register themselves as account or bank<br />
+ &gt; listeners.&nbsp; When a bank or account changes, it notifies all listeners.<br />
+ &gt; What other approaches have been tried?&nbsp; What is recommended? <br />
+<br />
+Listening and polling are the options we have. Both are OK. When we use listeners, we must take care that the business object's reference to the listening communication object is transient because the latter is probably not serializable. You can see that in the <a href='Prevayler.html'>Prevayler</a> bank demo (demo2).<br />
+<br />
+ &gt; I expect the result of the task would be passed to the business<br />
+ &gt; objects as a transaction.<br />
+<br />
+Yes. When the DonutOrderEMailSender receives the notification from the business object it will:<br />
+ #issue a DonutOrderInitiated transaction to the system;<br />
+ #send a donut order eMail to the SNMP Mail Server;<br />
+ #wait for an OK from the server and, finally<br />
+ #issue a DonutOrderSuccessful transaction to the system.<br />
+Then, if the system crashes, the business object will know not to order the donuts again.<br />
+<br />
+This is a very trivial example. I hope all can see how it can be applied to more complex interactions.<br />
+<br />
+ &gt; During playback of a log file, we want the business objects to behave<br />
+ &gt; exactly as they did the first time, but we don't want to send more emails,<br />
+ &gt; charge a credit card again, or order more donuts. <br />
+<br />
+When the system is recovered, the listener reference, being transient, will be null. The listener will be able to register itself for listening again only after the system is recovered and will not re-order the donuts, therefore. The <a href='Prevayler.html'>Prevayler</a> bank demo shows that well: the GUI (communication objects) does not replay all Transactions while the system is recovering.<br />
+<br />
+<i>"OK, but what if the system crashes right after the DonutOrderInitiated transaction (1) but before the DonutOrderSuccessful transaction (4)?" someone will inevitably ask in panic, "When the system recovers, we will not know wether the eMail had already been sent!".</i> @:o<br />
+<br />
+In that case, we have at least four options:<br />
+A) Just send another donut eMail order and perhaps eat twice the donuts (the best option by far) @:).<br />
+<br />
+If we cannot afford that, though, we still can:<br />
+B) Flood the <a href='Prevayler.html'>Prevayler</a> wiki and <a href='MailingLists.html'>MailingLists</a> asking for a new feature: two-phase-commits (also known as "Distributed Transactions"). @:p or simply: <br />
+<br />
+C) Perform a query on the SNMP server: "Have we already sent a donut order eMail through you today?" @;) and react accordingly.<br />
+<br />
+Please note how a system, just by providing the right historical queries, can make two-phase-commits unnecessary for its clients! If all systems provided decent historical queries, two-phase-commits would be completely unnecessary.&nbsp; @8)<br />
+<br />
+If we cannot find an SNMP server with decent queries or two-phase-commits, though, we still have a last resort:<br />
+D) Send another eMail order appending the following notice to it: "Please ignore this eMail if you have already received a donut order from us today." @:)<br />
+<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+"Keep it Simple, Stupid"<br />
+</div>
+        <div class='txt'>I think the system should go for C. I guess for C to work the following sequence must be executed:<br />
+ #First execute a prevayler transaction which states that something is going to happen and set the status to 'not happened yet';<br />
+ #Do the distributed interactions (execute all the time-consuming parts like sending the e-mail);<br />
+ #Finally, execute a <a href='Prevayler.html'>Prevayler</a> transaction which will set the status to 'happened'; If the distributed interactions fail, though, the status is changed to 'failed'. You could even keep a log of attempts and their results.<br />
+ #On crash recovery, check the status of the objects in the business system and if it hasn't happened yet, try it again starting at 2.<br />
+<br />
+Instead of a single transaction involving distributed interactions, two transactions are used, therefore. Assuming that distributed interactions take a very long time compared to the normal execution time of a prevayler transaction, and knowing that <a href='Prevayler.html'>Prevayler</a> uses a single write lock, it is undesirable to let a single transaction involved in distributed logic lock the system for a long time.<br />
+<br />
+Step 1 can not be removed because otherwise the check on restart would be unable to know whether something should happen. It is important in case the sequence fails before executing step 3.<br />
+<br />
+--<a href='JohanStuyts.html'>JohanStuyts</a><br />
+<br />
+<hr />
+Yes. Approach C is the best, in my opinion.<br />
+<br />
+Two disk writes are inevitable in any two-phase commit scheme, I believe.<br />
+<br />
+You had written: "During replay the transaction that sets the status to 'happened' must be able to find the distributed coordinator again and check the status of the transaction."<br />
+<br />
+I erased it because that is unnecessary. The recovering transaction does not have to find any coordinator because, after all, it already knows the distributed interaction has 'happened'.<br />
+<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<br />
+I'm not sure whether your changes will work. The way I read it now is that you commit the distributed transaction before the <a href='Prevayler.html'>Prevayler</a> transaction. If the <a href='Prevayler.html'>Prevayler</a> transaction gets executed the distributed transaction must have happened.<br />
+<br />
+But what if the distributed transaction successfully commits and the system crashes before the <a href='Prevayler.html'>Prevayler</a> transaction is appended to the command log? You have no way of knowing whether a distributed transaction was already started and what its result was. This could result in executing the same distributed transaction multiple times.<br />
+<br />
+That's why I want the <a href='Prevayler.html'>Prevayler</a> transaction to commit the distributed transaction. (Hopefully committing the distributed transaction will be fast so the <a href='Prevayler.html'>Prevayler</a> is not locked for a long time.) This way the <a href='Prevayler.html'>Prevayler</a> transaction will be in the log before the distributed transaction is committed.<br />
+<br />
+In the command log the <a href='Prevayler.html'>Prevayler</a> transaction will have a distributed transaction ID.<br />
+<br />
+During replay the <a href='Prevayler.html'>Prevayler</a> transaction must connect to the coordinator to either commit the transaction (if it's still valid) or retrieve the status of the earlier commit.<br />
+<br />
+--<a href='JohanStuyts.html'>JohanStuyts</a><br />
+<br />
+<hr />
+<a href='Prevayler.html'>Prevayler</a> transactions should not talk to external systems. They don't (and shouldn't) know wether they are recovering or executing for the first time.<br />
+<br />
+<b>But what if the distributed transaction successfully commits and the system crashes before the <a href='Prevayler.html'>Prevayler</a> transaction is appended to the command log?</b><br />
+<br />
+The <a href='CommunicationObjects.html'>CommunicationObjects</a>, who are always in charge of talking to external systems/devices, on recovery, query the system: "are there any pending distributed transactions I have to complete?", and complete them accordingly.<br />
+<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+OK. I've finally got it now. Thanks for your patience. --<a href='JohanStuyts.html'>JohanStuyts</a><br />
+<br />
+@:) --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+----</div>
+    </body>
+</html>

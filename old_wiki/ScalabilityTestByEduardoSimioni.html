@@ -1,0 +1,326 @@
+<html>
+    <head>
+        <title>ScalabilityTestByEduardoSimioni (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ScalabilityTestByEduardoSimioni</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Results:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+{#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+|<i>Prevayler</i> | <i>MySQL</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+Queries per second | 144205.91 | 28.08&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+Manipulations per second | 62.29 | 115.44&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+Number of Objects: One million.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+Test Environment:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ CPU: AMD K6-II 500MHz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ RAM: 512MB - 100Mhz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ Operating System: Windows XP (Professional)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ JVM: 1.3.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ <a href='DBMS.html'>DBMS</a>: MySQL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ JDBC Driver: MM.Mysql (http://mmmysql.sourceforge.net/)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ Table type: <a href='InnoDB.html'>InnoDB</a> (supports transactions)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ my.ini file:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+{##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#This File was made using the WinMySQLAdmin 1.4 Tool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#19/3/2002 21:19:37&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#Uncomment or Add only the keys that you know how works.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#Read the <a href='MySQL.html'>MySQL</a> Manual for instructions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+[mysqld]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+basedir=C:/mysql&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#bind-address=10.0.0.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+datadir=C:/mysql/data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#language=C:/mysql/share/your language directory&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#slow query log#=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#tmpdir#=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#port=3306&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=key_buffer=16M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable = flush_time = 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=max_connections=200&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=record_buffer=1M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=sort_buffer=1M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=key_buffer=50M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+innodb_data_home_dir = c:\ibdata&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+innodb_data_file_path = ibdata1:500M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=innodb_buffer_pool_size = 300M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=innodb_additional_mem_pool_size=20M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+innodb_log_group_home_dir=c:/iblogs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+innodb_log_arch_dir = c:/iblogs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+innodb_log_archive=0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=innodb_log_files_in_group=3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=innodb_log_file_size=50M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=innodb_log_buffer_size=8M&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+innodb_flush_log_at_trx_commit=1&nbsp;&nbsp;&nbsp; @:o&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=innodb_file_io_threads=12&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+set-variable=innodb_lock_wait_timeout=50&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ &lt;end of my.ini file&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<a href='EduardoSimioni.html'>EduardoSimioni</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+See: <a href='ScalabilityTestResults.html'>ScalabilityTestResults</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp; <br />
+----&nbsp; <br />
+&nbsp; <br />
+<i>TEST LOGS</i> <br />
+&nbsp; <br />
+<i><a href='Prevayler.html'>Prevayler</a></i>&nbsp; <br />
+========= Running Query Test (10 rounds). Subject: <a href='Prevayler.html'>Prevayler</a>...<br />
+Creating 1000000 objects...<br />
+100000...<br />
+200000...<br />
+300000...<br />
+400000...<br />
+500000...<br />
+600000...<br />
+700000...<br />
+800000...<br />
+900000...<br />
+Each round will take approx. 60 seconds to run...<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.026<br />
+--------- Round Result: 144205,91 operations/second (1 threads)<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.006<br />
+--------- Round Result: 139461,80 operations/second (2 threads)<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.057<br />
+--------- Round Result: 138784,34 operations/second (3 threads)<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.066<br />
+--------- Round Result: 135244,23 operations/second (4 threads)<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.006<br />
+--------- Round Result: 122190,48 operations/second (5 threads)<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.007<br />
+--------- Round Result: 114033,60 operations/second (6 threads)<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.186<br />
+--------- Round Result: 123162,11 operations/second (7 threads)<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.137<br />
+--------- Round Result: 131297,09 operations/second (8 threads)<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.126<br />
+--------- Round Result: 118936,73 operations/second (9 threads)<br />
+<br />
+Memory used: 493092864<br />
+Seconds ellapsed: 60.407<br />
+--------- Round Result: 106196,53 operations/second (10 threads)<br />
+<br />
+----------- BEST ROUND: 144205,91 operations/second (1 threads)<br />
+<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> CommandLog Directories:<br />
+ManipulationTest<br />
+ManipulationTest<br />
+ManipulationTest<br />
+ManipulationTest<br />
+ManipulationTest<br />
+ManipulationTest<br />
+ManipulationTest<br />
+ManipulationTest<br />
+ManipulationTest<br />
+ManipulationTest<br />
+<br />
+<br />
+========= Running Manipulation Test (10 rounds). Subject: <a href='Prevayler.html'>Prevayler</a>...<br />
+Creating 1000000 objects...<br />
+100000...<br />
+200000...<br />
+300000...<br />
+400000...<br />
+500000...<br />
+600000...<br />
+700000...<br />
+800000...<br />
+900000...<br />
+Each round will take approx. 60 seconds to run...<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.016<br />
+========= Round Result: 39,46 operations/second (1 threads)<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.027<br />
+========= Round Result: 41,31 operations/second (2 threads)<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.076<br />
+========= Round Result: 41,36 operations/second (3 threads)<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.046<br />
+========= Round Result: 41,42 operations/second (4 threads)<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.077<br />
+========= Round Result: 47,31 operations/second (5 threads)<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.046<br />
+========= Round Result: 51,58 operations/second (6 threads)<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.036<br />
+========= Round Result: 52,75 operations/second (7 threads)<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.067<br />
+--------- Round Result: 56,47 operations/second (8 threads)<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.066<br />
+--------- Round Result: 59,47 operations/second (9 threads)<br />
+<br />
+Memory used: 524025856<br />
+Seconds ellapsed: 60.077<br />
+--------- Round Result: 62,29 operations/second (10 threads)<br />
+<br />
+----------- BEST ROUND: 62,29 operations/second (10 threads)&nbsp; <br />
+<i><a href='MySQL.html'>MySQL</a></i>&nbsp; <br />
+========= Running Query Test (10 rounds). Subject: JDBC...&nbsp; <br />
+Creating 1000000 objects...&nbsp; <br />
+100000...&nbsp; <br />
+200000...&nbsp; <br />
+300000...&nbsp; <br />
+400000...&nbsp; <br />
+500000...&nbsp; <br />
+600000...&nbsp; <br />
+700000...&nbsp; <br />
+800000...&nbsp; <br />
+900000...&nbsp; <br />
+Each round will take approx. 60 seconds to run...&nbsp; <br />
+&nbsp; <br />
+Memory used: 2031616&nbsp; <br />
+Seconds ellapsed: 60.046&nbsp; <br />
+========= Round Result: 28,08 operations/second (1 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2031616&nbsp; <br />
+Seconds ellapsed: 60.027&nbsp; <br />
+========= Round Result: 27,92 operations/second (2 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2031616&nbsp; <br />
+Seconds ellapsed: 60.116&nbsp; <br />
+========= Round Result: 26,81 operations/second (3 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2031616&nbsp; <br />
+Seconds ellapsed: 60.046&nbsp; <br />
+========= Round Result: 22,20 operations/second (4 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2031616&nbsp; <br />
+Seconds ellapsed: 60.387&nbsp; <br />
+========= Round Result: 19,86 operations/second (5 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2031616&nbsp; <br />
+Seconds ellapsed: 60.127&nbsp; <br />
+========= Round Result: 19,19 operations/second (6 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2072576&nbsp; <br />
+Seconds ellapsed: 60.236&nbsp; <br />
+========= Round Result: 18,91 operations/second (7 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2281472&nbsp; <br />
+Seconds ellapsed: 60.337&nbsp; <br />
+========= Round Result: 19,23 operations/second (8 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2428928&nbsp; <br />
+Seconds ellapsed: 60.317&nbsp; <br />
+========= Round Result: 19,10 operations/second (9 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2727936&nbsp; <br />
+Seconds ellapsed: 60.357&nbsp; <br />
+========= Round Result: 18,90 operations/second (10 threads)&nbsp; <br />
+&nbsp; <br />
+========= BEST ROUND: 28,08 operations/second (1 threads)&nbsp; <br />
+&nbsp; <br />
+&nbsp; <br />
+========= Running Manipulation Test (10 rounds). Subject: JDBC...&nbsp; <br />
+Creating 1000000 objects...&nbsp; <br />
+100000...&nbsp; <br />
+200000...&nbsp; <br />
+300000...&nbsp; <br />
+400000...&nbsp; <br />
+500000...&nbsp; <br />
+600000...&nbsp; <br />
+700000...&nbsp; <br />
+800000...&nbsp; <br />
+900000...&nbsp; <br />
+Each round will take approx. 60 seconds to run...&nbsp; <br />
+&nbsp; <br />
+Memory used: 2543616&nbsp; <br />
+Seconds ellapsed: 60.017&nbsp; <br />
+========= Round Result: 12,26 operations/second (1 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2543616&nbsp; <br />
+Seconds ellapsed: 60.066&nbsp; <br />
+========= Round Result: 30,40 operations/second (2 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2543616&nbsp; <br />
+Seconds ellapsed: 60.076&nbsp; <br />
+========= Round Result: 46,34 operations/second (3 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2543616&nbsp; <br />
+Seconds ellapsed: 60.067&nbsp; <br />
+========= Round Result: 60,25 operations/second (4 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2543616&nbsp; <br />
+Seconds ellapsed: 60.056&nbsp; <br />
+========= Round Result: 73,30 operations/second (5 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2543616&nbsp; <br />
+Seconds ellapsed: 60.036&nbsp; <br />
+========= Round Result: 87,11 operations/second (6 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2543616&nbsp; <br />
+Seconds ellapsed: 60.047&nbsp; <br />
+========= Round Result: 98,12 operations/second (7 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 2543616&nbsp; <br />
+Seconds ellapsed: 60.126&nbsp; <br />
+========= Round Result: 105,13 operations/second (8 threads)&nbsp; <br />
+Memory used: 2543616&nbsp; <br />
+Seconds ellapsed: 60.077&nbsp; <br />
+========= Round Result: 115,44 operations/second (9 threads)&nbsp; <br />
+&nbsp; <br />
+========= BEST ROUND: 115,44 operations/second (9 threads)&nbsp; <br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

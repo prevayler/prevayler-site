@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>LazyEvaluation (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>LazyEvaluation</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>A design pattern that will vastly improve your system's transaction responsiveness and scalability.<br />
+<br />
+<hr />
+Suppose your sistem had to process a payment batch with 100000 payments. With Lazy Evaluation your system simply doesn't process the batch. Instead, it just keeps the batch in the "payment batches" list for future evaluation and returns, pretending it has processed the batch. <br />
+<br />
+The batch will be processed bit-by-bit whenever a query is evaluated regarding it. It is important to note that, while the client is building the batch object, the batch is internally preparing its structure to be kept in the system without further processing. Remember: a prevalent command is much more than a transaction, much more than an atomic set of operations. It is a full-fledged object and can be responsible for much of the system's business intelligence! The payment batch command, for example, would keep all payment records internally in a HashMap with contract id as the key. <br />
+<br />
+Suppose you then query the payment status of any given contract. The contract will see "When was the last time I updated my payment status?". It will then look at the "payment batches" list (there are two or three payment batches a month): "Were there any payment batches since my last update?". If there were, the contract updates itself accordingly (one HashMap lookup per batch). Then, the contract simply returns its payment status. This all takes only a few microsecond too. <br />
+<br />
+<b><i>What if I have a query that actually depends on the processing of ALL the payments (e.g. Total Monthly Revenue)?</i></b><br />
+In this case, the query AND ONLY THIS QUERY will take about 2 seconds* to execute. All the rest of the system continues working at FULL SPEED and with FULL AVAILABILITY. <br />
+<br />
+*Today, my company has an ORACLE based billing system running on big solaris boxes that takes 62.5 machine hours to process 100000 payment records. We estimate that doing it all in RAM would take no more than 2 seconds (on my desktop machine, mind you).<br />
+<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+See: <a href='InstantaneousTransactions.html'>InstantaneousTransactions</a>, http://www.c2.com/cgi/wiki?<a href='LazyEvaluation.html'>LazyEvaluation</a><br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

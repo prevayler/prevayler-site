@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>TheoreticalBasisForPrevayler (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>TheoreticalBasisForPrevayler</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'></div>
+        <div class='txt'>Has anyone written papers about <a href='Prevayler.html'>Prevayler</a> or similar systems?<br />
+<br />
+When I saw prevayler for the first time last year, I immediately understood the idea, and wondered why I hadn't tried to do it. I've studied several OO methods (OMT, Fusion, Catalysis, Syntropy...) and noticed that a lot of the analysis/conceptual modelling techniques consist of:<br />
+<br />
+ * modelling what kinds of objects are allowed (class diagrams)<br />
+ * modelling what objects and relationships exist at a particular time point (instance diagrams)<br />
+ * modelling what sequence of "events" happen to the entire domain of discourse (and the subsequent series of instance diagrams representing their effect)<br />
+<br />
+I built formal models of these, but worried that I couldn't support concurrency and nondeterminism.<br />
+If you take <a href='Prevayler.html'>Prevayler</a> "commands" to be implementations of "global events" and consider the set of all objects being managed by prevayler to be implementations of a "domain of discourse" you'd find that you have an implementation of one of these analysis models. From what I can see, prevayler doesn't allow multiple commands to happen simultaneously and correctly implemented prevalent objects can't behave nondeterministically. Those are the major assumptions I made with my analysis models. I never thought people would find a good reason to live within these limitations @;) --<a href='DafyddRees.html'>DafyddRees</a><br />
+<br />
+Just a little correction, Dafydd, is that your Business Objects must act deterministically, and not your entire prevalent system -- that wouldn't even be possible if you are working with things such as IO or times and dates. I don't see it as a being a limitation that big, in fact it gets to be just good programming practice after some time. Why do you think "people would (not) find a good reason to live within these limitations"? -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+I assume that all the business objects held in the prevalent system act deterministically - I don't make any assumptions about how this is implemented by a prevalent system. (By the way you can model and even implement time deterministically - in fact there's several ways to do it. The simplest one involves sending a "tick" event into the system in the stream of incoming events.)<br />
+-- <a href='DafyddRees.html'>DafyddRees</a><br />
+<br />
+That "tick" approach is the one used in <a href='Prevayler.html'>Prevayler</a> 2.00.</div>
+    </body>
+</html>

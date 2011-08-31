@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>CommandHistoryObject (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CommandHistoryObject</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>The Command History Object pattern implies that the object acts just as a holder for all the commands that can modify its state, and always delegate the queries to the last command used. If the last command is unable to calculate the value of the query by itself, it will delegate the query to the second oldest command and so on.<br />
+<br />
+So, the holder object must know the last command that has modified its state, and each command must know the last command that has modified the state of the holder object before itself.<br />
+<br />
+Besides that, the command must implement the query part of the holder object's interface.<br />
+<br />
+With this kind of implementation, you can have the value of the queries of the object relative to any time of your system. And by just removing the last commands from the holder, you can have a undo-feature or a rollback-feature.<br />
+<br />
+I will put here the Bank example with this concept implemented, without the undo-feature or the rollback-feature. I will try to alter the GUI to allow changes in the time of the Bank for making queries.<br />
+<br />
+<a href='HumbertoSoares.html'>HumbertoSoares</a><br />
+</div>
+        <div class='txt'><br />
+Humberto, I am very interested in this topic, and would like to take a look at a simple implementation, without all the complexities of the Bank demo. Can you help me with it? @:) -- <a href='CarlosVillela.html'>CarlosVillela</a></div>
+    </body>
+</html>

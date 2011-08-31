@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <title>ArtigoDoFernandoMachado (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ArtigoDoFernandoMachado</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>This is an article being written by FernandoMachado, for JavaMagazine, a brazilian mag about Java, J2EE/J2ME, opensource and related stuff. [http://www.javamagazine.com.br]. Obviously, the content is in portuguese, but we plan to translate it to english after it's finished, if there are requests for it. -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+</div>
+        <div class='txt'>Artigo a ser submetido para a Java Magazine do Brasil:<br />
+<br />
+{##<br />
+<i>Voce ainda usa banco de dados?</i><br />
+#}<br />
+<br />
+Imagine que voce possua uma biblioteca 90 vezes mais rapida do que um banco de dados <a href='Oracle.html'>Oracle</a>, com seu codigo-fonte aberto e sob a licensa <a href='LGPL.html'>LGPL</a>. E se esta biblioteca fosse 900 vezes mais rapida, voce acreditaria? Voce conseguiria imagina-la 9987 vezes mais rapida do que o <a href='Oracle.html'>Oracle</a> e 3251 vezes mais rapida do que o <a href='MySQL.html'>MySQL</a>? Esta biblioteca existe, funciona magnificamente bem e chama-se <a href='Prevayler.html'>Prevayler</a> - <a href='Prevalence.html'>Prevalence</a> Layer -,&nbsp; uma camada na aplicacao Java que permite a persistencia transparente de objetos.<br />
+<br />
+A ideia de prevalencia de objetos, concebida pelo time de desenvolvimento do <a href='Prevayler.html'>Prevayler</a>, resume-se basicamente em manter tudo em memoria RAM. O <a href='Prevayler.html'>Prevayler</a> funciona em qualquer Java VM padrao, nao necessita de pre-compilacao ou pos-compilacao - como ocorre com alguns bancos de dados Orientados a Objeto e ferramentas de mapeamento Objeto-Relacional - nem heranca de uma classe base ou alteracoes no codigo-fonte. Voce vera' apenas codigo Java puro.<br />
+<br />
+Atualmente, desenvolver um sistema OO que utilize a persistencia de dados e' um grande desafio, ja' que e' necessario relacionar os objetos `as tabelas de banco de dados ou a qualquer outro meio que quebrara' o encapsulamento. Isto nao ocorre com o <a href='Prevayler.html'>Prevayler</a>. Basta escrever as classes em Java puro e nao se preocupar com o codigo de acesso ao banco de dados. Direcione sua atencao para a logica de negocios e esqueca tudo que se refere a banco de dados. Com o <a href='Prevayler.html'>Prevayler</a>, voce finalmente conseguira utilizar o verdadeiro - e poderoso - desenvolvimento OO.<br />
+<br />
+Queda de energia, "crash" do Sistema Operacional ou algo que cause o reinicio do servidor nao sao problemas para o <a href='Prevayler.html'>Prevayler</a>. Apesar de estar tudo em em memoria RAM, voce nao perderah absolutamente nada. Por que? Continue lendo...<br />
+<br />
+(Antes de explicar o que sua classe de neg&#243;cios deve ser, faltou explicar o que s&#227;o os Commands/Transactions, e como voc&#234; deve adaptar seu desenvolvimento a eles, o que invalida a express&#227;o "transpar&#234;ncia persistente", mas ainda &#233; poss&#237;vel dizer que a "persist&#234;ncia &#233; transparente para os objetos de neg&#243;cio", que realmente &#233; o que interessa. -- <a href='CarlosVillela.html'>CarlosVillela</a>)<br />
+<br />
+Para que o <a href='Prevayler.html'>Prevayler</a> funcione corretamente, sua classe de negocios deve ser:<br />
+- Serializavel: Todo comando aplicado em sua classe de negocios eh previamente serializado e armazenado em um arquivo de log. Alem disso, o <a href='Prevayler.html'>Prevayler</a> cria "snapshots" diarios de todas as classes de negocios, serializando-as e armazenando-as em arquivo. Quando o sistema retorna apos um "crash", o <a href='Prevayler.html'>Prevayler</a> le o "snapshot" mais recente e, na sequencia, todos os comandos - dentro dos arquivos de log - sao aplicados como se eles estivessem vindo do cliente. No final deste processo, seu sistema estarah no mesmo estado quando no momento da interrupcao.<br />
+<br />
+- Deterministica: Dada uma determinada sequencia de comandos, seu sistema deve sempre produzir o mesmo estado. Isto n&#227;o &#233; nenhum bicho-de-sete-cabe&#231;as: basta n&#227;o utilizar n&#250;meros rand&#244;micos ou dispositivos externos em suas classes de neg&#243;cio (arquivos, conex&#245;es de rede, etc). O rel&#243;gio do sistema, quando usado diretamente, tamb&#233;m conta como um dispositivo externo. Para fazer opera&#231;&#245;es com o rel&#243;gio, o <a href='Prevayler.html'>Prevayler</a> possui uma implementa&#231;&#227;o bastante simples de um rel&#243;gio que pode ser usado sempre que necess&#225;rio.<br />
+<br />
+(continua)<br />
+<br />
+<br />
+Pontos a serem abordados:<br />
+<br />
+1) O que eh o <a href='Prevayler.html'>Prevayler</a>?<br />
+&nbsp;&nbsp; [90%] - Falta comentar sobre a replicacao;<br />
+<br />
+2) Como funciona?<br />
+&nbsp;&nbsp; [85%] - Falta comentar sobre a replicacao e esclarecer o logging dos comandos;<br />
+<br />
+3) Pre-requisitos?<br />
+&nbsp;&nbsp; [100%]<br />
+<br />
+4) Exemplos<br />
+&nbsp;&nbsp; [0%]<br />
+<br />
+Alguns exemplos simples podem ser tirados do artigo da developerWorks (Articles), mas aquele exemplo n&#227;o &#233; t&#227;o "wow" quanto poderia/deveria. -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+5) O que tem de mais avan&#231;ado usando o <a href='Prevayler.html'>Prevayler</a>?<br />
+&nbsp;&nbsp; [0%]<br />
+<br />
+Nannings-<a href='Prevayler.html'>Prevayler</a>? <a href='WidgetWeb.html'>WidgetWeb</a>? <a href='XtremeSpace.html'>XtremeSpace</a>? --<a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+6) Finalizacoes e referencias<br />
+&nbsp;&nbsp; [50%] (falta incluir aqui)<br />
+<br />
+<br />
+<br />
+Comentar sobre a "liberdade" na utiliza&#231;&#227;o do <a href='Prevayler.html'>Prevayler</a> e sobre como a cultura OO est&#225; "atrofiada".<br />
+<br />
+Elaborar bastante sobre a total independencia e a explicita falta de intromissao do <a href='Prevayler.html'>Prevayler</a> nas queries, e mostrar algumas possibilidades (HowDoIQureyMyObjects?) -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<br />
+Copyright 2003 FernandoMachado</div>
+    </body>
+</html>

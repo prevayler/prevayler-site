@@ -1,0 +1,116 @@
+<html>
+    <head>
+        <title>WhenShouldINotUsePrevalence (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>WhenShouldINotUsePrevalence</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'> -When you cannot afford enough RAM to contain all your <a href='BusinessObjects.html'>BusinessObjects</a>. (See: <a href='BreakthroughsInMemoryTechnology.html'>BreakthroughsInMemoryTechnology</a>)&nbsp; <br />
+ -When you cannot find a Java Virtual Machine that is robust enough. Any Java system that runs on an application server is already dependent on a Java Virtual Machine, mind you.<br />
+ -When you are unable of producing high-quality <a href='BusinessClasses.html'>BusinessClasses</a>.&nbsp; <br />
+<br />
+----&nbsp; <br />
+What if my boss is too scared to use Prevayler?&nbsp; <br />
+&nbsp; <br />
+Find a better job. @8)<br />
+ <br />
+---- <br />
+Some systems do integration through the database - that's why some fools call the <a href='RDBMS.html'>RDBMS</a> an 'Enterprise Application Integration' tier. In those cases, using prevalence does not make much sense. By the way, nothing makes sense. <br />
+Encapsulation is zero and all applications are brutally coupled to each other's private parts via the database...and these people still wonder why the promises of object orientation are not fulfilled! @8\ <br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a> and <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+The 1.3 and 1.4 JVMs from Sun do not support heap sizes larger than 2 gigabytes on Intel machines, regardless of how much RAM you have. So, if you`re planning to store large amounts of data, try to avoid these VMs. If you know about other VMs (IBM`s, Sun`s Solaris VMs, etc), please post a comment here.<br />
+<br />
+<hr />
+From the Java2 Standard Edition 1.4 datasheet: <br />
+"64-bit support provides Java technology developers with near limitless amounts of memory for high-performance, high-scalability computing. While previous J2SE releases were limited to addressing 4 gigabytes of RAM, version 1.4 allows Java applications to access hundreds of gigabytes of RAM. This enables developers to drive more applications and very large datasets into memory, and avoids the performance overhead of reading data in from a disk or from a database." <br />
+<br />
+WagnerMirandaCosta added that HP's VM (for HP-UX 11) allows initial heap sizes up to 4 gigs (or more, depending on your hardware). Thanks, Wagner! @:)<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+</div>
+        <div class='txt'>Given that <a href='RDBMS.html'>RDBMS</a>-level integration is so lousy (been there), is there any current thinking about how multiple applications would share a <a href='Prevayler.html'>Prevayler</a> repository?&nbsp; If one is read-only, then it's an easy enough matter to simply broadcast Commands from the read-write instance to the read-only instance, but with both applications issuing Commands, it's a much more subtle issue.&nbsp; Either you come up with some clever synchronization scheme to make sure that Commands issued by either are applied to both instances in the same order, or you need to make a single <a href='Prevayler.html'>Prevayler</a>'s model remotely accesible, via SOAP or RMI, for example. -- <a href='MichaelPrescott.html'>MichaelPrescott</a><br />
+<br />
+Are you talking about different distributed clients accessing a same prevalent system or are you talking about autonomous prevalent systems communicating?<br />
+<br />
+Gee...both sound interesting! Any more information on the second option? -- TLT tysonlt@webmedia.com.au<br />
+<br />
+If you take your snapshots to a <a href='RDBMS.html'>RDBMS</a> instead of serialization you can still keep "ye olde database" and all the applications that accesses it. It will of course not be synchronously updated. You would also get help from the database to do schema evolution that serialization by definition is bad at.<br />
+--<a href='JonTirsen.html'>JonTirsen</a><br />
+<hr />
+Jon, that would mean a lot of work in mapping object serialization to database table(s). It can be a *lot* of boring work, but it can be done, and be, in fact, very effective in the long run. I would not do it for a throw-away project or quick prototype, though, as schema evolution will be even harder (as you mentioned). Imagine yourself having to implement an ObjectOutputStream for each entity type you have on your model...<br />
+<br />
+-<a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+Carlos, Java has reached pretty far when it comes to implementing OR-mappers. Plenty of them is trying to solve two problems at once, storing objects into highly normalized relational schemas and at the same time trying to minimize communication overhead with the named database. Solving just one of these problems into a library based on for example runtime attributes is actually almost trivial. Doing schema evolution serialized objects is a nightmare (since you're breaking encapsulation) doing it on a relational database is (almost) a piece of cake. Also applications such as data warehousing and report tools could access a very nice relational database to do their jobs. Besides you can still tell your customers you're using a relational database which I think is not an issue that should be looked upon lightly (unfortunately)... :-)<br />
+-- <a href='JonTirsen.html'>JonTirsen</a><br />
+<br />
+<hr />
+What happens when I want to change some of my business objects. Since they will be different from when I take a snapshot and then restart with new code.&nbsp; <br />
+--Grant Morgan<br />
+<br />
+See: <a href='SchemaEvolution.html'>SchemaEvolution</a>.<br />
+<br />
+<br />
+<br />
+Storing data in <a href='RDBMS.html'>RDBMS</a>'s is going to remain popular for a number of reasons.<br />
+* SQL tools allow *users* to examine the data, whether directly or using reporting tools.<br />
+* To allow a reporting tool to query your data with <a href='Prevayler.html'>Prevayler</a>, you have to give it access to your app -- which means you'll end up writing locking semantics and state protection layers, just to prevent corruption. There is no standard interface for this.<br />
+* In most business areas (certainly the ones I work in), the data lives much longer than the app - the app will be almost transient in relative terms. Then you have data migration issues, you have to write an app to do the conversion - i know you have to migrate database data too, but I don't need to tie up a Java developer to understand *this* app to do that. The data tends to be simpler than the business rules. Again, there's no standard for app structure to make this easier.<br />
+-- KenHorn<br />
+<br />
+<br />
+Ken, I see your arguments can be easily debunked:<br />
+<br />
+1) We can provide tools together with <a href='Prevayler.html'>Prevayler</a> that allow users to examine data, too<br />
+2) Users and reporting tools *query* the system. It's possible to allow them to do this with live java objects.<br />
+3) You mean that your raw data is used in a longer lifetime than that data's business rules? Ok, then, export it out of your app, use XML and be happy :)<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<br />
+1) Do you have query tools for <a href='Prevayler.html'>Prevayler</a> yet? Do they work with Excel/<a href='BusinessObjects.html'>BusinessObjects</a>/ODBC? This is the level of access often needed. Of course, if development is really that much faster, we can write the front ends too.<br />
+2) Queries would need to be given serialized access to the data -- to give the same transactional (ie consistent) view -- *could* be a performance issue.<br />
+3) Yes, the data lasts longer than a specific set of data rules (trade data). Export may be okay, depending on the requirements for 1. Often, multiple apps read the same data -- for feeds, reports etc.<br />
+4) Gigs of data are often accumulated, holding this in RAM on a shared box isn't the easiest thing to convince the admins..<br />
+<br />
+I'm not totally against <a href='Prevayler.html'>Prevayler</a>, just want to help define it's limits.<br />
+<br />
+-- KenHorn<br />
+I think this has already been mentioned on the site, but I can't see how Object <a href='Prevalence.html'>Prevalence</a> can be appropriate where you're talking about huge amounts of data, which need to be warehoused or mined.&nbsp; The RAM costs involved in that kind of data storage will be cost-prohibtive.&nbsp; <br />
+<br />
+That being said, I really like the ideas you've presented on this site.&nbsp; I'd love to be able to use <a href='Prevayler.html'>Prevayler</a> for one of my upcoming projects, but with the amounts of data over time that this might involve (potentially in the order of 100's of Gb) I'm not sure whether it's appropriate.&nbsp; I'd really like some feedback on what you think about it's suitability for this kind of app.&nbsp; Convince me! :-)<br />
+<br />
+What's cheaper, a new quality 512mb RAM chip every month or hiring a good <a href='Oracle.html'>Oracle</a> DBA/DBM? I think that the RAM costs involved in getting huge amounts of data in a prevalent system can pay for themselves over time. Google found out that RAM could - and, in fact, is being - cheaper in the long run, while providing an awesome speed increase over traditional relational databases.<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<br />
+Adding 512mb chips on a regular basis assumes that you've got a JVM that can spread one logical instance of itself across a server farm, doesn't it?&nbsp; If such a JVM is available, doesn't it hit the same sorts of performance traps discussed elsewhere on this site?&nbsp; Also, what about fault tolerance when a single node falls over?&nbsp; It seems like this is going to be limited by the cost of the box to hold the RAM, not the price of the RAM itself.&nbsp; (How much is a box that will upgrade to 100's of Gb of memory these days??)&nbsp; Having said that, I think that this project has potential for larger systems from an architecture layout point of view.&nbsp; Having one, scalable representation of the data would certainly be nice.&nbsp; (I'm considering this for a project that would require about 10-50GB of space on intels, so this won't work for me.&nbsp; I'm now going to try out a combinination of hibernate and hypersonic SQL, since I already have hibernate persistance set up.)<br />
+-- Rusty Sears<br />
+It seems to me that <a href='Prevayler.html'>Prevayler</a> isn't all that scalable - a <a href='Prevayler.html'>Prevayler</a> system is limited to running on a single system, with just a single CPU (as only 1 'command' can be executed at at time). Sure, the amount of RAM on that machine can be increased, but not ad infinitum - every machine has a certain limit as to the amount of RAM chips it will hold and work with. Beyond that, you'd need a newer/bigger machine, if one exists. With other <a href='DBMS.html'>DBMS</a> solutions, you could cluster multiple machines. Also, the amount of RAM on the machine may increase, but it will always be just the one CPU that has to do all the work - if the increasing amount of data still has to be processed in the same finite amount of time, there will be a point at which this is no longer possible (unless you can keep plugging in a newer CPU with a higher clockrate).<br />
+Is this about right, or am I overlooking something/have misinterpreted the features/limitations of the <a href='Prevayler.html'>Prevayler</a> system ?<br />
+-- Florimon van Putte<br />
+<br />
+</div>
+    </body>
+</html>

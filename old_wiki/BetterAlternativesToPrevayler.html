@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>BetterAlternativesToPrevayler (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>BetterAlternativesToPrevayler</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>If you can provide a more reliable implementation of a prevalence layer or, if you can describe a more transparent, faster or simpler architecture, please append a reference below:<br />
+</div>
+        <div class='txt'>I am tackling the object persistence problem myself right now and have some thoughts / questions about <a href='Prevayler.html'>Prevayler</a> vs other aproaches<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> looks really nice BUT I see two potential problems with it:<br />
+ #The licence is <a href='LGPL.html'>LGPL</a>: unlike say (Apache or Linux licence) <a href='LGPL.html'>LGPL</a> tends to scare most businesses. the feeling (right or wrong) is that <a href='LGPL.html'>LGPL</a> is "viral" (just like GPL) and thus makes any project even if it does not modify the <a href='LGPL.html'>LGPL</a> component but just "uses" it) <a href='LGPL.html'>LGPL</a> as well. In terms of building a community around <a href='Prevayler.html'>Prevayler</a> I'd think you might consider changing licence types to encourage more use.<br />
+ #<a href='Prevayler.html'>Prevayler</a> seems to be based on the notion that not only is hardware (memory) cheap but that there is going to be a "glut" of it (that is memory availabilty will grow faster than the demand for more memory).&nbsp; While I think <a href='Prevayler.html'>Prevayler</a> looks like a cool project with some really big plusses to it (aside from fast access, the "open" query model would seem to be of high value for certian specialized data mining applications...) I am not sure that I buy either of those assumptions (as a "general" case).<br />
+<br />
+<br />
+Answer:<br />
+ #The <a href='LGPL.html'>LGPL</a> is not viral, such as the GPL, but thanks for warning us that such a feeling exists.<br />
+ #That memory will be cheap is just a question of time. See <a href='BreakthroughsInMemoryTechnology.html'>BreakthroughsInMemoryTechnology</a>. "memory availabilty will grow faster than the demand for more memory" <a href='Prevayler.html'>Prevayler</a> is not based on that assumption. That will obviously depend on the application. For many applications, there is enough RAM already.<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+I am trying to work on "generalized" bridge technology (basically I want to save objects with the same programatic overhead that serialization imposes (or less) and do so to an arbitrary datastore).&nbsp; Even if, memory were free and in hideous surplus..., there are lots of applications that go through third party modules (such as say Crystal Reports, other report generators or data mining tools) and those tools are rather intrenched (one will not rapidly "overthrow" them, and people right now "want" and "depend" on them).&nbsp; Thus I see a need for a flexible "bridge" technology.&nbsp; If you know of other projects that are doing this please let me know (dshriver@engenia.com) because (naturally) I'm running into some hairy cases in developing such a bridge (BTW: Castor, Hibernate, OJB, TJDO (and the addons xDoclet...)- aren't the "general" or "low overhead" bridges I'm talking about; they require mapping files and other restrictions and my goal is to serialize arbitrary classes with almost no burden on the developer).<br />
+<br />
+That being said <a href='Prevayler.html'>Prevayler</a> does look like a really cool project and I hope to see more of it (more use and more development) in the future.<br />
+<br />
+<hr />
+<br />
+<a href='Prevalence.html'>Prevalence</a> technology sounds like a great breakthough.&nbsp; I'm trying to use it in a prototype project right now.&nbsp; Just an observation.&nbsp; Even with advances in memory (which will take a few years anyway) a large company could have many different systems running, and each with a prevalent system instead of a centralized big-iron dbms.&nbsp;&nbsp; As we all know unused or rarely used stuff will accumulate; data storage needs will always expand to fill availble memory.&nbsp; The solution to this in the industry is&nbsp; HSM (Hierarchical Storage Management).&nbsp; In HSM direct access devices are considered the 'fast' close to the user storage.&nbsp; <a href='Prevalence.html'>Prevalence</a> changes this.&nbsp; I wonder if this is possible, could a policy based HSM process migrate objects from the prevaler storage into the storage hierarchy.&nbsp; Of course, its possible.&nbsp; Does it make sense.&nbsp;&nbsp;&nbsp; Just musing.<br />
+--- J. Betancourt<br />
+<br />
+To do that transparently, I believe, would have the same complexity and overhead as an OODBMS. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+</div>
+    </body>
+</html>

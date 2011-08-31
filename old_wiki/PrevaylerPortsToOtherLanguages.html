@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>PrevaylerPortsToOtherLanguages (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>PrevaylerPortsToOtherLanguages</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Other <a href='PrevalenceLayer.html'>PrevalenceLayer</a> implementations: <br />
+ <br />
+{# <br />
+<b><i>Name</i></b> | <b><i>Language</i></b> | <b><i>Author</i></b> <br />
+Bamboo | .NET (C#) | <a href='RodrigoOliveira.html'>RodrigoOliveira</a><br />
+Florypa | Smalltalk (<a href='VisualWorks.html'>VisualWorks</a>) | <a href='KentBeck.html'>KentBeck</a>, RobMee, <a href='HumbertoSoares.html'>HumbertoSoares</a> and <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+Madeleine | Ruby | <a href='AndersBengtsson.html'>AndersBengtsson</a><br />
+Mnemonic | Ruby | LeslieHensley<br />
+<a href='PyPerSyst.html'>PyPerSyst</a> | Python | PatrickOBrien<br />
+ | Smalltalk (Squeak) | JoshFlowers<br />
+<a href='SPrevayler.html'>SPrevayler</a> | Smalltalk (Squeak) | Marco Paga (<a href='SPrevayler.html'>SPrevayler</a>@marco-paga.de)<br />
+<a href='SPrevayler.html'>SPrevayler</a> | Smalltalk (<a href='VisualWorks.html'>VisualWorks</a>) | <a href='RonieUliana.html'>RonieUliana</a><br />
+<a href='VTNPrevayler.html'>VTNPrevayler</a> | Objective-C | <a href='VictorNg.html'>VictorNg</a><br />
+#}<br />
+<br />
+See: <a href='DoesPrevalenceOnlyWorkInJava.html'>DoesPrevalenceOnlyWorkInJava</a>? and <a href='OpenSourcePrevaylerProjects.html'>OpenSourcePrevaylerProjects</a><br />
+</div>
+        <div class='txt'>Is anyone keen to try porting to PHP?<br />
+<br />
+PHP does support object serialization through the serialize() and unserialize() functions. So, there seems to be possible to implement it. To my knowledge, there's nobody trying to port it yet. Who'll be first? :)<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+See: <a href='Prevayler.html'>Prevayler</a> for the <a href='PalmPilot.html'>PalmPilot</a>?<br />
+<br />
+<hr />
+<br />
+A fundamental problem with PHP is the lack of a global object space. Objects generally live for the duration of a single script execution. To my knowledge, the only exception to this rule concerns session objects. These face severe restrictions though: If some object with a class C is held in a session, ALL pages must define class C; otherwise, the object is discarded.<br />
+<br />
+Even if you could make this work somehow, how do you manage concurrency or synchronization? PHP has no multithreading support at all. --<a href='StefanReich.html'>StefanReich</a><br />
+<br />
+<hr />
+<br />
+What about prevalence in C or CPP? Is it possible, is there anyone trying to port it?<br />
+<br />
+I am pretty sure it is possible to adapt prevayer to C++ but I don't know about the details. I would be glad to join such a project.<br />
+<br />
+<hr />
+<br />
+What about Common Lisp!?<br />
+<br />
+<hr />
+<br />
+And what about an Objective CAML (ocaml) implementation ? Its high security at runtime (strong typing and more) and high performance generated native code should make it a language of choice for implementing robust speed devils...<br />
+<br />
+Objective CAML is already cool enough! It does not need this. No ... move along now, nothing for Objective CAML to see here ;)<br />
+<br />
+<hr />
+<br />
+I would like to join the PHP port ... I am willing to try it through a persistent PHP session. Adam Prall (adam@thinkingman.com) ... I NEED this software NOW!<br />
+<br />
+PHP port: I've written a piece of code based on <a href='Prevayler.html'>Prevayler</a> today (2003-03-08). Works reasonably fast but with no support for concurrency. Apparently something can be done by locking files...<br />
+Real issue tho is the overhead when the system initializes (load data that is). 13 MB test snapshot file was loading in something like 2.5 sec. considering a short execution time of PHP script only rather small data files can be used effectively.<br />
+I'm planning to rewrite the code so that it's closer to the original Java implementation. Feel free to contact me if you're interested (baglan@ankara.edu.tr)<br />
+<br />
+</div>
+    </body>
+</html>

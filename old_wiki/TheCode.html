@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>TheCode (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>TheCode</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>This is a new topic for code discussions.<br />
+<br />
+The current production release implementation code is 335 lines long (See <a href='ZeroBugs.html'>ZeroBugs</a>).<br />
+</div>
+        <div class='txt'>Why are the <a href='PrevalentSystem.html'>PrevalentSystem</a> interface methods not in the format of getter/setter? -- <a href='GuillermoCastro.html'>GuillermoCastro</a><br />
+<br />
+I don't like the getter/setter format. It is wordy and unnecessary. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+But it's a 'standard', and lets bean property accessors (<a href='JXPath.html'>JXPath</a>, for example) happy @:( -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+Then why not write a wrapper that conforms to this 'standard'? It's not a good idea to use convoluted naming standards for <a href='Prevayler.html'>Prevayler</a> just because it could help in some special cases.<br />
+<br />
+Could be, but, heck, wrapping it all just for the sake of standard naming practices? Seems like a bit of overkill to me. I would duplicate, rename and deprecate <a href='Prevayler.html'>Prevayler</a>'s methods instead. -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+Because that would force us to live with the ugly getter/setter format. :)<br />
+<br />
+<hr />
+Are these the only code issues you can come up with? I hope no one starts criticizing indentation too. @:) --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<br />
+Before I still asking questions note: This is one of the best ideas I have seen in a long time.<br />
+<br />
+As I was looking at demo1 and in org.prevayler.implementation.AbstractPrevalentSystem the <a href='AlarmClock.html'>AlarmClock</a> instance gets Serialized with the NumberKeeper.&nbsp; Is this necessary?&nbsp; It seems like it isn't but I wasn't sure.<br />
+<br />
+Also, as that same class is Serializable and designed to be inherited from, shouldn't it define the serialUID.&nbsp; As it is now, in the future when that class's signature changes, it will break everyone's snapshots as the deserialization will fail.<br />
+<br />
+<br />
+Help, I am getting this error when running the prevayer demo1<br />
+D:\Documents and Settings\Tim\Desktop\GU\Database3001\prevayler1.03.003alpha\prevayler1.03.003alpha\source\org\prevayler\demos\demo1\Main.java:7: cannot resolve symbol<br />
+symbol&nbsp; : class SnapshotPrevayler&nbsp; <br />
+location: package implementation<br />
+import org.prevayler.implementation.SnapshotPrevayler;<br />
+Do you know what wrong? Does the demo1 work first time?<br />
+Regards<br />
+Tim</div>
+    </body>
+</html>

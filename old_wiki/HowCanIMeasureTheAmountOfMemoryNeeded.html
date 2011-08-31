@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>HowCanIMeasureTheAmountOfMemoryNeeded (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>HowCanIMeasureTheAmountOfMemoryNeeded</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'></div>
+        <div class='txt'>Hi! I would like to know how I can measure the amount of memory needed.<br />
+<br />
+<hr />
+<br />
+The best way, I think, to estimate is to create thousands of objects similar to the ones you'll have and see how much they occupy. You can use Runtime.totalMemory() minus Runtime.freeMemory() for that. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<br />
+The cost of loading a class is almost impossible to estimate - it depends on the structures the VM creates and the machine code that is generated (which, in the presence of adaptive optimization, depends on runtime measurements!).<br />
+<br />
+The cost of a single object is much easier to estimate. In the case of <a href='HotSpot.html'>HotSpot</a>, it goes like this:<br />
+<br />
+-2 words for object header (flags, class reference, object identity)<br />
+-2 words for every non-static long or double field<br />
+-1 word for every non-static field of any other type (including object types)<br />
+<br />
+A word is 4 bytes (at least on 32-bit machines).<br />
+<br />
+Arrays have some fixed overhead plus the size of the contents (calculated the obvious way: char arrays take up 2 bytes per element, int arrays 4 bytes per element etc).<br />
+<br />
+This is the raw object size. You have to add allocation slack for unused/fragmented heap space (not sure if <a href='HotSpot.html'>HotSpot</a> additionally pads object sizes to 16 byte boundaries or something, I think it doesn't). -- <a href='StefanReich.html'>StefanReich</a><br />
+</div>
+    </body>
+</html>

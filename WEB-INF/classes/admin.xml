@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+<xwork>
+	<package name="admin" extends="priki" namespace="/admin">
+		<default-interceptor-ref name="adminStack" />
+	
+		<action name="show" class="org.priki.actions.AdminAction" method="showConfig">
+			<result name="success" type="velocity">
+				<param name="location">/admin/show.vm</param>
+			</result>	
+		</action>
+
+		<action name="edit" class="org.priki.actions.AdminAction" method="showConfig">
+			<result name="success" type="velocity">
+				<param name="location">/admin/edit.vm</param>
+			</result>
+		</action>		
+
+		<action name="post" class="org.priki.actions.AdminAction" method="postConfig">
+            <result name="success" type="redirect">/admin/show.pr</result>
+        </action>
+        
+        <action name="rollback" class="org.priki.actions.AdminAction" method="rollback">
+            <result name="success" type="redirect">/admin/show.pr</result>
+        </action>
+        
+        <action name="goodUser" class="org.priki.actions.AdminAction" method="goodUser"> 
+            <result name="success" type="redirect">/admin/show.pr</result>
+        </action>        
+        
+        <action name="goodLink" class="org.priki.actions.AdminAction" method="goodLink"> 
+            <result name="success" type="redirect">/admin/show.pr</result>
+        </action>   
+        
+        <action name="manageUser" class="org.priki.actions.AdminAction" method="manageUser"> 
+			<result name="success" type="velocity">
+				<param name="location">/admin/manageUser.vm</param>
+			</result>
+        </action>          
+        
+        <action name="changeUserRole" class="org.priki.actions.AdminAction" method="changeUserRole"> 
+            <result name="success" type="redirect">/admin/show.pr</result>
+        </action>           
+
+        <action name="removeComment" class="org.priki.actions.AdminAction" method="removeComment"> 
+			<result name="success" type="redirect">/wiki/${keyword}</result>
+        </action>    
+        
+        <action name="snapshot" class="org.priki.actions.AdminAction" method="snapshot"> 
+			<result name="success" type="redirect">/admin/show.pr</result>
+        </action>                
+	</package>
+</xwork>

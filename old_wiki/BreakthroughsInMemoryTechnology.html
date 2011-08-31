@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>BreakthroughsInMemoryTechnology (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>BreakthroughsInMemoryTechnology</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>I wouldn't be so optimistic about the dates, but there you go:<br />
+<br />
+ -<i>Holographic RAM</i> - "IBM researchers have suggested that they will have a small HDSS device ready as early as <i>2003</i>. These early holographic data storage devices will have capacities of 125 GB and transfer rates of about 40 MB per second. Eventually, these devices could have storage capacities of 1 TB and data rates of more than 1 GB per second." http://computer.howstuffworks.com/holographic-memory.htm<br />
+<br />
+ -<i>Magnetic RAM</i><br />
+&nbsp; -"600GB per square inch (non-volatile)" http://www.theregister.co.uk/content/archive/10300.html <br />
+&nbsp; -"MRAM promises to combine the high speed of static RAM (SRAM), the storage capacity of DRAM and the non-volatility of Flash memory ... MRAM will slowly begin to replace DRAM starting sometime in <i>2003</i>." http://computer.howstuffworks.com/mram.htm<br />
+<br />
+ -<i>Polymer RAM</i> - "The equivalent of 400,000 CDs, or 60,000 DVDs, or 126 years of MPG music may be stored on a polymer <i>non-volatile</i> memory chip the size of a credit card" http://www.thinfilm.se/html/technology.htm<br />
+<br />
+<br />
+<i>Others:</i><br />
+ -Molecular memory: http://www.theregister.co.uk/content/archive/7679.html <br />
+ -2300GB on a PC Card: http://www.theregister.co.uk/content/archive/6099.html <br />
+<br />
+<hr />
+"640KB will always be enough." -- Bill Gates.<br />
+<br />
+From an interview with Google CEO, Erich Schmidt:<br />
+"At Google, for example, we found it costs less money and it is more efficient to use DRAM as storage as opposed to hard disks -- which is kind of amazing. It turns out that DRAM is 200,000 times more efficient when it comes to storing seekable data. In a disk architecture, you have to wait for a disk arm to retrieve information off of a hard-disk platter. DRAM is not only cheaper, but queries are lightning fast."<br />
+<br />
+<hr />
+From the Java2 Standard Edition 1.4 datasheet:<br />
+"64-bit support provides Java technology developers with near limitless amounts of memory for high-performance, high-scalability computing. While previous J2SE releases were limited to addressing 4 gigabytes of RAM, version 1.4 allows Java applications to access hundreds of gigabytes of RAM. This enables developers to drive more applications and very large datasets into memory, and avoids the performance overhead of reading data in from a disk or from a database."<br />
+<br />
+---- <br />
+More Memory Breakthroughs in the past year: http://www.google.com/search?hl=en&amp;as_qdr=y&amp;q=%22memory-breakthrough%22+%7C+%22RAM+breakthrough%22&amp;as_qdr=y&amp;btnG=Google+Search&nbsp; @;) <br />
+<br />
+<hr />
+Back to: <a href='PrevalenceSkepticalFAQ.html'>PrevalenceSkepticalFAQ</a>.<br />
+</div>
+        <div class='txt'>I have 36Gb of on data on disk, how can I use this technology if I have to keep it all in RAM?<br />
+<br />
+You cannot use prevalence if you don't have enough RAM. The point of this page is to show that, if your organization cannot afford 36GB of RAM today, it is just a question of time. See: <a href='PrevalentHypothesis.html'>PrevalentHypothesis</a>. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+If you lack enough RAM to hold the object database, raw disk I/O can be used in its place.&nbsp; For example, for *decades*, Forth has been using raw disk I/O in the form of "blocks" to store everything from source code to database records with absolutely outstanding performance.&nbsp; While thrashing the internal memory cache can occur, blocks in Forth have proven to be about as fast as normal RAM in actual practice.<br />
+<br />
+Do not discount the value of simplicity.&nbsp; Much of persistent storage's slowness comes from the layer upon layers upon layers of abstractions of abstractions in the filesystem layers of most operating systems.<br />
+<br />
+From what I've read of prevalence so far, Forth has been doing it, on 8-bit processors with as little as 32K of address space, for pretty much since the early 70s, if you treat Forth blocks as a form of virtual, persistent memory.<br />
+<br />
+<hr />
+"blocks in Forth have proven to be about as fast as normal RAM in actual practice." Why is using virtual memory so much slower than using actual RAM, then? Are all operating-system providers plain stupid? --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<br />
+I'm interested in using <a href='Prevayler.html'>Prevayler</a> to persist the majority of my objects by count, but the minority by size.&nbsp; Since my application will be archiving data result sets, over time these results may be more than 4GB.&nbsp; On the other hand, the indexes on the results for result searches, the result managment, and the remainder of the application that is not result driven can use <a href='Prevayler.html'>Prevayler</a>.&nbsp; <br />
+<br />
+I have not gotten to figuring out how to break it down, but 90% of the tasks should simply use <a href='Prevayler.html'>Prevayler</a> and the final result data lookup will have to be from a file rather than from in memory because of the large result size.&nbsp; The persisted in memory "mini-result" will contain a reference to the file location of the full result.&nbsp; Result searches, sorts, etc should all be in memory and very fast, with only the last least common and least expensive step going to file.&nbsp; <br />
+It is not always necessary to keep everything in memory, so many projects that have more data than available memory may still be able to use <a href='Prevayler.html'>Prevayler</a> provided some of the things that require persistence.<br />
+<br />
+I have not yet gotten into the project and used <a href='Prevayler.html'>Prevayler</a> yet, so I don't know if it could benefit from the notion of memory priority of some objects, where persisted objects have two classes: some are persisted to file and removed from memory because they are known to be accessed very infrequently, and others are always kept in memory.&nbsp; However, this may complicate the very simple nature of <a href='Prevayler.html'>Prevayler</a>.<br />
+Good point. How should we deal with history?<br />
+Mihies<br />
+</div>
+    </body>
+</html>

@@ -1,0 +1,136 @@
+<html>
+    <head>
+        <title>RollbackIsNeedless (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>RollbackIsNeedless</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Rollback is not a feature. It is a workaround for limitations in database technology.<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> provides all ACID transaction properties without using rollback logic. Since traditional databases, on the other hand, have to use rollback logic to implement ACID properties anyway, they also offer you rollback to use if you want.<br />
+<br />
+People use rollback to undo the operations that they have <i>speculatively</i> applied to the database until one of the following happens:<br />
+ #The user (or the master in a distributed transaction cenario) decides to give up.<br />
+ #They realize the transaction would produce an inconsistent state.<br />
+The reason why operations have to be <i>speculatively</i> applied is that transactions take time to execute in traditional databases. The database cannot simply wait until commit to start applying the operations.<br />
+<br />
+With prevalence you no longer need rollback. <a href='InstantaneousTransactions.html'>InstantaneousTransactions</a> simply eliminate the need to speculatively apply operations to the system before the user (or the master) commits.<br />
+<br />
+To deal with the committing of inconsistent transactions, you just have to determine wether the transaction is inconsistent <i>BEFORE</i> starting to apply it. Every operation that could possibly fail must have explicitly verifiable pre-conditions (good practice anyway).<br />
+<br />
+Some people suggested every business object could provide an undo operation for every operation. Having to implement undo methods for every change (and propagating those undo methods through the business object trees) is impractical for the amount of work and is extremely error-prone, though.<br />
+<br />
+Object-oriented databases try to make everything "transparently" undoable. Changes are made to clones of the real business objects; on commit the changes are synched and the clones discarded. This is pretty complex to implement if you want it to be minimally invasive, however, and extremely slow because every single variable access (including reads) requires indirection.<br />
+<br />
+That is why <a href='Prevayler.html'>Prevayler</a> is so much faster and simpler than OO databases even.<br />
+<br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a>, Quartz and <a href='CarlosVillela.html'>CarlosVillela</a>.<br />
+</div>
+        <div class='txt'>The hot/replica pair Carlos mentioned earlier, I think, is the best solution I've seen. Commands that are rolled back (for whatever reason, be it an exception or another participant in a distributed transaction) cause the hot instance to be discarded. --<a href='MichaelPrescott.html'>MichaelPrescott</a><br />
+<br />
+To implement that, it seems we would have to be able to copy replicas faster than the rollback rate, which I think we cannot guarantee (not for all applications). --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+These are all problems that have been solved many times before.<br />
+<br />
+No. They are all problems that have been worked around many times before. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<a href='Prevayler.html'>Prevayler</a>'s design is very simple and lightweight, but I think the statement: "you just have to determine whether the transaction is inconsistent BEFORE starting to apply it." imposes an object design with which many people are not familiar. It means you must edit all input before changing the state of any objects in memory. <br />
+<br />
+This is exactly what you meant by the words "Every operation that could possibly fail must have explicitly verifiable pre-conditions (good practice anyway)". You may consider it good practice, but it is certainly not commonplace. I'm not even sure it is always good practice. It means each Prevaylent Command object must invoke all the methods which check all the pre-conditions for the things it needs to do. Then it must invoke the methods which really "do the work". The Command can end up needing to know way too much about the internals of the domain objects. <br />
+<br />
+The problem is that if any sort of editting or processing exception occurs after any object has had state changed by the Command, the only way to get back to previous state is to have some sort of rollback mechanism. It should be possible to recover forward from the last known good state and the command logs, but this is probably not a great approach for interactive work.<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> is essentially, an in-memory database. Even in a fast in-memory database, I may still have "speculative updates". To maintain ACIDity, I must have either a rollback, or recover-forward capability.<br />
+<br />
+--<a href='DougSwartz.html'>DougSwartz</a><br />
+<br />
+See: <a href='PrevaylerIsNotADatabase.html'>PrevaylerIsNotADatabase</a><br />
+<br />
+I agree that using explicitly verifiable pre-conditions is not commonplace yet. See <a href='DesignByContract.html'>DesignByContract</a>.<br />
+<br />
+The Command does not need to "invoke all the methods which check all the pre-conditions for the things it needs to do". The business object can provide a single method for that.<br />
+<br />
+I agree that if you were going to do "speculative updates" you would need rollback. Because of our rollback-spoilt habits, we find it easier to do certain things with speculative updates.<br />
+<br />
+We also found it easier to do certain things using GOTO statements.<br />
+<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+What I don't understand is how to implement isolation with <a href='Prevayler.html'>Prevayler</a>. Assuming two clients want to redraw money from a bank account. Check money, then take it if there is enough. This is usually handled by transactions in databases. The only way to make this work is using synced methods in Java (either in the business method or in a testAndModify method of account), but I can't find something about that on the site. Syncing methods will create bottlenecks, but I assume you do not care because a synced method is still much faster than a <a href='DBMS.html'>DBMS</a> transaction? --<a href='StephanSchmidt.html'>StephanSchmidt</a><br />
+<br />
+ #Sync'd methods are MUCH faster than DB transactions.<br />
+ #Sync'd methods will only create bottlenecks on specific objects.<br />
+ #Only one transaction is executed on a prevalent system at a time.<br />
+ #All transactions in a prevalent system run in just a few microseconds. See <a href='InstantaneousTransactions.html'>InstantaneousTransactions</a>.<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+What if I have two threads manipulating the business objects simultaneously - both need to access the same two objects, but in reverse order. If I (a) just use plain synchronization, they'll deadlock forever. If I (b) force all operations to execute sequentially by synchronizing on a global object, I ruin throughput. If I (c) use custom lock objects I wait on and a deadlock-avoidance algorithm, I need to be able to roll back one of deadlocked threads by calling Thread.interrupt() and therefore causing InterruptedException while it's wait()ing for a deadlocked lock's monitor. It appears that by saying "rollback is needless" you're forcing me into using global synhronization object (solution b) and therefore killing all performance benefits of multithreading. Do I see right? OTOH, if everything is in memory, then threads are never blocked on I/O, so maybe there's no benefit in multithreading over singlethreading anyway? I have to devote some more thinking to this...<br />
+--<a href='AttilaSzegedi.html'>AttilaSzegedi</a><br />
+<br />
+<hr />
+The assumption is invalid. During a single transaction I may query, update, insert, delete, query some more, etc. All of this happens sequentially, not instantaneously. At some point during the process, I may find that, because of some condition of the data (for example account balance has reached zero), I need to rollback all of my work. This isn't because of some clunky database limitation, it's because of a condition that I can't answer until queries and updates have been applied to the database. It's business logic that either all has to happen, or not at all. That's the "A" part of <a href='ACID.html'>ACID</a>. I think you REALLY need to rethink transactions!<br />
+<br />
+<br />
+You are mixing two cases:<br />
+ #A system using the database rollback "feature" to allow the user to perform "transaction simulations" (holding as many locks as he pleases) and quit without committing. @:p<br />
+ #The execution of a transaction on behalf of a user that has already issued his <i>OK</i> by a system that does not know before actual execution wether the transaction will explode in its face.<br />
+The system in the second case is untestable at best. How do you know its execution will even return?<br />
+<br />
+<b>"I think you REALLY need to rethink transactions!"</b><br />
+As if I wasn't the one rethinking transactions. @;) --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+I'm still trying to wrap my head around object prevalence, but it seems to me that it's the previous comment's assumptions that are invalid.&nbsp; In an <a href='RDBMS.html'>RDBMS</a> each select, insert, update, etc. is a single atomic command, thus you need to use explicit transactions to group several operations in an atomic way.&nbsp; And in a prevalent system (to quote Klaus), "Only one command is executed on a prevalent system at a time."&nbsp; What I'm thinking (someone correct me if I'm wrong) is that executing a (synchronized) command in a prevalent system might be a call to a single method which contains all needed business logic and does (or doesn't do, or undoes, or...) data modifications as appropriate.<br />
+Unless you're talking about using transactions with ad-hoc queries, in which case it's more an issue of how to handle ad-hoc queries (discussed elsewhere) than how to handle transactions.<br />
+<br />
+- Joel Fouse<br />
+<br />
+<hr />
+So if I understand this correctly, every single <a href='ACID.html'>ACID</a> transaction that a particular system requires gets implemented as one of these <a href='Prevayler.html'>Prevayler</a> command objects, and these objects are globally synchronised (ie. only one of them can execute at once).&nbsp; This would enforce globally serialised access to your "data model", and hence eliminate a lot of the concurrency related problems that traditional <a href='RDBMS.html'>RDBMS</a> transactions attempt to solve.&nbsp; In a traditional database, global serialisation would guarantee truly abysmal performance, but I'm guessing that because everything happens in memory, this isn't an issue with <a href='Prevayler.html'>Prevayler</a>?<br />
+<br />
+If I've got it right, that makes a fair bit of sense actually...<br />
+<br />
+...although I must admit that I'm not particularly satisfied with the answers that have been given for some of the issues that others have raised.&nbsp; In particular:<br />
+1. 2PC (in the case where your transactional boundary encompasses more than just your PrevLayer "data model")<br />
+2. rollback support (to avoid having to manually guarantee ALL preconditions BEFORE modifying any of the "data model" objects)<br />
+etc.<br />
+<br />
+-- Peter Monks<br />
+<br />
+<br />
+You are right regarding the speed of globally synchronized transactions in RAM (<a href='InstantaneousTransactions.html'>InstantaneousTransactions</a>) and the fact that this eliminates concurrency problems among them. Before they are executed serially, mind you, they are written to disk <i>in parallel</i>. <a href='Prevayler.html'>Prevayler</a> 1.03 does that, although that was not yet migrated to the 2.0 architecture.<br />
+<br />
+As for 2PC see <a href='TwoPhaseCommitIsUnnecessary.html'>TwoPhaseCommitIsUnnecessary</a>.<br />
+<br />
+As for not being able to guarantee all preconditions for your transactions, please keep a secret: thanks to coding by <a href='JonTirsen.html'>JonTirsen</a>, <a href='Prevayler.html'>Prevayler</a> 2.0 will actually <i>only execute transactions which are guaranteed not to throw <a href='RuntimeExceptions.html'>RuntimeExceptions</a>!</i> If a transaction would throw a <a href='RuntimeException.html'>RuntimeException</a>, <a href='Prevayler.html'>Prevayler</a> just does not execute it on your system. "How on earth does <a href='Prevayler.html'>Prevayler</a> know wether a particular transaction <i>would</i> throw a <a href='RuntimeException.html'>RuntimeException</a>?" @??? <a href='Download.html'>Download</a> the 2.0 code from CVS and try it out. It is pretty cool to see that working and, as most of <a href='Prevayler.html'>Prevayler</a>, is based on an anticlimactically simple idea brought up by several people on the <a href='PrevaylerTeam.html'>PrevaylerTeam</a>.<br />
+<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<br />
+Command objects must be executed serially, obviously. Which as PeterMonks describes means that the only 'writing' to the object graph is done synchronously. However, this does not mean that the Command itself must read &amp; write lock the entire object graph to conduct its business. It should only read &amp; write lock the part it is working on, allowing the rest of the graph to be 'read'. Am I correct in this assumption, Klaus? <br />
+<br />
+--<a href='TalRotbart.html'>TalRotbart</a></div>
+    </body>
+</html>

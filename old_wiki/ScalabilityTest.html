@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <title>ScalabilityTest (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ScalabilityTest</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>The scalability test's goal is to compare Prevayler's scalability to that of <a href='DBMSs.html'>DBMSs</a> such as Oracle, MySQL and SQLServer.<br />
+<br />
+It is composed of two tests:<br />
+ #<i>Query Scalability Test</i> - Measures how many queries the test subjects can handle per second.<br />
+ #<i>Manipulation Scalability Test</i> - Measures how many manipulations the test subjects can handle per second.<br />
+The tests run against a defined subject interface. There are two scalability test subject implementations: the JDBC implementation, which uses any SQL database to store its objects, and the Prevayler implementation, which uses plain Java objects.<br />
+<br />
+<br />
+<b><i>How does each scalability test work?</i></b><br />
+First, it creates a number of <a href='RecordObjects.html'>RecordObjects</a>. This number can be configured to 100k, 1M or 10M objects. When the subject is a database, these <a href='RecordObjects.html'>RecordObjects</a> are mapped directly to rows in a table.<br />
+<br />
+Then, the test runs for several one minute rounds. For each round, the number of test threads is increased by one. These test threads are threads that perform the greatest ammount of queries (query test) or manipulations (manipulation test) they can during that one minute.<br />
+<br />
+The tests are limited to very simple operations so that the relational databases can cope:<br />
+ -Each <i>query</i> is a simple attribute equality query (WHERE NAME='NAME1234') and returns a List of 10, 100 or 1000 <a href='RecordObjects.html'>RecordObjects</a> depending on the number of <a href='RecordObjects.html'>RecordObjects</a> initially created.<br />
+ -Each <i>manipulation</i> is a transaction with one <a href='RecordObject.html'>RecordObject</a> deletion, one insertion and one update, all by ID.<br />
+<br />
+<b><i>Isn't it unfair for the database to have to read from disk while Prevayler uses RAM only?</i></b><br />
+You must give your database enough RAM so that it can keep all its data blocks in RAM and <i>not</i> have to read from disk either. @;) The results are only considered valid if you do that.<br />
+<br />
+<hr />
+See: <a href='ScalabilityTestResults.html'>ScalabilityTestResults</a> for results and easy instructions on how to run the tests for yourself.<br />
+</div>
+        <div class='txt'>How if the query is consisting complex condition (using AND, OR, etc) and with complex relation (JOIN, INNER-JOIN, etc)? Since what I got in mind, good <a href='RDBMS.html'>RDBMS</a> not only can store data, but it must provide a way to retreive needed data fast.<br />
+I'm not talking about simple guess-book-like table, but more to real, big enterprise database here..<br />
+<br />
+<br />
+AND? OR? JOIN? INNER-JOIN? All too simple. How about a query based on polimorphically evaluated methods based on the current millisecond? Can your database even handle that? Even object databases are notoriously better than relational databases for complex queries. I have chosen a very simple query on purpose to handicap <a href='Prevayler.html'>Prevayler</a> and give relational databases a better chance. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<br />
+Ok, this is what I'm looking for. I can download and use prevayler on my next project, but too bad... I don't know how to perform complex query on my collections. Is there any sample or resources that I can visit to learn more about this things? so I can rely on prevayler to perform my database queries.<br />
+<br />
+<br />
+See: <a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>?<br />
+<br />
+<br />
+Yes, prove it that it's "TOO SIMPLE" since Java's collections (eg. TreeMap, HashMap) are only using one key, how if it involve more than one key (eg. query based on the name and zip-code)?<br />
+<br />
+<br />
+You are not restricted to using the Java collections API. See: <a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>? and <a href='NoMorePorridge.html'>NoMorePorridge</a>.<br />
+<br />
+<br />
+Everybody, just don't click the "<a href='NoMorePorridge.html'>NoMorePorridge</a>" links, it give you nothing.. no solution there.. it's just joke... (don't know who's idea is this!)<br />
+<a href='Prevayler.html'>Prevayler</a> is a great concept, but it not ready to be used for serious application. We can say that prevayler is a very powerfull boat-engine, but it's only an engine, it cannot float in the water yet... so no use!<br />
+If you claim prevayler are the solution.. think again.. since it not complete!!!.. I know we not restricted only to using java collections API. but... what else? maybe somebody got the API to do query, but somebody else NOT.<br />
+So how we can use prevayler for our project if we don't have any query API????<br />
+<br />
+<br />
+Have you taken a look at the collections APIs and query languages in <a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>? Have you even entered that page?<br />
+<br />
+<br />
+Hi, I am new to this discussion and <a href='IMHO.html'>IMHO</a> there are some valid points on both sides:<br />
+- On one hand, the SQL minded people should realize that doing a natural join between tables is a quite inefficient way to collect related data. When manipulating classes, most of the related informations are connected using associations between different classes. One-to-many associations are implemented very efficiently using Java collections. Many-to-many associations can be implemented using ad-hoc classes. And the queries can be written in an efficient way by navigating through these links and applying different filters at each level (this is how pre-relational databases where working too).<br />
+- On the other hand, the Relational model gives you a flexibility that is not addressed by class-oriented languages like Java. If your user needs to collect informations in a new unanticipated way it should be quite easy to write a new SQL query collecting the information and to add some indexes to the tables to get a decent result. Whereas with class-oriented languages you will probably need to refactor your classes to add a new association and think twice about how to feed this association for existing objects and how to handle the migration (see Schema Evolution problems regarding that matter). Chances are, that these repeated difficulties will make your developers find some workarounds to implement those evolutions that will bring you far from the object paradigm...<br />
+For me, class-oriented languages are perfect to develop application/web servers, network clients, GUI frameworks, image processing, etc... but are just too inflexible for building business apps. I would love to see <a href='Prevayler.html'>Prevayler</a> available for an object-oriented language like Self (by object-oriented, I mean that objects are not built by classes allowing for more flexibility).<br />
+Just my 2 eurocents.<br />
+Arnaud.Clere@free.fr<br />
+<br />
+Build your own <a href='Prevayler.html'>Prevayler</a> in Self then. It's just ten classes (in a class-oriented language), you'd do it in no time. -- <a href='JonTirsen.html'>JonTirsen</a><br />
+<br />
+You're right. I need to talk less and code more&nbsp; :)<br />
+Arnaud <br />
+<br />
+<hr />
+<br />
+<a href='Prevayler.html'>Prevayler</a> is great! Previously, I wanted to use FirebirdSQL to store my data, as it could grow large, and everyone advised me to store my data in a <a href='RDBMS.html'>RDBMS</a>, mainly because they are good at handling large quantities of data, and you don't have to go through the hassle of having to parse CSV or use your own database file format. Naturally, I overlooked one of Java's main features: Object Serialization. I didn't know what it was, until I was confronted with <a href='Prevayler.html'>Prevayler</a>. <a href='Prevayler.html'>Prevayler</a> inspired me to implement a similar system into my server application. While it handles multiple data types, at most a few hundred thousand of each, it still manages to write 10 million of my custom business objects of some 8 different types (that's 80 million) to disk in less than 20 seconds! And my application uses less memory, it creates less garbage (no more JDBC overhead) and it's faster. It even saved me the costs of having to put up a seperate database server. thanks <a href='Prevayler.html'>Prevayler</a>!<br />
+<br />
+A question concerning the previous comment. You say you put 80 million objects into memory? What types do you put there? How much RAM does all that occupy? Which JDK do you use?<br />
+Storing in memory is great! But, the JDK I use (Sun's) seems to use way too much memory. I know cause I tried to port my Postgres database (dumped size: only 14M; 200.000 records in all) into memory. The first 30.000 filled the default 64M that java allocates!<br />
+So, I'm looking for the JDK with the smallest memory footprint. Any suggestions?<br />
+<br />
+I wish memory size wasn't an issue already. Database world would be SO much simpler and nicer :-) Wherefore art thou Athlon64? :-)<br />
+--<br />
+Atus<br />
+<br />
+Just set the JVMs memory size higher, you can use close to 2GB using most JVMs (given that you have enough RAM).<br />
+<br />
+While I was testing this great project, I noticed that inserting and deleting data actually "does" take pretty long. Doing queries on the data (which is in memory) is of course very VERY fast.. of course would a database with very much memory and caching be fast too... if you do a few 1000times the same query on a database (like oracle) then I guess oracle has cached this data in memory and thus it will be almost as fast as <a href='Prevayler.html'>Prevayler</a> I think.. or am I wrong here?<br />
+<br />
+You're wrong, for one simple reason: there's too much code between <a href='Oracle.html'>Oracle</a> and your application to be faster than <a href='Prevayler.html'>Prevayler</a>. There's the query planner, caching code, network protocol, JDBC driver, and a stack of interfaces between your app and your <a href='Oracle.html'>Oracle</a> data. With <a href='Prevayler.html'>Prevayler</a>, you have Java method calls, which are <b>fast</b>.<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+</div>
+    </body>
+</html>

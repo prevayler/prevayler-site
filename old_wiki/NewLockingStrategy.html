@@ -1,0 +1,124 @@
+<html>
+    <head>
+        <title>NewLockingStrategy (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>NewLockingStrategy</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'></div>
+        <div class='txt'>A new locking startegy was proposed by <a href='DanielMcAllansmith.html'>DanielMcAllansmith</a> to allow non-conflicting transactions to execute in parallel.<br />
+<br />
+The whole motivation for the lock idea is that the precondition checking within Transaction.executeOn() violates <a href='InstantaneousTransactions.html'>InstantaneousTransactions</a>. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+Well, not really precondition checking... querying state is the thing which <br />
+can take time.&nbsp; Presumably precondition checking will usually query state.<br />
+Even without precondition checks I think it would be hard work to ensure all <br />
+transactions were 'instantaneous', some querying is going to occur while <br />
+queueing up the transaction for deferred computation. --<a href='DanielMcAllansmith.html'>DanielMcAllansmith</a><br />
+<br />
+I believe that, using lazy evaluation, though, we can write a system with very complex transaction pre- conditions and still have instantaneous transactions. I shall elaborate in a future post. As I said before, the trick is the Transaction.executeOn() never returning a result or throwing an exception (throwing an exception is just a special way of returning a result). --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+I'm eager to see how it could be acheived, and how difficult it would be to write the Transactions.&nbsp; Personally I'm usually willing to sacrafice a little speed for clarity. --<a href='DanielMcAllansmith.html'>DanielMcAllansmith</a><br />
+I'm unconvinced that <a href='Prevayler.html'>Prevayler</a> support for this is necessary.&nbsp; The premise is that Instantaneous Transactions aren't effective if you have some long-running Transaction.<br />
+<br />
+For this situation I recommend creating a small Instantaneous Transaction that just forks a thread to do the real work.<br />
+<br />
+My opinion is that in most applications, long-running Transactions are in the minority and I don't want to see <a href='Prevayler.html'>Prevayler</a> add complexity to support a minority case that can be easily handled by just having the Transactions themselves fork new threads.<br />
+--Dave Orme<br />
+<br />
+I second <a href='DaveOrme.html'>DaveOrme</a>'s concerns, but wouldn't a Thread-spawning Transaction be undeterministic on some conditions, like the ones that suggest using them in the first place? -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+I'm confused about a couple of things here:&nbsp; How does this give up the lock that happens when adding a Transaction to the queue?&nbsp; It seems that you're going to have to synchronize that no matter what.&nbsp; Or am I missing something else here? --<a href='DaveOrme.html'>DaveOrme</a><br />
+<br />
+Well, there is no actual queue.&nbsp; The transactions 'queue up' waiting to aquire locks. I have been known to be wrong before, but I think you can get away with much less synchronisation than occurs now.&nbsp; Though that's not to say that the current way is inherently more expensive... maybe it just hasn't experienced enough iterations. --<a href='DanielMcAllansmith.html'>DanielMcAllansmith</a><br />
+<br />
+Perhaps an outline of the current algorithm then the algorithm as you envision it would be helpful. --<a href='DaveOrme.html'>DaveOrme</a><br />
+<br />
+Righto.&nbsp; This is based off of my reading of the 1.x code, hopefully Klaus will point out any errors I make or differences in teh 2.0 code. I have left out actual logging of transations and transaction counting for purposes of snapshotting as that will probably be equivalent.<br />
+<br />
+Current algorithm:<br />
+ #log transaction asynchronously<br />
+ #synch on transaction queue<br />
+ #add transaction token to queue<br />
+ #get logical transaction time<br />
+ #synch on transaction token<br />
+ #synch on transaction queue //thread sleeps until the transaction token is at the head of the queue. //indicating that it is time for this transaction to be executed.<br />
+ #execute transaction //not in a synch block but the transaction queue is effectively locked, so no concurrent execution<br />
+ #synch on transaction queue<br />
+ #remove transaction token from head of queue<br />
+ #get next token on transaction queue<br />
+ #synch on next token<br />
+ #notify token that its transaction can proceed<br />
+<br />
+Proposed algorithm: //the only locks held during this method are those in aquire so transactions operating over disjoint subsets of state may proceed concurrently<br />
+ #transaction aquires locks&nbsp; //could be no locks, global write (like now) or more. This prevents other transactions that operate on the same subset of state proceeding until release locks is called.<br />
+ #check that transaction preconditions hold //bail out if they don't hold<br />
+ #log the transaction asynchronously<br />
+ #get logical transaction time<br />
+ #commit the effects of the transaction<br />
+ #transaction releases locks //transactions that operated over the same subset may proceed through the lock aquisition<br />
+<br />
+As things stand, the implementation of the current algorithm synchs five times, and probably would make more method calls. If you're sure your transactions won't stomp each other you can do no locking in the proposed algorithm. If you want a global write lock you'd probably be looking at a couple of synch blocks, one for aquire and one for release of a lock object. If you want you can get more specific with your locking which basically gives you the ability to trade off between the cost of acheiving locks and the amount of concurrency possible.<br />
+<br />
+It would require changes to the core and the Transaction interface, but I think the changes simplify things, are more expressive, are more conceptually accurate, and quite possibly more efficient even for the 'simple' case.&nbsp; But maybe I'm biased... @:)&nbsp; --<a href='DanielMcAllansmith.html'>DanielMcAllansmith</a><br />
+<br />
+<hr />
+The proposed algorithm is simply defined in a more abstract level than the current one. Please describe the "transaction acquires locks" step. Please describe the recovery phase too (how will it know which transactions can run concurrently and in which order).<br />
+<br />
+I like the idea. I want to explore it more. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+To avoid deadlocks and allow locking to take place in parallel, we would also have to:<br />
+ -Sequence transactions BEFORE they aquire their locks.<br />
+ -Allow older transactions to "break" locks by newer ones. The newer ones would simpy have to try again later (or throw an UnableToAquireLockException to their callers, which is VERY BAD and doesn't occur today). --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+No. No. There would be no problem with locking as long as use a sensible method of ordering lock aquisitions. It is (or at least should be!) standard practice to aquire locks in a well defined sequence to minimise the possiblity of deadlock. And given that locks are aquired in only one place ordered lock aquisition should totally prevent deadlock. --<a href='DanielMcAllansmith.html'>DanielMcAllansmith</a><br />
+<br />
+<br />
+OK. So we would have to:<br />
+ #Determine all locks a given transaction needs. Who will do that? Will the business have to signal that? Will the transaction break encapsulation and "just know"? Would we "analyse" the code via AOP and generate the locks? How?<br />
+ #Acquire them in ascending order. All locks would have to be comparable! Each lock acquisition will require a synchronized block.<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<br />
+'describe the "transaction acquires locks" step' - The method of aquiring locks is not mandated.&nbsp; The prevayler simply makes a call to Transaction.aquireLocks, which could do anything from a 'no-op' right up to obtaining read/write locks on individual fields of multiple business objects.<br />
+<br />
+'describe the recovery phase too (how will it know which transactions can run concurrently and in which order)' - Transactions are partially-ordered.&nbsp; The partial-ordering is determined by the locks which they require.&nbsp; The simplest thing to do is log the Transactions in a full-order that is consistent with their partial-ordering.&nbsp; The simplest form or recovery would be to replay the Transactions in the full-ordering.<br />
+If replaying the Transactions sequentially (ie on a single thread) you could disable the lock aquisition/release phases.&nbsp; Or you could replay Transactions concurrently (lock aquisition/release will allow concurrency consistent with the Transactions partial-order).<br />
+<br />
+'Who will determine locks a transaction needs?' - The transaction writer, the prevayler simply provides the hook for the transaction to aquire and release the necessary locks.<br />
+<br />
+In general the answer to the points below is 'Do it however you like, it's not mandated.', but I'll add my opinions.<br />
+'Will the transaction break encapsulation and "just know"?' - Personally I think the Transaction is a more correct place for lock objects than within the business objects.&nbsp; Business objects have no business with lock objects.<br />
+<br />
+'Would we generate locks?&nbsp; How?' - That's one way to do it.&nbsp; With strict OO you could provide access to a canonicalized pool of lock objects, which are created on demand, to all transactions.<br />
+I'd be more inclined to see transactions as an Aspect of Business Object behaviour and define Transactions using aspects (ala <a href='AspectJ.html'>AspectJ</a>).&nbsp; With this approach it seems feasible to have no mention of Transactions or <a href='Prevayler.html'>Prevayler</a> in your (java) code.&nbsp; Also (hopefully) you could move to a different persistence mechanism by simply changing some abstract aspects.<br />
+<br />
+'Acquire locks in ascending order. All locks would have to be comparable! Each lock acquisition will require a synchronized block.' - That would be my advice.&nbsp; I get scared when there are more than a handful of locks being aquired in random order at random points.&nbsp; It is so much easier to reason about when they are aquired in a defined order, and it will usually prevent deadlock.<br />
+In actuality each lock will most likely cost you two synchs, one to aquire and one to release.&nbsp; But transaction writers are free to use as few or many locks as they like.<br />
+<br />
+If you wrote an application with very fine-grained transactions with the current system you incur 5 synchs to get a global lock.&nbsp; If your transactions all consist of setting a single field (excluding doubles and longs) they are already atomic and there is no need for any locking at all.&nbsp; <br />
+<br />
+A similar problem exists if you write a single-threaded application, you pay for synchs you don't need.<br />
+<br />
+--<a href='DanielMcAllansmith.html'>DanielMcAllansmith</a></div>
+    </body>
+</html>

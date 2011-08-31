@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>HashCode (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>HashCode</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>To be Deterministic, <a href='BusinessClasses.html'>BusinessClasses</a> must pay attention to the proper use of Object.hashCode().<br />
+<br />
+The <i>default</i> Java hashCode() is based on the object's address in the VM heap and cannot be deterministically reproduced. It can only be used as a short-cut to avoid identity comparisons, therefore.<br />
+<br />
+Using the default hashCode() is OK for HashSet.add() and HashSet.remove(), for example. It is <i>NOT OK</i>, though, to use a HashSet.iterator() and process only the first element out of several, for example. If your <a href='BusinessClasses.html'>BusinessClasses</a> do not implement their own hashCode(), the order of the elements in that iterator will vary non-deterministically.<br />
+<br />
+A Set.iterator() can be safely used if all elements are processed regardless of order.<br />
+<br />
+A List.iterator(), as you might expect, is always safe to use.<br />
+<br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+----</div>
+        <div class='txt'><br />
+hashCode()</div>
+    </body>
+</html>

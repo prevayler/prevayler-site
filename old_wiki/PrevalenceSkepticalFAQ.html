@@ -1,0 +1,322 @@
+<html>
+    <head>
+        <title>PrevalenceSkepticalFAQ (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>PrevalenceSkepticalFAQ</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>RAM is getting cheaper every day. Researchers are announcing major <a href='BreakthroughsInMemoryTechnology.html'>BreakthroughsInMemoryTechnology</a>. Even today, servers with multi-gigabyte RAM are commonplace. For many systems it is already feasible to keep all business objects in RAM.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<b><i>Do you mean I can simply have my objects in RAM and forget all that database hassle?</i></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+That's right.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<b><i>Are you crazy? What if there's a system crash?</i></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+To avoid losing data, every night, or in any reasonable period, your system server saves a snapshot of all business objects to a file using plain object serialization.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<b><i>What about the changes occurred since the last snapshot was taken? Won't the system lose those in a crash?</i></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+No. All commands received from the system's clients are converted into serializable objects by the server. Before being applied to the business objects, each command is serialized and written to a log file. During crash recovery, first, the system retrieves its last saved state from the snapshot file. Then, it reads the commands from the log files created since the snapshot was taken. These commands are simply applied to the business objects exactly as if they had just come from the system's clients. The system is then back in the state it was just before the crash and is ready to run. <br />
+ <br />
+ -<b><i><a href='DoesntTheSystemHaveToStopInOrderToProduceAConsistentSnapshot.html'>DoesntTheSystemHaveToStopInOrderToProduceAConsistentSnapshot</a>?</i></b><br />
+ -<b><i><a href='IsThereAFreeImplementationForJava.html'>IsThereAFreeImplementationForJava</a>?</i></b><br />
+ -<b><i><a href='WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey</a>?</i></b><br />
+ -<b><i><a href='WhatAreTheCodingRestrictionsMyClientClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyClientClassesHaveToObey</a>?</i></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ -<b><i><a href='IsObjectPrevalenceFasterThanUsingADatabase.html'>IsObjectPrevalenceFasterThanUsingADatabase</a>?</i></b><br />
+ -@:o<b><i><a href='IsItTrueThatPrevaylerIsThreeThousandTimesFasterThanMYSQL.html'>IsItTrueThatPrevaylerIsThreeThousandTimesFasterThanMYSQL</a>?</i></b><br />
+ -<b><i><a href='DoesPrevalenceOnlyWorkInJava.html'>DoesPrevalenceOnlyWorkInJava</a>?</i></b><br />
+ -<b><i><a href='DontINeedTransactions.html'>DontINeedTransactions</a>?</i></b><br />
+ -<b><i><a href='WillIBeAbleToUseSQLBasedTools.html'>WillIBeAbleToUseSQLBasedTools</a>?</i></b><br />
+ -<b><i><a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>?</i></b><br />
+ -<b><i><a href='IsPrevaylerReliable.html'>IsPrevaylerReliable</a>?</i></b><br />
+ -<b><i><a href='WhenShouldINotUsePrevalence.html'>WhenShouldINotUsePrevalence</a>?</i></b><br />
+ -<b><i><a href='HowMuchDoesPrevaylerCost.html'>HowMuchDoesPrevaylerCost</a>?</i></b><br />
+ -<b><i><a href='HowLongDoesASnapshotTake.html'>HowLongDoesASnapshotTake</a>?</i></b><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ -<b><i><a href='ButWhatIfIAmEmotionallyAttachedToMyDatabase.html'>ButWhatIfIAmEmotionallyAttachedToMyDatabase</a>?</i></b><br />
+ <br />
+----&nbsp; <br />
+See: <a href='StartingPoints.html'>StartingPoints</a>, <a href='PrevalenceMyths.html'>PrevalenceMyths</a> and Download.&nbsp; <br />
+</div>
+        <div class='txt'>First things that come to my mind are referencial integrity, schema evolution, etc.<br />
+<br />
+The VM's strong typing does referential integrity. <a href='DBMSs.html'>DBMSs</a> don't help you much with schema evolution. You have to write the migration scripts anyway. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+!!!!<br />
+<hr />
+Won't a sufficiently complicated database application written using <a href='Prevayler.html'>Prevayler</a> contain an ad-hoc, informally-specified bug-ridden slow implementation of half of a <a href='DBMS.html'>DBMS</a>?<br />
+<br />
+No. Your database didn't allow it so you probably didn't consider this an option but, now, with <a href='Prevayler.html'>Prevayler</a>, you are finally free to use object libraries! @;) -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+Are the best practices one finds in today database theory all best forgotten?<br />
+<br />
+All the ones spawned from the problem of paging memory blocks to disk, yes. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+I think one of the reasons that <a href='Prevayler.html'>Prevayler</a> can be so radically simple is that it doesn't deal with the issue of making data remotely accessible.&nbsp; A database server, apart from providing a reliable storage mechanism for data, necessarily has to expose this to remote clients.&nbsp; <a href='Prevayler.html'>Prevayler</a>'s striking simplicity is possible because it assumes that the data will be consumed only by the one, local application.&nbsp; It's likely that at some point during the lifetime of a <a href='Prevayler.html'>Prevayler</a>-based application, there will be another application that needs to use its data. -- <a href='MichaelPrescott.html'>MichaelPrescott</a><br />
+<br />
+Yes. With a database you hava a DATA server. With <a href='Prevayler.html'>Prevayler</a>, you have an OBJECT server. The application is free, therefore, to decide how it will let its clients and other systems access those objects. Some options include RMI, CORBA, XML, Sockets, JSP, Servlets, etc.<br />
+<br />
+For web applications, you have an extremely simple and fast architecture which is JSP/Servlets accessing the objects directly in the same VM. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+How is record locking implemented?<br />
+<br />
+You now have objects, not only records. See: <a href='WhatAreTheCodingRestrictionsMyClientClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyClientClassesHaveToObey</a>?<br />
+<br />
+<hr />
+Has anyone tried IBM's open-source ICU4J unicode compressor?&nbsp; For string-heavy applications using Latin charsets, it looks like it could save as much as 50% of the space.&nbsp; It claims it works best for small to medium sized strings.<br />
+<br />
+Here's the API: http://www-124.ibm.com/icu4j/doc/com/ibm/icu/text/UnicodeCompressor.html&nbsp; <br />
+<a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+<hr />
+Any plans of integration with EJB containers for persistence?<br />
+<br />
+That might be good marketing. Technically, though, it would be a step backwards. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a> and <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+Your idea is really the coolest one of 2002 so far!<br />
+<br />
+Thanks, we're glad you liked it! @:) --<a href='PrevaylerTeam.html'>PrevaylerTeam</a><br />
+<br />
+<hr />
+<a href='HowCanIMeasureTheAmountOfMemoryNeeded.html'>HowCanIMeasureTheAmountOfMemoryNeeded</a>?<br />
+<br />
+<hr />
+Wouldn't it make sense to use some persistent collection (BTree?) that uses the filesystem to temporarily swap out objects? This would reduce the memory requirements...<br />
+<br />
+That would be as complex to implement and as slow as an object database. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<a href='Prevayler.html'>Prevayler</a> for the <a href='PalmPilot.html'>PalmPilot</a>.<br />
+<br />
+<hr />
+I'm realy happy you did this @:) I just was a month away from starting exactly this project as I'm about to build a massive multi user world for which I considered this persistence schema the best suiting.<br />
+<br />
+Best Regards, angel'o'sphere aka angelo.schneider@oomentor.de<br />
+<br />
+<hr />
+*sigh* I've been looking at the demo's, tests and implemntation classes all day long, and I still can't figure it out. It's giving me a headache. Would it be possible to write a simple document on how to design an application to store its data using <a href='Prevayler.html'>Prevayler</a>? I really can't figure out what class to use how and where, and how to handle everything :(<br />
+<br />
+Take a look at <a href='GettingStarted.html'>GettingStarted</a>, especially the articles. There's a nice intro by <a href='CarlosVillela.html'>CarlosVillela</a> -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+The comparison of prevayler with SQL-Databases is misleasing. The latter supports<br />
+concurrent writers while prevayler does not. Currently I cannot see how <a href='Prevayler.html'>Prevayler</a> <br />
+addresses concurrent updates from multiple processes (VMs).<br />
+<br />
+As of release 1.03, <a href='Prevayler.html'>Prevayler</a> does provide concurrent transaction logging. Multiple processes (VMs) will access the <a href='Prevayler.html'>Prevayler</a> VM normally, as if they were clients. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+OK. Assume this "classical" problem: Two users of an ERP system try both to<br />
+update the address-record of a customer. Both are connected by separate<br />
+processes to the db-storage. With an SQL-<a href='RDBMS.html'>RDBMS</a> *one* solution is to open <br />
+transactions for both clients. Ony a single one will succeeed.<br />
+So how does <a href='Prevayler.html'>Prevayler</a> support shared access in detail. Are there any<br />
+design documents/concepts?<br />
+<br />
+No. You actually have to know your OO and your Java. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+See: <a href='WhatAreTheCodingRestrictionsMyClientClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyClientClassesHaveToObey</a><br />
+<br />
+<hr />
+How can one make the <a href='Prevayler.html'>Prevayler</a> compatible with languages like Delphi or Kylix ?<br />
+<br />
+Do they have some sort of object serialization? If so, then an <a href='ObjectPrevalence.html'>ObjectPrevalence</a> layer can be written for them.<br />
+<br />
+<hr />
+Schema evolution is the biggest problem. I am trying to port one of my applications to use <a href='Prevayler.html'>Prevayler</a> and it is difficult to work in an iterative manner as all data has to be reloaded again and again using crude tooling. I decided to start building the business classes and commands based on my spec and then adding the servlet/velocity layer. Using a DB is not cool (but <a href='SimpleORM.html'>SimpleORM</a> helps there (www.simpleorm.org)) but allows for schema modification and good reporting.<br />
+<br />
+Well, I will do both versions and see what is the most appropriate for the small product of mine.<br />
+If I get it done, I'll post it somewhere in the next weeks.<br />
+<br />
+--<a href='PhilippeBack.html'>PhilippeBack</a><br />
+<br />
+Cool. I suggest you start using automated testing. That way, you only have to reload your data at release time and not during development. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Next comment is that the system becomes a very big FacadeClass with too many methods relaying the work to CommandObjects.<br />
+I would like to be able to partition those methods in several groups:<br />
+- to allow separate developers to work on their part<br />
+- to avoid a big class that does everything on the BusinessObjectModel<br />
+<br />
+I takes a while to get used to it (half a day or so) but it can prove useful (for prototyping, it's sure that I can win some time). For production development, that's another story... let's give it a chance though as the idea is clever (kind of like a SmallTalk image for BusinessModelObjects).<br />
+--<a href='PhilippeBack.html'>PhilippeBack</a><br />
+<br />
+"I would like to be able to partition those methods in several groups"<br />
+Just make BigFacade return ^SmallFacade1, ^SmallFacade2, etc, with commands/transactions grouped according to their functionality. You can even have business objects returning the Commands/Transactions that operate on them. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+What happens if I run out of RAM unexpectedly? Is graceful degradation just swapping out to Virtual Memory until the RAM delivery van comes around again?<br />
+<br />
+Yes. Your system will become pityfully slow, though. See the <a href='PrevalentHypothesis.html'>PrevalentHypothesis</a>. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<a href='DBMS.html'>DBMS</a>'s use raw partitions to gain better control over physically writing to disk -- can <a href='Prevayler.html'>Prevayler</a> use a DB to store the log?<br />
+-- KenHorn<br />
+<br />
+The current implementation cannot usa a DB to store the log. I think the JDBC overhead is greater than the Java file-writing overhead anyway, though. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+Also, disk is significantly cheaper than RAM, and is getting cheaper much faster. If I've got a 20GB database, can I really afford 25GB in RAM to use <a href='Prevayler.html'>Prevayler</a>? I think my SA's would just laugh.<br />
+This looks useful for small to medium data requirement apps, but I can't see it scaling without transparent paging to disk (which OS may provide enough of).<br />
+-- KenHorn<br />
+<br />
+How much does 25GB of RAM cost? US$ 3000? Can you afford that?<br />
+<br />
+<hr />
+I can see a lot of advantages in using this for small projects. However I am still not sure how to use it in a web application architecture. Since a servlet based architecture (jsp, velocity, etc) is multi-threaded, what are some best practices about building access to the Prevalent objects? The simple approach is to use an exclusive lock around the request processing. Since data access is so fast it might be possible. To increase concurrency one would need more complicated locking around each usage of a "prevaylerbase" controlled object, but this makes things harder to set up. Any comments/experiences would be interesting to hear. - Andrew<br />
+<br />
+See: <a href='InstantaneousTransactions.html'>InstantaneousTransactions</a>, <a href='WhatAreTheCodingRestrictionsMyClientClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyClientClassesHaveToObey</a>?<br />
+<br />
+<hr />
+How is <a href='Prevayler.html'>Prevayler</a> related to and what are the advantages of <a href='Prevayler.html'>Prevayler</a> over the RAM I/O Project (http://www.eecs.umich.edu/Rio/) (1996) which suggests a similar solution? <br />
+<br />
+<hr />
+How can you keep bugs from contaminating the Data in a system using <a href='Prevayler.html'>Prevayler</a>? If the whole system crashes, my data would be safe in a conventional storage system. What happens if my objects are RAM-persistent such as in <a href='Prevayler.html'>Prevayler</a>? My application may be running for a while and messing things up before crashing. There's no place where my data would be safe. A bug in my software may cause the corruption of data which, in a conventional persistent system, could be more reliably protected.<br />
+<br />
+That is a myth. "How can you keep [application] bugs from contaminating the Data in a system" using a database? --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Do you guys have any reference implementation?<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> 1.00.xxx is the reference implementation. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+What is the main difference with the existing HSQL database, which is tiny SQL compatrible database written in pure Java with JDBC interface. It also can keep tables, indexes, etc. in memory, make snapshots and transaction logging...? Another clone?<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> is MUCH simpler (therefore much more robust), orders of magnitude faster (no JDBC overhead), and works for objects, not only for records. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+See: <a href='PrevaylerIsNotADatabase.html'>PrevaylerIsNotADatabase</a>.<br />
+<br />
+<hr />
+Doesn't the system have to stop and restart to apply code changes even if the data and its structure is unchanged?<br />
+With <a href='Prevayler.html'>Prevayler</a>, new commands (soon transactions or queries), new business logic code, or new client code must be compiled into a new executable.&nbsp; To substitute executables, one must stop the old executable--preferably after a snapshot--and start the new executable, which must load data from a snapshot and log files.<br />
+Compare this to SQL, where the database server (<a href='Oracle.html'>Oracle</a>, Sybase, Postgresql, ...) is a stable, long-running process independent of application code changes.&nbsp; With SQL, I can change reporting requirements, transactional data sources, etc. without shutting down the database server.&nbsp; For example, my web shopping cart can continue to accept orders as I change my order fulfillment system. --<a href='JoelShprentz.html'>JoelShprentz</a><br />
+<br />
+We can just load the new version of the code on a replica and route the clients transparently to it. See: <a href='DoesntTheSystemHaveToStopInOrderToProduceAConsistentSnapshot.html'>DoesntTheSystemHaveToStopInOrderToProduceAConsistentSnapshot</a>?<br />
+Also, Java is more naturally run on a virtual machine rather than compiled to an executable. If we don't want to use a replica, therefore, we can use Java's dynamic class loading in association with lazy migration to do a live upgrade of the system. That way, our web shopping carts can continue to accept orders as we change our SHOPPING CART system! @8) --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+'That is a myth. "How can you keep [application] bugs from contaminating the Data in a system" using a database?'<br />
+This is not a myth. You can actually use stored procedures and constrains to protect the data in a <a href='DBMS.html'>DBMS</a>. Also I can think of situation on which roll-back is really usefull. Ries<br />
+<br />
+Did your stored procedures and constraints come as part of your <a href='DBMS.html'>DBMS</a> or are they part of "the application"? @;) Also, I didn't say rollback is useless, I said <a href='RollbackIsNeedless.html'>RollbackIsNeedless</a>. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+I discussed this with coworkers and some just cannot get the point.<br />
+<br />
+Let me quote a line from 'The Matrix': "There is no database"<br />
+<br />
+"You have to understand, most of these people are not ready to be unplugged. And many of them are so inert, so hopelessly dependent on the system that they will fight to protect it." --Morpheus in "The Matrix"<br />
+<br />
+<hr />
+We ran across <a href='Prevayler.html'>Prevayler</a> last week and were surprised to find a lot <br />
+in common with a system we are developing. Chief differences:<br />
+<br />
++ Commands (we call them updates) are implicit; we trap mutative<br />
+&nbsp; operations and use the Java reflection API to extract the methods <br />
+&nbsp; and their arguments for later reapplication. (We rely on <a href='AspectJ.html'>AspectJ</a> <br />
+&nbsp; to help with this magic.) <br />
+<br />
++ We use XML to serialize both the operation lists and the state<br />
+&nbsp; snapshots, not Java serialization.<br />
+&nbsp; <br />
++ We can group multiple mutative operations into a single update.<br />
+&nbsp; In the context of this update, local state appears to have <br />
+&nbsp; changed -- accessors return the changed values -- but uncaught <br />
+&nbsp; exceptions cause the state to be rolled back to the point before <br />
+&nbsp; the update was initiated. Normal return from the update context <br />
+&nbsp; commits the changes atomically. (Again we rely on <a href='AspectJ.html'>AspectJ</a> to<br />
+&nbsp; make this work.) As a by-product of this, we can offer robust<br />
+&nbsp; disconnected operation.<br />
+&nbsp; <br />
+But for the most part the approaches are strikingly similar. No<br />
+database, all state must be in memory, changes are logged with<br />
+a repository before committing to in-memory state.<br />
+<br />
+--tim@peierls.net<br />
+<br />
+To answer the RAM cost question. For 1GB of Sun RAM, for an x000 range, is $4,000 -- $100,000 for RAM is pretty expensive, plus in order to use this much a BIG box is required, at least an Enterprise 6000. When this maxes out because of extra data, upgrading a whole box instead of adding a disk to the array/SAN.<br />
+<br />
+-- KenHorn<br />
+<br />
+I think there are alot of really excellent things about <a href='Prevayler.html'>Prevayler</a>...&nbsp; It's fast, easy to learn and use, small footprint, and so simple that it doesn't come with (or need) an ant build.&nbsp; These are great things.&nbsp; But, alot of what I'm reading here about RAM vs disk costs and the associated limitations (such as the admitidly "pitifully poor performance" of <a href='Prevayler.html'>Prevayler</a> when the OS runs out of RAM) lead me to think that a hybrid solution is probably the most logical for larger projects.<br />
+<br />
+Fer Instance.&nbsp; Lets say I have an online shop that sells books.&nbsp; To try to cache the entire book catalog in the same memory space as the app server and application is just eating up resources that most of the time aren't used (most people will likely be interested in a set of books way more than another set).&nbsp; This (as well as full text searching, etc) are where I think you're still going to need a <a href='RDBMS.html'>RDBMS</a>.&nbsp; But why does it mean that you can't store the "top 1000" selections in ram, as well as say, the customer information (so they can quickly login).&nbsp; This is all hypothetical, but I guess what I'm trying to say is that I can see alot of instances where you would want to load and unload a subset of data into something like <a href='Prevayler.html'>Prevayler</a>.&nbsp; Why does it have to be one or the other.&nbsp; Isn't there room for the 2 to peacefully coexist?&nbsp; I'm convinced it's fast, but not convinced that for a number of applications it wouldn't grow unanageably large and eventually cause OutOfMemoryErrors or suffer from very slow performance.&nbsp; How about storing a rolling set of commands and archiving the previous ones to the database?&nbsp; Does the <a href='Prevayler.html'>Prevayler</a> team see any use for any types of hybrid approaches?&nbsp; Has the <a href='Prevayler.html'>Prevayler</a> team done any testing to determine and recommend strategies for developing very large catalogs or other similar applications?&nbsp; Simply saying "your modeling sucks" really doesn't solve this problem<br />
+<br />
+--Joe Maisel<br />
+<br />
+<br />
+I think all of this worrying about infinitely large datasets being stored in memory is a bit on the ridiculous side... Of course you wouldn't want to store hundreds of gigabytes (or more) in memory on a single machine. That wouldn't be cost effective, and since in this game it is all about cost vs. benefit it would be almost ludicrous to spend the kind of money to store a very large system in main memory.<br />
+<br />
+That being said. There are many options for large data sets (as Joe said). One is using a <a href='RDBMS.html'>RDBMS</a> or ODBMS. Another is "roll your own" solution maintaining your "business" data in memory and your "non-business" data in a slower to access medium (the file-system, tape, shelf 552 box 27, etc). Prevalayer serves a purpose in that it allows projects that need a simple way to have persistence from having to worry about having an external database and communicating with it.&nbsp; <br />
+<br />
+--Brian S. Lloyd-Newberry<br />
+<br />
+<br />
+<hr />
+Why was this site unavailable for almost 24 hours after it was posted on slashdot? That doesn't sound like a highly responsive data store.<br />
+<br />
+How foolish. This guy incorrectly assumes the <a href='Prevayler.html'>Prevayler</a> site runs on <a href='Prevayler.html'>Prevayler</a> and draws his conclusions from that. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Where's my relational algebra? (e.g. http://www.cis.ohio-state.edu/~gurari/course/cis670/cis670Ch4.html)&nbsp; <a href='Prevayler.html'>Prevayler</a> does not match the capabilities offered by a relational database.&nbsp; I'd say you're comparing apples to oranges.<br />
+<br />
+Yes, it is comparing apples to oranges. You keep using your <a href='RDBMS.html'>RDBMS</a>. My clients average database size is 1 - 50mb. <a href='Prevayler.html'>Prevayler</a> is absolutely perfect for that.<br />
+<br />
+They also don't mind the fact that development time is cut in half. - Sean<br />
+<br />
+<hr />
+A highly responsive data store also needs a highly responsive pipe to pump data through. The slashdot flooding effect doesn't always mean that a server is unable to handle the load, but the internet connection too.<br />
+<br />
+This site does not run on <a href='Prevayler.html'>Prevayler</a> but yes, <a href='Prevayler.html'>Prevayler</a> actually raises the performance bar on all other components in your architecture. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+I'm really loving prevayler. Although I must make one comment... I wouldn't use it for a project where the DB size was going to be over 4gb... The comment made is "How much does ram cost? Can you afford &lt;insert amount here&gt; for 32gb of ram".. The rebuttle to that is "Yes I can afford the ram. No I cannot afford the server to stick it in." A server which can hold 32gb of ram isn't an intel based machine, not one you buy at your local computer market anyway :)<br />
+<br />
+Until the 64bit machines become common place, and desktops/servers in our sme's are &gt; 4gb standard, I will only use prevayler for smaller apps (Hell. some of my "big" apps, only use 50mb of ram for the DB anyway, so its not really much of an issue)<br />
+<br />
+- David<br />
+<br />
+<hr />
+How does <a href='Prevayler.html'>Prevayler</a> deal w/ an evolving object model?&nbsp; For instance, say I have a Person class w/ two fields: 'firstName' and 'lastName'.&nbsp; I persist an object of this class using <a href='Prevayler.html'>Prevayler</a>.&nbsp; Down the road I update Person to have a 3rd field: 'middleName'.&nbsp; What will happen when I try to pull the older instance out of <a href='Prevayler.html'>Prevayler</a> (the one w/o 'middleName') and cast it to my updated version of Person (the one that now has 'middleName')?&nbsp; <br />
+<br />
+My understanding is that <a href='Prevayler.html'>Prevayler</a> uses simple object serialization for taking snapshots.&nbsp; When I tested this (w/o <a href='Prevayler.html'>Prevayler</a>...just serialized to text file) I got a "InvalidClassException: Person, local class incompatible: stream classdesc serialVersionUID = -5507413414685982915, local class serialVersionUID = -8332091257996572949"<br />
+<br />
+See: <a href='SchemaEvolution.html'>SchemaEvolution</a>.<br />
+<br />
+<hr />
+One issue that necessarily happens in a prevalence system is that the operations have to be completely serialized, which creates a potential bottleneck at the prevalence layer that a persistence system doesn't have.<br />
+<br />
+In <a href='Prevayler.html'>Prevayler</a>, only one command can be executing in the entire system at a given time. Many <a href='DBMSs.html'>DBMSs</a> can update distinct rows concurrently - and pretty much all of them can at least update different tables concurrently. <a href='Prevayler.html'>Prevayler</a> requires each command to be completely written to the transaction log and then completely executed before the next one can start. This could be pipelined a little (once the first is written and begins executing, the write for the next could start), but that's as far as it can go in an automated environment.<br />
+<br />
+On the whole, it probably doesn't matter because of the improved performance you get from getting rid of the object/relational mapping code, but it's something to consider.<br />
+<br />
+Running two systems in parallel, with the "hot" system *not* writing the transaction log could maybe improve this, too.<br />
+<br />
+Just some random thoughts --- Scott Brickner<br />
+<br />
+In <a href='Prevayler.html'>Prevayler</a> 1.03, transactions are logged in parallel on several files. You forget that databases have EXACTLY the same thing: the redo log. Databases still have to write to the rollback segment and to the actual data-blocks (DBWR process in <a href='Oracle.html'>Oracle</a>, for example). They can do that in parallel, as you mentioned, but <a href='Prevayler.html'>Prevayler</a> doesn't even have to do any of that. The <a href='Prevayler.html'>Prevayler</a> equivalent is the Snapshot, which can be taken at an off-peak moment or even on a replica. See <a href='InstantaneousTransactions.html'>InstantaneousTransactions</a>. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<br />
+Very enthusiastic about the concept of <a href='Prevalence.html'>Prevalence</a>. Tested Prevalyer last night and coded a working demonstration up in 30mins. One question..<br />
+<br />
+If you are coding nearly any real world system your business objects are likely to change fairly frequently. I coded a small business object and populated my system, then brought down the system and added a toString() method to the object. When I tried to re-populate the system Serialization complained, I presume because the object it was trying to de-serialize to was not the same as the object it had serialized from (my business object had changed). Any advice on avoiding this?</div>
+    </body>
+</html>

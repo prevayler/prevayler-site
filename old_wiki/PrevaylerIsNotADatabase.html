@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <title>PrevaylerIsNotADatabase (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>PrevaylerIsNotADatabase</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Relational database management systems restrict you to using rows and columns and ALL database management systems, including OODBMSs:<br />
+ -worry about RAM limitations;<br />
+ -worry about paging data blocks from RAM to disk and back;<br />
+ -restrict you to using query algorithms, data structures and query languages (SQL, OQL) that must work well on disk clusters.<br />
+<a href='Prevayler.html'>Prevayler</a> does not.<br />
+<br />
+It is, therefore, MUCH simpler (which makes it much more robust) and orders of magnitude Faster (no JDBC overhead).<br />
+<br />
+You are finally free to write a decent object server, the way OO was intended since the beggining. See: <a href='NoMorePorridge.html'>NoMorePorridge</a>.<br />
+<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+See: <a href='PrevalentHypothesis.html'>PrevalentHypothesis</a>.<br />
+<br />
+<hr />
+</div>
+        <div class='txt'>Why isn't <a href='Prevayler.html'>Prevayler</a> a database? Granted it's not an <a href='RDBMS.html'>RDBMS</a>, but it does look like a <a href='DBMS.html'>DBMS</a>. --<a href='DafyddRees.html'>DafyddRees</a><br />
+<br />
+Yes, <a href='Prevayler.html'>Prevayler</a> is a <a href='DBMS.html'>DBMS</a>, as it manages command-logs and snapshots, which are nothing but object stores, and objects are made mainly of data. But, in practice, it's easier to explain how it works by reverse logic: first negating that <a href='Prevayler.html'>Prevayler</a> is a database management system, thus removing all assumptions that this statement makes, and then explaining what <a href='Prevayler.html'>Prevayler</a> is. The conclusion is that <a href='Prevayler.html'>Prevayler</a> is a <a href='DBMS.html'>DBMS</a>, but you don't have to keep saying "no, it doesn't have SQL", "no, no JDBC", and things like that @:) -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> is not a database. Read the beggining of the page. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+At what point doesn't <a href='Prevayler.html'>Prevayler</a> worry about RAM limitations? Surely worrying about RAM limitations is one of the primary concerns of <a href='Prevayler.html'>Prevayler</a>?<br />
+<br />
+No. <a href='Prevayler.html'>Prevayler</a> assumes the <a href='PrevalentHypothesis.html'>PrevalentHypothesis</a>. Databases do not. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+A "database" does not have to be on or assume disk. RAM-centric <a href='RDBMS.html'>RDBMS</a> are in the works.<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> provides persistence. RAM-centric "databases" don't. I wouldn't even call them "databases". I would call them RAM-centric SQL engines. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+Also, "database" does not have to be a relational database. The "navigational" databases of the 1960's are an example, as is OODBMS's (which some say are repackaged navigational DB's.) Thus, <i>if we ignore</i> the RAM issue, don't assume just relational ("must fit a table shape"), then exactly how is a prevalance layer different from a database? It is a sub-set of databases? Perhaps it can be defined as a "database based in RAM that does not have to be relational".<br />
+<br />
+Well, if you "ignore" all the differences between <a href='Prevayler.html'>Prevayler</a> and a database then I suppose you can make yourself believe <a href='Prevayler.html'>Prevayler</a> is a database. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+"No. <a href='Prevayler.html'>Prevayler</a> assumes the Prevalent Hypothesis. Databases do not."<br />
+<br />
+You have got to be kidding. Further comment moved to http://fishbowl.pastiche.org/archives/001295.html<br />
+Clearly, Klaus has a different definition of database than the rest of the world.&nbsp; Which, btw, he is welcome to do.&nbsp; However, it would make him seem more intelligent and less like&nbsp; man selling snake oil if he would define it and explicitly spell out "all the differences between <a href='Prevayler.html'>Prevayler</a> and a database ".<br />
+<br />
+Also, the idea that any software is not RAM dependant on any current hardware architectures displays a nievity about how a computer works.&nbsp; Software is highly RAM dependant, period.&nbsp; You can make some fantastic hypothisis about there being an inifinite amount of RAM (hell, you can even say that your CPU is infinitely fast), but when the software runs, it is dependant on there being enouh RAM to keep from swapping, that the RAM is error free, and the speed of the memory bus.&nbsp; It's also highly dependant on the cpu cache.&nbsp; Of course, it is dependant on a whole lot of other hardware concepts, but the previously mentioned items are particularly important for this type of software solution.</div>
+    </body>
+</html>

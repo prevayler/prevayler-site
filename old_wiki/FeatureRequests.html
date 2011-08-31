@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <title>FeatureRequests (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>FeatureRequests</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'> -Replication<br />
+ -<a href='ClusteringSupport.html'>ClusteringSupport</a><br />
+ -<a href='NewLockingStrategy.html'>NewLockingStrategy</a><br />
+ -<a href='RollbackSupport.html'>RollbackSupport</a>&nbsp; <br />
+ -<a href='CommandHistory.html'>CommandHistory</a><br />
+ -<a href='SpeedVsSafetyContinuum.html'>SpeedVsSafetyContinuum</a><br />
+ -<a href='CommandLogAndSnapshotInspector.html'>CommandLogAndSnapshotInspector</a><br />
+---- <br />
+<a href='EmmanuelHaardt.html'>EmmanuelHaardt</a> asked about the possibility to work in disconnected mode. <br />
+When disconnected, the system can work as an autonomous system, but synchronizing two autonomous systems (in a server and laptop scenario, for example, which is a very common use for disconnected operations) is a problem of <a href='EssentialDifficulty.html'>EssentialDifficulty</a> and cannot, therefore, be completely addressed by Prevayler. It will be up to the system's own code to do that. All replication/synchronization products we know of (Lotus Notes, <a href='Oracle.html'>Oracle</a>, etc) eventually require the application programmer to explicitly deal with "replication conflicts".<br />
+<br />
+Not wanting to install a database on every salesman's notebook for a project I was in was one of the inspirations for implementing Prevayler. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+</div>
+        <div class='txt'>Hi everybody,<br />
+<br />
+This is a feature proposal, about remote / concurrent access.<br />
+<br />
+A few words about my story. I started a CMS (Content Management System) project, using <a href='Prevayler.html'>Prevayler</a> for storing content metadata. In this system, the work-in-progress content is stored in a WebDAV server, and a proprietary, RMI-based database / workflow server pulls content from WebDAV when requested to. It stores the published content in a "BLOBStore" and metadata is "Prevayled". When I use the term "Database", it means "something keeping data", but be sure that my system is completely <a href='RDBMS.html'>RDBMS</a>-free.<br />
+It appeared quickly that all operations on my database should be modeled with Operation objects, which can cary as many (in, out) parameters as wanted. This was looking like <a href='Prevayler.html'>Prevayler</a> commands, plus an information about read / write effect for providing a mutex when required. In fact, <a href='Prevayler.html'>Prevayler</a> provides an interesting basis for handling concurrent access.<br />
+<br />
+But the problem is that my system is *not* prevalent. As a matter of fact, execution of the Operation pulling WebDAV content relies on something which is not a serialized Operation. <br />
+<br />
+<br />
+Klaus Wuestefeld's answered me :<br />
+<br />
+&gt; A few quick thoughts:<br />
+&gt; <br />
+&gt; 1) For the "command pulling different content when <br />
+&gt; restoring" problem: once the command pulls the content <br />
+&gt; (he can do that during his construction, previous to <br />
+&gt; execution), the content should be stored in a variable <br />
+&gt; of the command and logged AS PART OF IT. This way, the <br />
+&gt; command will always apply the same content when it is <br />
+&gt; first executed and every time it is restored. You can <br />
+&gt; also expect the actual execute() time to reduce <br />
+&gt; drastically.<br />
+&gt; <br />
+&gt; 2) For "non-impacting" commands: they should not even be <br />
+&gt; commands. They should simply be methods you call <br />
+&gt; directly on your business objects.<br />
+<br />
+His answer points out the difference between Operations (things done on the server) and Commands (modifications to replay on a prevalent system). In fact, Command objects are made to be used in-process, as my Operation objects are a RMI workaround for handling an unlimited number of parameters, plus mutex on write Operations.<br />
+<br />
+Here is example of an Operation composed of several Commands :<br />
+- create a Publication object, with a unique Id (from a counter, with synchronized access). Since the counter access does impact the model, it is made in a <a href='Prevayler.html'>Prevayler</a> Command.<br />
+- pull WebDAV content in a directory with a name deducted from Publication object Id. This can take a certain amount of time (depending of network speed, etc, and this is not a <a href='Prevayler.html'>Prevayler</a> Command). The pulling returns a bunch of File-like objects.<br />
+- create a <a href='Prevayler.html'>Prevayler</a> Command for adding the File-like objects to the Publication, and add the Publication to the model (to a synchronized Collection). This is done at the end, because we can't be sure of the result depending of I/Os. If it fails, we accept to waste the Publication Id (a java 'long').<br />
+<br />
+In this case, only 2 synchronized methods are required for providing the locking scheme. In fact, I did my best to avoid thinking about complex locks. Serializing all Operations may look like a solution, but, in this special case, people requesting a simple HTML page would be stuck while a 50-Mb site is being pulled from the WebDAV server.<br />
+<br />
+<br />
+<br />
+This is what lead me to propose some features :<br />
+<br />
+- add an Operation interface, describing "things being done" (reading, writing) on a <a href='Prevayler.html'>Prevayler</a> model. It could deliver Command objects, or other Operation objects (Composite pattern). The Operation object would also make sense for remote use, simplifying parameter passing.<br />
+<br />
+- add an Executor interface, executing Operation objects. A default implementation (ExecutorImpl) would be provided (I don't like those names, any better idea ?).<br />
+<br />
+- a new Executable interface provides a base to Command and Operation.<br />
+<br />
+- the Operation interface can iterate over Executable, for delivering nested Commands or Operations. In a multithreaded environment, an iterator guarantees that Command objects are stored in the *same* order they are executed. The Executable interface was required for this polymorphic behavior. Providing two iterators (one for Commands, one for Operations) would have lead to unclear situations about execution order.<br />
+<br />
+<br />
+In fact, this sounds much like "reinventing transactional processing" in a real OO world (with nested transactions, but without rollback support). There is nothing about explicit locks, because I think that is a problem of Essential Difficulty.<br />
+Except with the Executable interface, <a href='Prevayler.html'>Prevayler</a> original code shouldn't be impacted.<br />
+<br />
+<br />
+This is how I see the interfaces :<br />
+<br />
+<br />
+/**<br />
+ * Base interface for both Command and Operation<br />
+ */<br />
+public interface Executable {<br />
+&nbsp; Serializable execute( <a href='PrevalentSystem.html'>PrevalentSystem</a> ps ) ;<br />
+}<br />
+<br />
+<br />
+/**<br />
+ * Good ol' <a href='Prevayler.html'>Prevayler</a> Command<br />
+ */<br />
+public interface Command extends Executable { }<br />
+<br />
+<br />
+/**<br />
+ * Can nest both Operations and Commands,<br />
+ * in a defined order. <br />
+ */<br />
+public interface Operation extends Executable {<br />
+&nbsp; Serializable execute( PrevalentModel model ) throws Exception ;<br />
+&nbsp; boolean hasMoreExecutables() ;<br />
+&nbsp; Executable nextExecutable() ;<br />
+}<br />
+<br />
+<br />
+public interface Executor {<br />
+&nbsp; LockManager getLockManager() ;<br />
+&nbsp; void execute( Executable executable ) throws Exception ;<br />
+}<br />
+<br />
+<br />
+public interface RemoteExecutor extends Remote {<br />
+&nbsp; Executable execute( Executable executable ) <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; throws RemoteException ;<br />
+}<br />
+<br />
+<br />
+*.command file clean up request.<br />
+I am writing a system for embeded devices. <a href='Prevayler.html'>Prevayler</a> is great for object persistence in that environment because of its simplicity and small footprint, except that there is no automatic mechanism for cleaning up old .command files when a snapshot is taken. So as not to use up system resources. --Dan D.<br />
+<br />
+Dan, could that be turned on and off (default = leave the log files there) with a System property? Will that work for embedded? --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+What are the plans to support JDO?<br />
+<br />
+<hr />
+<br />
+<a href='SchemaEvolution.html'>SchemaEvolution</a> / Versioning Support<br />
+<br />
+I haven't done anything more than run the demos at this point, and I like <a href='Prevayler.html'>Prevayler</a> so far.&nbsp; Thinking ahead, I forsee that <a href='SchemaEvolution.html'>SchemaEvolution</a> will be something I'm going to want to handle in a smart way.&nbsp; I realize that part of <a href='SchemaEvolution.html'>SchemaEvolution</a> is an <a href='EssentialDifficulty.html'>EssentialDifficulty</a>, but at least a small part of it is an <a href='AccidentalDifficulty.html'>AccidentalDifficulty</a>.&nbsp; I don't have any solutions, but I think it would be interesting to see an effort to create some generic code to ease the burden of <a href='SchemaEvolution.html'>SchemaEvolution</a>.<br />
+<br />
+<hr />
+I would be interested in some sort of roll-forward recovery functionality.&nbsp; I've had a bit of experience with <a href='Oracle.html'>Oracle</a>, so I'll use that as my analogy for now.<br />
+<br />
+When you're recovering an oracle system, you can either do a complete recovery or an incomplete recovery.&nbsp; Complete, of course, brings the system up-to-date by applying all valid backups, redo logs, etc. that were successfully generated before system shutdown.&nbsp; This is how a prevalent system works now on every startup.&nbsp; But with incomplete recovery, you have at least two options:<br />
+<br />
+- Time-based Recovery (you specify a date/time, the system is recovered up to that point in time)<br />
+- Cancel-based Recovery (the system applies redo logs one at a time, giving you the opportunity to cancel or continue after each)<br />
+<br />
+There are others, but I think they're all <a href='Oracle.html'>Oracle</a>-specific (like using SCN's and Log Sequence Numbers).&nbsp; I can see valid uses for <a href='Prevayler.html'>Prevayler</a> analogs to these options, and I don't think either would add very much code.&nbsp; Granted, in a prevalent system the cancel-based recovery would probably be per-Command, which for high-traffic applications could get unwieldy.&nbsp; But it might be useful to add this sort of functionality into the API that applications could take advantage of if they like, and doesn't get in the way if they don't.<br />
+<br />
+I'm actually thinking of this for purposes _other_ than crash-recovery.&nbsp; For example, you might want to be able to pull a copy of your production log directory to an internal box when your manager says that some vp needs to know what something or other looked like three months ago.<br />
+<br />
+- Joel Fouse<br />
+<br />
+<hr />
+I think it would be great if a simple (say without joins) SQL command could be translated in Java code executed as a <a href='Prevayler.html'>Prevayler</a> transaction through JDBC. It would help integrate <a href='Prevayler.html'>Prevayler</a> with third-party tools (like Crystal Report) using SQL as a lowest common denominator. I've written a script language that maps identifiers to either Java fields or methods or <a href='JavaBeans.html'>JavaBeans</a> properties and handles java.util.List transparently, so I guess it is possible to do the same with SQL. However, I never heard of any free package doing so...<br />
+ArnaudClere</div>
+    </body>
+</html>

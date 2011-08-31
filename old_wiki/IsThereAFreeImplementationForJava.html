@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>IsThereAFreeImplementationForJava (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>IsThereAFreeImplementationForJava</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Prevayler is the <a href='OpenSource.html'>OpenSource</a> <a href='PrevalenceLayer.html'>PrevalenceLayer</a> for Java.<br />
+<br />
+<br />
+<b><i>What features are implemented in Prevayler?</i></b>&nbsp;&nbsp; <br />
+Transparent persistence for Java business objects.<br />
+<br />
+<br />
+<b><i><a href='HowMuchDoesPrevaylerCost.html'>HowMuchDoesPrevaylerCost</a>?</i></b><br />
+<b><i><a href='WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey</a>?</i></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<br />
+<hr />
+Back to: <a href='ObjectPrevalenceSkepticalFAQ.html'>ObjectPrevalenceSkepticalFAQ</a>.&nbsp; <br />
+</div>
+        <div class='txt'><b><i>Why implement it in Java?&nbsp; Why not use the faster C or C++?&nbsp; Then, through a Jini interface you could bind it to your Java classes.</i></b><br />
+Do you have a system running on Prevayler that is actually lacking speed? @;)<br />
+Did you take a look at the <a href='ScalabilityTestResults.html'>ScalabilityTestResults</a>?<br />
+Having it all in Java is also Simpler. Using C at some point is something we can keep in mind, though. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<br />
+There are a lot of compelling reasons to NOT use JNI, JINI, CORBA or whatever technology/buzzword you want <a href='Prevayler.html'>Prevayler</a> to be compliant to/support: simplicity. <br />
+<br />
+This stagnates <a href='Prevayler.html'>Prevayler</a> in a way that it's difficult to think of new features, but if making it work with XYZ will not make it faster or simpler or affect scalability in a positive way, then there's no reason to put it into the main code.<br />
+<br />
+I think the most exciting "feature" of <a href='Prevayler.html'>Prevayler</a> - and that is part of the problem it came to solve - was ***SIMPLICITY***. Smile. @:) -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+<br />
+As far as I know, Jini adds a significant overhead to method calls. This said, while Jini implementation would be much less simple, it wouldn't necessarily be any faster or could be even slower. Of course it's impossible to say it for certain without trying out, but I don't see much use for these tests unless we start to have serious performance problems with <a href='Prevayler.html'>Prevayler</a>. -- <a href='JariJuslin.html'>JariJuslin</a><br />
+<br />
+<br />
+Did you all mean JNI when you said JINI? Otherwise this makes no sense<br />
+--<a href='StephanSchmidt.html'>StephanSchmidt</a></div>
+    </body>
+</html>

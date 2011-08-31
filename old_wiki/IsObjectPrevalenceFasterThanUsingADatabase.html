@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <title>IsObjectPrevalenceFasterThanUsingADatabase (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>IsObjectPrevalenceFasterThanUsingADatabase</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Your objects are always in RAM, already in their native form. No disk access or data marshalling is required. No persistence hooks placed by preprocessors or postprocessors are required in your code. No "isDirty" flag. No restrictions.<br />
+<br />
+Things don't get much faster than that!&nbsp; @;)<br />
+<br />
+<br />
+<b><i>How scalable is object prevalence?</i></b><br />
+The persistence processes run completely in parallel with the business logic.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+While one command is being processed by the system, the next ones are already being written - each to a separate log file, in parallel. The periodic writing of the snapshot file by the Replica does not disturb the "hot" system in the slightest.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+Of course, tests must be carried out to determine the actual scalability of any given implementation but, in most cases, overall system scalability is bound by the scalability of the business classes themselves.&nbsp;&nbsp; <br />
+<br />
+See: <a href='ScalabilityTestResults.html'>ScalabilityTestResults</a>.<br />
+<br />
+<br />
+<b><i>Can't I use the Replicas to speed things up?</i></b>&nbsp;&nbsp; <br />
+All Replicas have to process all commands issued to the system. There is no great performance gain, therefore, in adding Replicas to command-intensive systems. In query-intensive systems such as most Web applications, on the other hand, every new Replica will boost the system because queries can be transparently balanced between all available Replicas. To enable that for a given query, though, just like your commands, it must also be represented as a serializable object.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>Isn't representing every system query as a serializable object a real pain?</i></b>&nbsp;&nbsp; <br />
+That is only necessary for the queries you want transparently load-balanced, mind you. Besides, the queries for most distributed applications arrive in a serializable form anyway. Take Web applications for example: aren't HTTP request strings serializable already?&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<hr />
+See: <a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>?, <a href='IsItTrueThatPrevaylerIsThreeThousandTimesFasterThanMYSQL.html'>IsItTrueThatPrevaylerIsThreeThousandTimesFasterThanMYSQL</a>?<br />
+Back to: <a href='ObjectPrevalenceSkepticalFAQ.html'>ObjectPrevalenceSkepticalFAQ</a>.<br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

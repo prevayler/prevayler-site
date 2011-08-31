@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>Replication (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Replication</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'><a href='Replication.html'>Replication</a> support in <a href='Prevayler.html'>Prevayler</a> is currently under development for version 2.00. Available from <a href='PrevaylerCVS.html'>PrevaylerCVS</a>.<br />
+<br />
+This is the concept: <a href='DoesntTheSystemHaveToStopInOrderToProduceAConsistentSnapshot.html'>DoesntTheSystemHaveToStopInOrderToProduceAConsistentSnapshot</a>?<br />
+<br />
+<hr />
+<i>Pending Development Tasks</i><br />
+ -Enable queries on a replica.<br />
+&nbsp; -Slave receives snapshot.<br />
+&nbsp; -Master has Transaction buffer.<br />
+&nbsp;&nbsp; -Buffer overflows.<br />
+&nbsp; -Slave disconnects.<br />
+&nbsp; -Master disconnects.<br />
+ -Enable Logging on a replica.<br />
+ -Slave takes over and becomes the master.<br />
+<br />
+<i>Development Tasks Done</i><br />
+ -Enable queries on a replica. (<a href='KlausWuestefeld.html'>KlausWuestefeld</a>)<br />
+&nbsp; -Master listens, waiting for slaves.<br />
+&nbsp; -Slave connects to master.<br />
+&nbsp; -Slave receives commands.<br />
+&nbsp;&nbsp; -Master re-sends Transactions published so far.<br />
+&nbsp;&nbsp; -Master publishes new Transactions.<br />
+ -Enable Snapshots on a replica. System no longer has to stay read-only during snapshots. (<a href='KlausWuestefeld.html'>KlausWuestefeld</a>)<br />
+&nbsp; -Unique sequential number for Transactions. transactionLog files would reset the sequence every time the system is restarted. (<a href='KlausWuestefeld.html'>KlausWuestefeld</a>)<br />
+ -Enable Commands on a replica. (<a href='KlausWuestefeld.html'>KlausWuestefeld</a>)<br />
+ -Multiple slaves. (<a href='KlausWuestefeld.html'>KlausWuestefeld</a>)<br />
+<br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

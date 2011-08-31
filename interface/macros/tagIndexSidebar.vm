@@ -1,0 +1,37 @@
+#macro( showTagIndexSidebar $globalTags )
+<div class="left-menu">
+	    <div class="left-sidebarbox-border bg-blue02">
+	    	<div class="sidebarbox-title-shading bg-blue05">
+	    	     $action.getText('priki.indexMenuItem')
+	    	</div>	
+			<div class="dtree" >
+			<script type="text/javascript">
+				tagMenu = new dTree('tagMenu');
+				tagMenu.add(0,-1,'$action.getText('priki.tags')', "$basePath/tagIndex.pr");
+				#set ($i = 0)
+				#foreach ($result in $globalTags)
+					#set ($i = $i+1)
+					#if (${result.hasDefinition()})
+					    tagMenu.add($i, 0, "${result.keyword}", "$basePath/wiki/${result.keyword}", '', '', "$basePath/interface/includes/tree/img/page_filled.gif", "$basePath/interface/includes/tree/img/page_filled.gif");
+					#else
+					    tagMenu.add($i, 0, "${result.keyword}", "$basePath/wiki/${result.keyword}", '', '', "$basePath/interface/includes/tree/img/page.gif", "$basePath/interface/includes/tree/img/page.gif");			        
+					#end
+					
+					#set ($pai = $i)						
+					#foreach ($result2 in $result.related) 
+						#set ($i = $i+1)
+						#if (${result2.hasDefinition()})	
+						    tagMenu.add($i, $pai, "${result2.keyword}", "$basePath/wiki/${result2.keyword}", '', '', "$basePath/interface/includes/tree/img/page_filled.gif", "$basePath/interface/includes/tree/img/page_filled.gif");
+						#else
+						    tagMenu.add($i, $pai, "${result2.keyword}", "$basePath/wiki/${result2.keyword}", '', '', "$basePath/interface/includes/tree/img/page.gif", "$basePath/interface/includes/tree/img/page.gif");			        
+					    	#end				
+					#end
+				#end
+						
+				document.write(tagMenu);	
+			</script>
+				
+		</div>
+	</div>
+</div>	
+#end

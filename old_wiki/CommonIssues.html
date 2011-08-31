@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>CommonIssues (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CommonIssues</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'><a href='Prevayler.html'>Prevayler</a> provides you with a way of finally being able to write a true object server with real, native Java objects.<br />
+<br />
+Most questions people ask us are object questions or Java questions. They are perfectly valid questions but have nothing to do with <a href='Prevayler.html'>Prevayler</a>:<br />
+<br />
+<a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>? is an example. See the <a href='PrevalenceSkepticalFAQ.html'>PrevalenceSkepticalFAQ</a> for more.<br />
+<br />
+See: <a href='AdvancedIssues.html'>AdvancedIssues</a>.<br />
+</div>
+        <div class='txt'>What happens when I need to modify my objects? I mean, my application is perfectly running, but suddenly I need to add new functionality. So I modify my source code (i add/remove attributes from my objects) and I create a new version. This new version must use the same data than the old one.<br />
+<br />
+How do I map the new version with the snapshot (and log files) of the version that was running before? <br />
+<br />
+See <a href='SchemaEvolution.html'>SchemaEvolution</a>.<br />
+<br />
+<br />
+I've written a tool to migrate data from an rdbms into prevayler, unfortunately the commandlog files invariably eat up my available inodes (many 1000's of files). I thought takeSnapshot() might clean up "old" command log, but it doesn't. Am i right in thinking that i can safely delete log files from times prior to a snapshot?<br />
+<br />
+Yes. Is your name already among the <a href='PrevaylerPioneers.html'>PrevaylerPioneers</a>? --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+yup. <br />
+<br />
+I'm thinking of modifying the snapshot prevayler to nuke redundant logs after a snapshot. that should solve my problem.<br />
+-mcclain<br />
+<br />
+<br />
+Cool. If you make that an option through a system property, we can add that to <a href='Prevayler.html'>Prevayler</a>. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a></div>
+    </body>
+</html>

@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <title>CommandExecutionRuntimeException (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CommandExecutionRuntimeException</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>When a <a href='RuntimeException.html'>RuntimeException</a> is thrown during the execution of a command, the prevalent system enters an undefined, potentially inconsistent state.<br />
+<br />
+"You will now have the means to actually write server code. It is the way object orientation was intended all along; but it is certainly not for wimps." -- <a href='PrevalenceSkepticalFAQ.html'>PrevalenceSkepticalFAQ</a><br />
+<br />
+It is clear that the quality requirements for prevalent server code are much higher that those for flaky client code. Although <a href='RuntimeExceptions.html'>RuntimeExceptions</a> are expected to be extremely rare, we must have some way of dealing with them.<br />
+<br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+A few directions some people started to explore:<br />
+ #Using rollbackable "variables" and collections. See <a href='RollbackSupport.html'>RollbackSupport</a>.<br />
+ #Halting all commands and queries while <a href='Prevayler.html'>Prevayler</a> recovers the last snapshot an applies the commands.<br />
+<br />
+The first idea would be almost like using an OODBMS. The main impacts will be on simplicity, transparency and performance.<br />
+<br />
+The second idea would have an impact on availability, unacceptable for many systems.<br />
+<br />
+More ideas? -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+This morning, while I was in the bathroom, a possible solution to this problem was given to me.<br />
+<br />
+Basically, we can apply each command to the replicas only after it has executed successfully in the "hot" system, without throwing a <a href='RuntimeException.html'>RuntimeException</a>. When a <a href='RuntimeException.html'>RuntimeException</a> occurs, the "hot" system restarts and the replica takes over.<br />
+<br />
+Of course, you will still have the same availability problem (waiting for restart) if your code throws so many <a href='RuntimeExceptions.html'>RuntimeExceptions</a> that your replicas cannot keep up.<br />
+<br />
+Every <a href='RuntimeException.html'>RuntimeException</a> will still have a cost but, it is no longer required that your code be 100% <a href='RuntimeException.html'>RuntimeException</a> free. @;) -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<br />
+Could a similar technique be used to maintain availability during a snapshot?<br />
+<br />
+I think the whole <a href='RuntimeException.html'>RuntimeException</a> argument boils down to the problem of HighAvailability. Where an <a href='RDBMS.html'>RDBMS</a> uses specialized hardware, limited operations, and rollback to get HighAvailablity, <a href='Prevayler.html'>Prevayler</a> uses redundancy, assuming the occasional crash is inevitable.<br />
+<br />
+<a href='DarrinThompson.html'>DarrinThompson</a><br />
+<br />
+<hr />
+<br />
+It looks like a forced solution to a problem wich could have a simplier one. Transactions are not something we must be afraid of! Sometime ago, Klaus and I, after a huge discussion on prevayler list (the portuguese one), agreed that prevayler in fact has transactions, but in a very special way. So my point is:<br />
+<br />
+1)How does prevayler deal with a command that was written to disk and during its execution a RuntimeError (out of memory, Esgrinphos atacked, ...) occurs?<br />
+By your solution the replica server would not be aware of this command and therefore, prevayler would reestart and be doomed to restart ab aeterno, because the client would resend the command again and again since the error is not his.<br />
+<br />
+2) What is the big deal with creating a Transaction class that each instance of it is treated exactly as a command, and therefore when a exception occurs all it's done is wiped?<br />
+<br />
+<a href='EmilioFrancesquini.html'>EmilioFrancesquini</a><br />
+<br />
+PS. Please try to convince me, but so far I don't think the absense of transactions is a marvelous thing as you preach<br />
+<br />
+<hr />
+<br />
+Some thoughts:<br />
+<br />
+I thought reading some specifics would be helpful. So I checked the Javadocs for JDK 1.4 and looked up <a href='RuntimeException.html'>RuntimeException</a>. The list of classes that extend it is disconcerting. Looks like a lot of stuff that really could happen, and really could doom a prevayler cluster.<br />
+<br />
+Maybe that's Java's way of saying "Yes, there are bad commands."<br />
+<br />
+What if we do what Klaus suggested but not actually pass the command on to replicas until it's safe?<br />
+<br />
+[oops duh, that's what he said.] <br />
+<br />
+Wouldn't a network protocol tell the client that the command it sent was bad? I don't think that anything but a malicious client would retry after it was told that it's command was rejected for a "<a href='RuntimeException.html'>RuntimeException</a>" reason.<br />
+<br />
+I like Klaus' idea because it's provably correct. The only problem with it is that it opens up a method for attack by a malicious client sending a lot of bad commands. I don't want to implement "undo" methods because I know I would sooner or later mess one up. That opens up the possiblity for the system to go into an inconsistent state silently. <br />
+<br />
+<a href='DarrinThompson.html'>DarrinThompson</a><br />
+<br />
+<hr />
+Prevayler does have transactions, as Em&#237;lio ponted out, and as we can read from the TheFAQ (<a href='DontINeedTransactions.html'>DontINeedTransactions</a>?):<br />
+<br />
+<b>"In the prevalent design, every transaction is represented as a serializable object which is atomically written to the queue (a simple log file) and processed by the system. An object, or object graph, is enough to encapsulate the complexity of any business transaction."</b><br />
+<br />
+What Prevayler does <i>not</i> have is:<br />
+ #<a href='RollbackSupport.html'>RollbackSupport</a><br />
+ #<a href='DoItYourselfTransactions.html'>DoItYourselfTransactions</a><br />
+I have, therefore, moved the discussion that was in <a href='TransactionSupport.html'>TransactionSupport</a> to <a href='RollbackSupport.html'>RollbackSupport</a>.<br />
+<br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

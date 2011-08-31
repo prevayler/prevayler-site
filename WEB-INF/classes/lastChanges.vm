@@ -1,0 +1,83 @@
+#set($lastChanges = true)
+#set($dtree = true)
+#parse("interface/includes/imports.vm")
+#parse("interface/includes/header.vm")
+
+  		<!-- 	CONTENT -->
+		<div class="content content-font">
+			#parse("interface/includes/pagination.vm")
+
+			<div class="contentbox-full">
+			
+			#if ($lastChangesAsItems)
+			
+				<div style="float: right">
+				<a href="$basePath/lastChangesRss.pr"><img border=0 src="$imgPath/rss.jpg"></img></a>
+				</div>			
+			
+				<h1 class="line-black-titles">$action.getText('priki.lastChangesMenuItem') </h1> 
+			
+				$action.getText('priki.lastChanges.allModifications')
+
+				<ul>
+				#foreach($key in ${lastChanged.keySet()})
+					#if (${accessManager.isCanRead($lastChanged.get($key).getKeyword())})
+					<li><a href="$basePath/wiki/${lastChanged.get($key)}">${df.format($key)} - ${lastChanged.get($key)}</a></li>
+					#end
+				#end
+				</ul>
+
+			#else
+
+			    #set($firstTime = "true")
+			    #foreach($key in ${lastChanged.keySet()})
+			    	
+			    #if (${accessManager.isCanRead($lastChanged.get($key).getKeyword())})
+			    
+				<!-- SIDEBAR -->
+				## if existe para que o RSS não fique fora de lugar. 		
+				#if ((!${accessManager.isPublic($lastChanged.get($key).getKeyword())}) || ${lastChanged.get($key).getRelated().size()} > 0 || ${lastChanged.get($key).getTags().size()} > 0)
+				
+				  	<div class="sidebar sidebar-font">
+						#showVisibilitySidebar(${lastChanged.get($key).getKeyword()})
+						#showTagsSidebar(${lastChanged.get($key).getTags()})
+						#showRelatedSidebar(${lastChanged.get($key).getRelated()})
+		  			</div>
+				
+				#end				    
+			    
+			    	#if ($firstTime == "true")
+			    		#set($firstTime = "false")
+			    		<div style="float: right">
+						<a href="$basePath/lastChangesRss.pr"><img border=0 src="$imgPath/rss.jpg"></img></a>
+					</div>	
+				#end
+			    
+				<h1>${lastChanged.get($key).getKeyword()}</h1>
+				 
+				<div class="contentbox-noshading">
+					${action.getWikiwordFormattedWithLinks($lastChanged.get($key).getKeyword())}
+				</div>
+								
+				#set ($postUser = $lastChanged.get($key).getDefinition().getWhoPosted().getIdentifier())
+				#set ($postUserComplete = $lastChanged.get($key).getDefinition().getWhoPosted().getName())
+				#set ($strPostDate = $df.format($lastChanged.get($key).getDefinition().getPostDate()))
+	
+				<div style="text-align:right">
+					$action.getText('priki.postedInLong', [${basePath}, $strPostDate, $postUser, $postUserComplete]) -
+					<a href="$basePath/wiki/${lastChanged.get($key).getKeyword()}">$action.getText('priki.permanentLink')</a> - 
+				 	<a href="$basePath/wiki/${lastChanged.get($key).getKeyword()}">$action.getText('priki.comments') (${lastChanged.get($key).getComments().size()})</a> -  
+							
+				#if (!$readonlyWiki)
+				   	<a href="$basePath/edit.pr?keyword=${lastChanged.get($key).getKeyword()}">$action.getText('priki.edit')</a> - 
+				#end
+				<a href="$basePath/history.pr?keyword=${lastChanged.get($key).getKeyword()}">$action.getText('priki.history')</a>
+				</div>
+			    #end
+			    <div class="clear line-black-afterText"></div>
+			    #end
+			#end
+			</div>
+		</div>
+		
+#parse("interface/includes/footer.vm")

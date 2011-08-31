@@ -1,0 +1,202 @@
+<html>
+    <head>
+        <title>ScalabilityTestByDanielSantos (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ScalabilityTestByDanielSantos</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Results:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+{#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+| <i>Prevayler</i> | <i>SQLServer</i> | <i>MySQL</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+Queries per second | 215543,43 | 95.46 | 75,87&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+Manipulations per second | 55,42 | 144.50 | 298.31&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+Number of Objects: One million.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+Test Environment:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ CPU: Pentium 900 MHz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ Operating System: Windows 2000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+ <a href='DBMS.html'>DBMS</a>: MS SQL Server 7.0 and <a href='MySQL.html'>MySQL</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<a href='DanielSantos.html'>DanielSantos</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+See: <a href='ScalabilityTestResults.html'>ScalabilityTestResults</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+----&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+<i>TEST LOGS</i>&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+<i><a href='Prevayler.html'>Prevayler</a></i>&nbsp;&nbsp;&nbsp; <br />
+========= Running Query Test (5 rounds). Subject: <a href='Prevayler.html'>Prevayler</a>...&nbsp; <br />
+Creating 1000000 objects...&nbsp; <br />
+100000...&nbsp; <br />
+200000...&nbsp; <br />
+300000...&nbsp; <br />
+400000...&nbsp; <br />
+500000...&nbsp; <br />
+600000...&nbsp; <br />
+700000...&nbsp; <br />
+800000...&nbsp; <br />
+900000...&nbsp; <br />
+Each round will take approx. 60 seconds to run...&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.006&nbsp; <br />
+========= Round Result: 214922,57 operations/second (1 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.016&nbsp; <br />
+========= Round Result: 215467,68 operations/second (2 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.017&nbsp; <br />
+========= Round Result: 215543,43 operations/second (3 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.006&nbsp; <br />
+========= Round Result: 215102,81 operations/second (4 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.036&nbsp; <br />
+========= Round Result: 214756,35 operations/second (5 threads)&nbsp; <br />
+&nbsp; <br />
+========= BEST ROUND: 215543,43 operations/second (3 threads)&nbsp; <br />
+&nbsp; <br />
+========= Running Manipulation Test (5 rounds). Subject: <a href='Prevayler.html'>Prevayler</a>...&nbsp; <br />
+Creating 1000000 objects...&nbsp; <br />
+100000...&nbsp; <br />
+200000...&nbsp; <br />
+300000...&nbsp; <br />
+400000...&nbsp; <br />
+500000...&nbsp; <br />
+600000...&nbsp; <br />
+700000...&nbsp; <br />
+800000...&nbsp; <br />
+900000...&nbsp; <br />
+Each round will take approx. 60 seconds to run...&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.006&nbsp; <br />
+========= Round Result: 43,16 operations/second (1 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.016&nbsp; <br />
+========= Round Result: 47,97 operations/second (2 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.027&nbsp; <br />
+========= Round Result: 49,11 operations/second (3 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.026&nbsp; <br />
+========= Round Result: 55,06 operations/second (4 threads)&nbsp; <br />
+&nbsp; <br />
+Memory used: 500957184&nbsp; <br />
+Seconds ellapsed: 60.046&nbsp; <br />
+========= Round Result: 55,42 operations/second (5 threads)&nbsp; <br />
+&nbsp; <br />
+========= BEST ROUND: 55,42 operations/second (5 threads)&nbsp; <br />
+----&nbsp;&nbsp;&nbsp; <br />
+ <br />
+<i>SQL Server</i>&nbsp;&nbsp;&nbsp; <br />
+---- <br />
+ <br />
+<i><a href='MySQL.html'>MySQL</a></i>&nbsp;&nbsp;&nbsp; <br />
+========= Running Query Test (5 rounds). Subject: JDBC...&nbsp;&nbsp;&nbsp; <br />
+Creating 1000000 objects...&nbsp;&nbsp;&nbsp; <br />
+100000...&nbsp;&nbsp;&nbsp; <br />
+200000...&nbsp;&nbsp;&nbsp; <br />
+300000...&nbsp;&nbsp;&nbsp; <br />
+400000...&nbsp;&nbsp;&nbsp; <br />
+500000...&nbsp;&nbsp;&nbsp; <br />
+600000...&nbsp;&nbsp;&nbsp; <br />
+700000...&nbsp;&nbsp;&nbsp; <br />
+800000...&nbsp;&nbsp;&nbsp; <br />
+900000...&nbsp;&nbsp;&nbsp; <br />
+Each round will take approx. 60 seconds to run...&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2031616&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.017&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 75,01 operations/second (1 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2031616&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.066&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 75,87 operations/second (2 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2211840&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.066&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 75,42 operations/second (3 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2392064&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.057&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 65,65 operations/second (4 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2703360&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.066&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 61,48 operations/second (5 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+========= BEST ROUND: 75,87 operations/second (2 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+========= Running Manipulation Test (5 rounds). Subject: JDBC...&nbsp;&nbsp;&nbsp; <br />
+Creating 1000000 objects...&nbsp;&nbsp;&nbsp; <br />
+100000...&nbsp;&nbsp;&nbsp; <br />
+200000...&nbsp;&nbsp;&nbsp; <br />
+300000...&nbsp;&nbsp;&nbsp; <br />
+400000...&nbsp;&nbsp;&nbsp; <br />
+500000...&nbsp;&nbsp;&nbsp; <br />
+600000...&nbsp;&nbsp;&nbsp; <br />
+700000...&nbsp;&nbsp;&nbsp; <br />
+800000...&nbsp;&nbsp;&nbsp; <br />
+900000...&nbsp;&nbsp;&nbsp; <br />
+Each round will take approx. 60 seconds to run...&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2031616&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.067&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 277,99 operations/second (1 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2031616&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.056&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 290,66 operations/second (2 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2031616&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.257&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 298,31 operations/second (3 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2031616&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.036&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 278,53 operations/second (4 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+Memory used: 2031616&nbsp;&nbsp;&nbsp; <br />
+Seconds ellapsed: 60.026&nbsp;&nbsp;&nbsp; <br />
+========= Round Result: 273,38 operations/second (5 threads)&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+========= BEST ROUND: 298,31 operations/second (3 threads)&nbsp;&nbsp;&nbsp; <br />
+</div>
+        <div class='txt'>Where is the code used in these tests?<br />
+<br />
+<a href='Download.html'>Download</a> the newest <a href='Prevayler.html'>Prevayler</a> version and read the Readme.txt file. @:p<br />
+<br />
+<hr />
+</div>
+    </body>
+</html>

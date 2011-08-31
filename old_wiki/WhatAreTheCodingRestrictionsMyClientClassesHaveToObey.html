@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <title>WhatAreTheCodingRestrictionsMyClientClassesHaveToObey (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>WhatAreTheCodingRestrictionsMyClientClassesHaveToObey</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Every command your client objects issue to your business objects must be represented as a serializable Command object.<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+<b><i>Is it prohibited for a developer to use direct method calls to any of its <a href='BusinessObjects.html'>BusinessObjects</a>? Must he always use a command object instead? -- <a href='EmmanuelHaardt.html'>EmmanuelHaardt</a></i></b><br />
+No. Any call between two <a href='BusinessObjects.html'>BusinessObjects</a> and any <i>query</i> from a client to a <a href='BusinessObject.html'>BusinessObject</a> can be done through a direct method call.<br />
+ <br />
+ <br />
+<b><i>Isn't using commands between clients and business objects a burden?</i></b> <br />
+Some people find it a burden. For most distributed systems, mind you, commands already come in a serializable form anyway. Http requests are an example.<br />
+ <br />
+Apart from that, some people actually find this "Command Pattern" guideline quite useful. Many projects use it regardless of <a href='Prevayler.html'>Prevayler</a>. Typically, you will have one class representing each use-case in your system. <br />
+<br />
+<br />
+<b><i>You do not make it compulsory, for instance, to have only protected methods in <a href='BusinessObjects.html'>BusinessObjects</a>. Does this mean you don't have the possibility to check if a programmer respects the use of commands and so can drive his system to become inconsistent? -- <a href='EmmanuelHaardt.html'>EmmanuelHaardt</a></i></b> <br />
+I find it a good design procedure, but Prevayler does not make it compulsory to use protected methods. You can make that a compulsory thing in your project, if you want. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<br />
+<b><i>Can a Command hold references to <a href='BusinessObjects.html'>BusinessObjects</a>?</i></b><br />
+No. Commands must be serializable independently of the <a href='BusinessObjects.html'>BusinessObjects</a> or else they would have no effect when re-executed during recovery. That is because new business object "clones" would be created during recovery (unserialization) and garbage collected after the Command is re-executed, leaving the original business objects untouched. Commands have to know, therefore, how to <i>find</i> the business objects they need given the system. See the <a href='Prevayler.html'>Prevayler</a> Demos for examples.<br />
+<br />
+<br />
+<b><i>If any query from a client to a Business Object can be done through a direct method call, how is read consistency guaranteed? Isn't it possible that the "reading" method is interrupted by a "write" command? -- AndreasBaumgart</i></b><br />
+Yes, it is possible. Prevayler does not impose any particular locking scheme. Read consistency is guaranteed by the <a href='BusinessObjects.html'>BusinessObjects</a> themselves. There are several strategies you can choose from, therefore:<br />
+ -<i>Fine-grained locking</i>: Each <a href='BusinessObject.html'>BusinessObject</a> will use standard Java synchronization to guarantee read consistency at the object level.<br />
+ -<i>Coarse-grained locking</i>: Execution of commands and queries is synchronized at the system level. Normally in prevalent systems the actual execution of commands (after logging) and queries is so brutally fast that you can easily afford to do that. Your <a href='BusinessObjects.html'>BusinessObjects</a> no longer have to worry about synchronization.<br />
+<br />
+<hr />
+See: <a href='DontINeedTransactions.html'>DontINeedTransactions</a>?<br />
+Back to: <a href='ObjectPrevalenceSkepticalFAQ.html'>ObjectPrevalenceSkepticalFAQ</a>.&nbsp;&nbsp; <br />
+</div>
+        <div class='txt'>The answer to "direct references to Business Objects" is a bit confusing... perhaps what you meant to say is that a command can reference a business object (it probably has to do anything useful), but it must not store a reference to that business object in a member variable in the command constructor.<br />
+<br />
+I have made it clearer. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<b><i>Can commands hold references to mutable client objects?</i></b><br />
+<br />
+The CommandLogger uses Java ObjectOutputStream objects to serialize commands to log files. Serialization rule 5 states, "If the object has already been written to the stream, its handle is written to the stream and writeObject returns." (See http://java.sun.com/j2se/1.3/docs/guide/serialization/spec/output.doc1.html)<br />
+<br />
+Consider a command that updates the shipping address for an account.&nbsp; Following the bank demo examples, the command will store the account number and the shipping address object (street, city, state, ...). If the client changes that shipping address object and creates a second updateShippingAddress command, won't the ObjectOutputStream record a handle to the shipping address object instead of storing its revised field contents? -- <a href='JoelShprentz.html'>JoelShprentz</a><br />
+<br />
+Yes. Commands cannot hold references to mutable client objects, therefore. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+A possible, and simple, solution for this is to clone() the mutable client objects if you create a setter on your Command. Here's an example:<br />
+<br />
+&nbsp; public void setUserLogin(String userLogin) {<br />
+&nbsp;&nbsp;&nbsp; this.userLogin = userLogin.clone();<br />
+&nbsp; }<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+The two strategies offered for guarunteeing read consistency both seem to have limitations.&nbsp; Fine grained locking is insufficient in cases where a write Command updates multiple objects and overall consistency depends on the successful completion of all of those updates.&nbsp; Coarse grained locking seems impractical and inefficient - every time you wanted to query an attribute (or a series attributes - say when poplating a form) of your <a href='BusinessObjects.html'>BusinessObjects</a> you would have to lock the entire system against updates.&nbsp; This is a real implementation hassle, not to mention quite inefficient.&nbsp; Doesn't the fact that this problem exist also violate the Consistency constraint of <a href='ACIDTransactions.html'>ACIDTransactions</a>? --<a href='CharlesBlaxland.html'>CharlesBlaxland</a><br />
+<br />
+<hr />
+The following web site supplementing Doug Lea's book "Concurrent Programming in Java" has a concurrent programming toolkit for Java that is a precursor to the JSR-166 work being done by Doug. The website is <br />
+<br />
+http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html <br />
+<br />
+One of the classes is a read write lock with several different reader and writer access policies. <br />
+<br />
+Richard Hensley<br />
+<br />
+<hr />
+Examining the most recent "production" distribution, I see that in demo2, the Deposit Command object is given and retains a reference to an Account object. Doesn't this violate the constraint above? --Jay Sachs<br />
+<br />
+It does not keep a reference to the Account. It keeps the account number. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Please forgive a possibly-naive question:&nbsp; How does Prevaylor cope when you have to make changes to your business object class definitions (e.g. altering attributes, associations or methods) but you don't want to lose your existing data.<br />
+See <a href='SchemaEvolution.html'>SchemaEvolution</a>.<br />
+</div>
+    </body>
+</html>

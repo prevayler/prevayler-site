@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>JXPath (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>JXPath</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>[From http://jakarta.apache.org/commons/jxpath/index.html]:<br />
+<hr />
+<br />
+The org.apache.commons.jxpath package defines a simple interpreter of an expression language called <a href='XPath.html'>XPath</a>. <a href='JXPath.html'>JXPath</a> applies <a href='XPath.html'>XPath</a> expressions to graphs of objects of all kinds: <a href='JavaBeans.html'>JavaBeans</a>, Maps, Servlet contexts, DOM etc, including mixtures thereof. <br />
+<br />
+Consider this example: <br />
+<br />
+Address address = (Address)JXPathContext.newContext(vendor).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; getValue("locations[address/zipCode='90210']/address");<br />
+<br />
+<hr />
+<br />
+This <a href='XPath.html'>XPath</a> expression is equvalent to the following Java code: <br />
+<br />
+Address address = null;<br />
+Collection locations = vendor.getLocations();<br />
+Iterator it = locations.iterator();<br />
+while (it.hasNext()){<br />
+&nbsp;&nbsp;&nbsp; Location location = (Location)it.next();<br />
+&nbsp;&nbsp;&nbsp; String zipCode = location.getAddress().getZipCode();<br />
+&nbsp;&nbsp;&nbsp; if (zipCode.equals("90210")){<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; address = location.getAddress();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; break;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<hr />
+<br />
+<a href='XPath.html'>XPath</a> was standardized by W3C and is used in both XSLT and XPointer. <br />
+<br />
+</div>
+        <div class='txt'>I've put a demo on how to query objects using <a href='JXPath.html'>JXPath</a> and <a href='Prevayler.html'>Prevayler</a>. Take a look at the Demos page. -- <a href='CarlosVillela.html'>CarlosVillela</a></div>
+    </body>
+</html>

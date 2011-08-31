@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>WillIBeAbleToUseSQLBasedTools (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>WillIBeAbleToUseSQLBasedTools</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>No. You will be able to use object-based tools. <br />
+ <br />
+The good news is you will no longer be breaking your objects' encapsulation. <br />
+<br />
+<hr />
+Back to <a href='ObjectPrevalenceSkepticalFAQ.html'>ObjectPrevalenceSkepticalFAQ</a>.</div>
+        <div class='txt'>To let SQL programmers giving up their living is not an easy task. But I know a professional concert piano player is doing programming for a living now. So it's not at all impossible. But you have to do a lot of preaching to connect people's own thinking process with new tools.<br />
+<br />
+<hr />
+Asking the "dumb question": can you point us (the unwashed sql folks) at some references for object-based tools?&nbsp; or briefly describe them, enough so we get the "aha-moment" of enlightenment.&nbsp; Thanks.<br />
+<br />
+See: <a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>?<br />
+<br />
+<br />
+I have an open-source Swing-based <a href='ObjectInspector.html'>ObjectInspector</a> that I modified from something Axel Uhl wrote.&nbsp;&nbsp; It's kind of like a Smalltalk inspector.&nbsp; I added a <a href='BeanShell.html'>BeanShell</a> command window so one could dynamically run methods against the object you are looking at.&nbsp; I have some things I want to improve on it, but it will run OK now.&nbsp; Feel free to ask me for it.<br />
+<br />
+<a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+http://www.sabertooth.org/ (http://sabertooth.blogspot.com/) - seems to plan something like that ?<br />
+<br />
+Has anybody got an "object inspector" that can query (with ad-hoc written queries) millions of objects, as SQL tools can do on SQL databases?<br />
+<br />
+See: <a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>?<br />
+<br />
+<br />
+Okay, I already read "How Do I Query My Objects", and I'm still worried about the whole ad-hoc query thing.&nbsp; Here's my understanding: there *is* currently no good tool for querying large object graphs like this, especially remotely.&nbsp; Think about this: your client (who could be on the other side of the world) says he gets an error everytime your system tries to render order #12345.&nbsp; What do you do?&nbsp; Fortunately, this is a temporary weakness (because people will write tools to support remote access to large object graphs, etc.), but for the moment, this will prevent me from using the system.&nbsp; I also think of the development stage of an application, when I want to run a single transaction, then check the data to see if it did what I wanted.&nbsp; Am I stuck with dumping the objects' details to System.out?<br />
+<br />
+-Rob<br />
+I've implemented ad-hoc queries pretty easily using <a href='JXPath.html'>JXPath</a>, you should try out the <a href='JXPathDemo.html'>JXPathDemo</a>. In your user-on-the-phone-is-complaining example, you could easily take a look at your logs (you use a logging&nbsp; facility, don't you?) and see what's happening, or turn debugging on, set some breakpoints and navigate through the object graph using the debugger's expression evaluator. Pretty simple and efficient, but it could get a lot more sophisticated with specialized tools. -- <a href='CarlosVillela.html'>CarlosVillela</a></div>
+    </body>
+</html>

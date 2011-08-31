@@ -1,0 +1,162 @@
+<html>
+    <head>
+        <title>ScalabilityTestResults (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ScalabilityTestResults</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Many people dismiss <a href='Prevayler.html'>Prevayler</a>'s scalability test results as a hoax. @:)<br />
+<br />
+(To understand how they are possible, see <a href='PrevalenceSkepticalFAQ.html'>PrevalenceSkepticalFAQ</a>.)<br />
+<br />
+<hr />
+<i>Query <a href='ScalabilityTest.html'>ScalabilityTest</a> Results:</i> (queries per second)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+{#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<i>Prevayler</i> | <i>Oracle</i> | <i>MySQL</i> | <i>SQLServer</i> | <i><a href='CombinedProcessorSpeed.html'>CombinedProcessorSpeed</a></i> | <i>More Details</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+62880.46 | 9.15 | | | 400 MHz | <a href='ScalabilityTestByEduardoAkatsu.html'>ScalabilityTestByEduardoAkatsu</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+144205.91 | | 28.08 | | 500 MHz | <a href='ScalabilityTestByEduardoSimioni.html'>ScalabilityTestByEduardoSimioni</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+215543.43 | | 75.87 | 95.46 | 900 MHz | <a href='ScalabilityTestByDanielSantos.html'>ScalabilityTestByDanielSantos</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<i>Query Scalability Ranking:</i> (based on results above)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+{#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<i>Rank</i> | <i>System</i> | <i>Average <a href='QueriesPerSecondPerMHz.html'>QueriesPerSecondPerMHz</a></i> | <i>Comparison to Prevayler</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+1 | Prevayler | 228.369 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+2 | SQLServer | 0.10607 | 2153 times slower than Prevayler&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+3 | MySQL | 0.07023 | 3251 times slower than Prevayler&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+4 | Oracle | 0.022875 | 9983 times slower than Prevayler&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<i>Manipulation <a href='ScalabilityTest.html'>ScalabilityTest</a> Results:</i> (manipulations per second)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+{#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<i>Prevayler</i> | <i>Oracle</i> | <i>MySQL</i> | <i>SQLServer</i> | <i><a href='CombinedProcessorSpeed.html'>CombinedProcessorSpeed</a></i> | <i>More Details</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+106.53 | 15.50 | | | 400 MHz | <a href='ScalabilityTestByEduardoAkatsu.html'>ScalabilityTestByEduardoAkatsu</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+62.29 | | 115.44 | | 500 MHz | <a href='ScalabilityTestByEduardoSimioni.html'>ScalabilityTestByEduardoSimioni</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+55.42 | | 298.31 | 144.50 | 900 MHz | <a href='ScalabilityTestByDanielSantos.html'>ScalabilityTestByDanielSantos</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<i>Manipulation Scalability Ranking:</i> (based on results above)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+{#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<i>Rank</i> | <i>System</i> | <i>Average <a href='ManipulationsPerSecondPerMHz.html'>ManipulationsPerSecondPerMHz</a></i> | <i>Comparison to Prevayler</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+1 | MySQL | 0.28 | 1.87 times faster than Prevayler&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+2 | SQLServer | 0.16 | 1.06 times faster than Prevayler&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+3 | Prevayler | 0.15 |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+4 | Oracle | 0.039 | 3.89 times slower than Prevayler&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+#}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<i>Hard to believe?</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+You can easily run the <a href='ScalabilityTest.html'>ScalabilityTest</a> for yourself. Just Download the latest Prevayler alpha release and read the readme.txt file included.&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+We can certainly use more results. Please send your own results to prevayler-scalability@lists.sourceforge.net and they will be published on this page. Running the tests for other <a href='DBMSs.html'>DBMSs</a> is a good idea too.<br />
+&nbsp;&nbsp;&nbsp; <br />
+Thanks,&nbsp;&nbsp;&nbsp; <br />
+The <a href='PrevaylerTeam.html'>PrevaylerTeam</a>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+----&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+See: <a href='ScalabilityTest.html'>ScalabilityTest</a>.<br />
+</div>
+        <div class='txt'>I'd like to see comparisons on startup time between <a href='DBMS.html'>DBMS</a> based applications and <a href='Prevayler.html'>Prevayler</a> based apps.&nbsp; Obviously, this isn't going to be your strong point, but it would help complete the picture, show how much you pay for the improvements mentioned above...<br />
+<br />
+Sure. According to DouglasGiacomini, <a href='Prevayler.html'>Prevayler</a> recovers 300.000 simple object creation commands in 50 seconds on his home PC (IDE hard-drive). I shall produce better benchmarks, though. If you have more results, please publish them here too. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+What about the impact of maintaining multiple indexes in a given entity? Obviously, for hierarchical storage and simple hash lookups, objects in memory are superior to databases. But when replacing a database, could you be losing some of the effeciencies of heavily optimized DB indexing techniques? In other words, if you use prevayler, do you have to become an indexing expert in order to balance memory usage for multiple indexes against performance considerations?<br />
+<br />
+Hardly. Performance is a non-issue. In the <i>WORST CASE</i>, indexing can be done exactly the same way your database does it @;) but without inter-process comunication and without object marshalling/unmarshalling. We are talking 3 to 4 <i>orders of magnitude</i> faster.<br />
+The real issue is the complexity of your code. You can write indexing code yourself or you can use a library for that. See: <a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>? You are no longer restricted to indexing schemes that must work well with disk blocks, such as the database indexing schemes. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<br />
+Can I suggest that without detailed configuration details of the box, these figures still don't mean that much to me. What's the memory size &amp; speed?&nbsp; What sort of boxes are these running on?&nbsp; What's the IO subsystem like?&nbsp; It's all well &amp; good to test these on my PC at home, but that hardly compares to the hardware I'd deploy to.&nbsp; That's where it really counts after all.<br />
+<br />
+On every comparison, the same machine was used for <a href='Prevayler.html'>Prevayler</a> and the database in question. Feel free, though, to run the tests on any hardware you want and publish your results here. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<br />
+And what's that you say? In process operations are orders of magnitude faster than calling out to another system.&nbsp; WOW ;)&nbsp; You talk elsewhere about still being able to remote query using RMI, CORBA, JSP's perhaps...&nbsp; Can we see some performance comparisons based on these, where we're no longer talking about everything working in the same VM?<br />
+<br />
+The client-to-appserver connection will be equally slow with <a href='Prevayler.html'>Prevayler</a> or with a database. The appserver itself, though, is 3 to 4 orders of magnitude faster with <a href='Prevayler.html'>Prevayler</a> because, as you well spotted, you can have a cohesive <a href='ObjectServer.html'>ObjectServer</a> in a single process. With the database/appserver architecture you cannot. That's precisely the point. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<br />
+I need fault tolerance.&nbsp; Load balancing.&nbsp; Multiple VM's accessing the same data at once.&nbsp; How does it compare under these conditions?<br />
+<br />
+Well, if you manage to put 9983 machines in an <a href='Oracle.html'>Oracle</a> cluster (with zero overhead, mind you), then you might get the same performance scalability as <a href='Prevayler.html'>Prevayler</a> on a single machine. The best thing is we don't even have to discuss. Just run the tests. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+What would be interesting is to test against an in-memory Java DB like McKoi ;-) --<a href='StephanSchmidt.html'>StephanSchmidt</a><br />
+<br />
+Just do it. The test will run on anything that has a JDBC driver. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<br />
+Yes, if I have some time left. But I guess we will change either way, because right now I think McKoi does heavy caching and <a href='SnipSnap.html'>SnipSnap</a> does heavy caching resulting in keeping the data twice in memory. --<a href='StephanSchmidt.html'>StephanSchmidt</a><br />
+<br />
+<hr />
+<b>"What are you waiting for? You're faster than this. Don't think you are, know you are..."</b> --Morpheus in <b>The Matrix</b><br />
+<br />
+<hr />
+<br />
+Are you not comparing a Database that is using a remote protocol (JDBC in this case) to <a href='Prevayler.html'>Prevayler</a> which is all in one VM?<br />
+<br />
+Yes. This question was already asked and answered above. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+Seems to me that to get an Apples/Apples comparison your benchmark should have a remote client (using RMI, or something like that). <br />
+<br />
+No. Feel free to run your database in the same VM as the test. @;) --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+As a follow up to the above question - please don't dismiss the remote issue as "we dont need to do it that way". If this technology is going be accepted as a viable persistence mechanism, it is going to need to deal with multiple remote clients.<br />
+<br />
+No. Persistence mechanisms do not have to "deal with" remote access. That would be coupling. They just have to "allow for" remote access. That is what "cohesion" means. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+Security in particular is a concern. Having a remote protocol makes it much easier to control access to the data.<br />
+<br />
+Doing access-control directly on data is brutally breaking encapsulation but, anyway, you are finally free to use whatever remote protocol you want. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+See: <a href='NoMorePorridge.html'>NoMorePorridge</a>.<br />
+<br />
+<hr />
+<br />
+Any non trivial application is going to have to use a remote protocol of some description. For example, if I am Bank - I am going to want some degree of isolation between my core transactional data and my application clients. <a href='RDBMS.html'>RDBMS</a> provide some measure of isolation. Yes, I am free to use any remote protocol I want - but I have to use something - and your benchmark does not factor this in. Once again - I think your benchmark is not comparing apples to apples. <br />
+&lt;p&gt;<br />
+Don't get me wrong - I really like the idea of prevayler! Writing enterprise apps is very difficult - and a large part of that is dealing with impedance mismatch between the object and relational worlds. That being said, the issues of security, isolation, etc. are going to have to be dealt with if this technology is going to be usefull. <br />
+&lt;p&gt;<br />
+One approach might be to wrap <a href='Prevayler.html'>Prevayler</a> in a distributed technology like Jini (using RIO, etc.). A persistent capable application could expose business methods (e.g. Account.updateBalance, etc.). You deploy a bundle of Biz Logic + Persistence to the persistence service. Remote clients can discover the service (via the lookup service) - and you get to leverage all the other Jini goodies (access control, robust service recovery, etc).&nbsp; Now that would be cool! I think there is a lot of potential synergy here. For example - your replication services could automagically discover each other. A deployed application could use the Quality of Service features of RIO to ask for the level of replication they desire. <br />
+&lt;p&gt;<br />
+-- Warren&nbsp; mailto:wstrange@telusplanet.net<br />
+<br />
+<br />
+Simply: I <i>AM</i> comparing apples to apples. You are wrong to state otherwise and that is not your point, anyway. Your point is: <i>YOU ARE NOT INTERESTED</i> in apples. You are interested in <i>REMOTE APPLES</i>. Regarding "remote apples" then, here we go again: <b>The client-to-appserver connection will be equally slow with <a href='Prevayler.html'>Prevayler</a> or with a database. The appserver itself, though, is 3 to 4 orders of magnitude faster with <a href='Prevayler.html'>Prevayler</a> because, as you well spotted, you can have a cohesive Object Server in a single process. With the database/appserver architecture you cannot. That's precisely the point.</b> I like the Jini idea. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+I think your claim of having an appserver that's 3 to 4 orders of magnitude faster with <a href='Prevayler.html'>Prevayler</a> is valid for the case where a remote client (if it's an appserver, there are going to be remote clients) is making a single request that would result in a very complex query over several objects (thousands, it looks like).&nbsp; The performance of a <a href='Prevayler.html'>Prevayler</a>-based appserver vs. a <a href='RDBMS.html'>RDBMS</a>-based appserver would look different for the case of many remote remote clients resulting in a few queries each. I think <a href='Prevayler.html'>Prevayler</a> would still be faster, but probably not 3 or 4 orders of magnitude faster. --Mark Kinzie<br />
+<br />
+Data drilling and mining activities as well as huge batch processes, where no client interaction is involved, also benefit from the 3 to 4 orders of magnitude acceleration. But regarding small queries from remote clients you are certainly right. The server will still have to process network packets and format responses for the clients. Using <a href='Prevayler.html'>Prevayler</a>, the time to execute the business query itself is negligible. <a href='Prevayler.html'>Prevayler</a> actually raises the performance bar for all other components in your architecture. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<br />
+<br />
+ I wonder if anyone would be prepared to generate some benchmarks for a Berkely DB based solution or similar. I would if I had the opportunity but I don't.<br />
+</div>
+    </body>
+</html>

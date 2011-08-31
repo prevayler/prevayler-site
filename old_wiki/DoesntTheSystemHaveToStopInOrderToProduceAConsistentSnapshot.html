@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>DoesntTheSystemHaveToStopInOrderToProduceAConsistentSnapshot (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>DoesntTheSystemHaveToStopInOrderToProduceAConsistentSnapshot</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>No. The snapshot can be taken without stopping the system.<br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>How can you expect to produce a consistent snapshot of a system that is constantly being modified?</i></b>&nbsp;&nbsp; <br />
+This is the fundamental problem with <a href='AmbitiousTransparentPersistence.html'>AmbitiousTransparentPersistence</a> projects. With prevalence, the problem is solved simply by using the command log.<br />
+<br />
+The command log enables the system to have a <b><i>replica</i></b> of the business logic on another virtual machine. All commands applied to the "hot" system are also read by the replica and applied in the exact same order. At backup time, the replica stops reading the commands and its snapshot is safely taken. Then, the replica resumes reading the command queue and gets back in sync with the "hot" system.<br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>Doesn't that replica give me fault-tolerance as a bonus?</i></b>&nbsp;&nbsp; <br />
+Yes it does. I have mentioned one but you can have several replicas. If the "hot" system crashes, any other replica can be elected and take over. Of course, you must be able to afford a machine for every replica you want.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>What about business rules involving dates and time? Won't all those replicas get out of sync?</i></b>&nbsp;&nbsp; <br />
+No. If you ask the use-case gurus, they will tell you: "<a href='TheClockIsAnExternalActor.html'>TheClockIsAnExternalActor</a> to the system.". This means that clock ticks are commands to the business objects and are sequentially applied to all replicas, just like all other commands.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i><a href='WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey</a>?</i></b>&nbsp;&nbsp; <br />
+&nbsp; <br />
+<hr />
+See: Replication.<br />
+Back to: <a href='ObjectPrevalenceSkepticalFAQ.html'>ObjectPrevalenceSkepticalFAQ</a>.&nbsp; <br />
+</div>
+        <div class='txt'>You could explain that "The Clock Is An External Actor To The System" a little better. How about giving some examples, too? How would I make a Command that deals with date &amp; time logic without blowing it all?<br />
+<br />
+If you want your system to be deterministic or at least testable, it cannot simply use "new Date()" to find out what time it is. Your system must use a clock interface that can be implemented as a real clock in production or as a fake clock (stub) for testing. <a href='Prevayler.html'>Prevayler</a>'s distribution comes with such an interface and implementation. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<br />
+That implementation is the <a href='AlarmClock.html'>AlarmClock</a> class. It's quite simple to use, yet very flexible. -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+<br />
+How much long takes to do an snapshot for a database under heavy load? <br />
+<br />
+See <a href='HowLongDoesASnapshotTake.html'>HowLongDoesASnapshotTake</a>?<br />
+<br />
+Is this persistent process done incrementally? I mean, are all the operations done during the day take them as a one huge operation when the data becomes persistent? <br />
+<br />
+<hr />
+<br />
+It seems there could be situations that would benefit from a mixture of prevalence and serialization to disk (along the lines of Jisp). Maybe swapping objects between ram and disk depending on the frequency of use and other factors. This would provide a cheaper alternative for those who can't afford huge amounts of RAM. Is there any plans to implement this in <a href='Prevayler.html'>Prevayler</a>?<br />
+<br />
+Yes, there are! Any contributions welcome, of course @:) -- <a href='CarlosVillela.html'>CarlosVillela</a></div>
+    </body>
+</html>

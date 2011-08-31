@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <title>PrevaylerEnterpriseObjectBrokerDemo (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>PrevaylerEnterpriseObjectBrokerDemo</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'><a href='Prevayler.html'>Prevayler</a> has NECESSARILY to provide a demo which is <a href='TheSimplestThingThatCouldPossiblyDemonstratePrevayler.html'>TheSimplestThingThatCouldPossiblyDemonstratePrevayler</a> -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+I'll strike you a deal -&gt;&nbsp;&nbsp; <br />
+ # you change org.prevayler.demo into org.prevayler.demos.demo2&nbsp;&nbsp; <br />
+ # I write the simpler demo as demo1&nbsp;&nbsp; <br />
+ # we change the bank demo to interface/impl separated with factories.&nbsp;&nbsp; <br />
+<a href='PaulHammant.html'>PaulHammant</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+Cool.&nbsp; @8) -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+----&nbsp;&nbsp; <br />
+EOB cannot work with callbacks. No one likes polling, though. Doesn't EOB plan to support callbacks? -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+See the <a href='EOBCallbackSupport.html'>EOBCallbackSupport</a> plan.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+The problem is that for a servlet example you would never setup a&nbsp;&nbsp;&nbsp; <br />
+listener because it does not suit the medium. Maybe a servlet use of the&nbsp;&nbsp;&nbsp; <br />
+same bank demo comes later (for us or for you). See fake idea-callback of Klaus's below -- <a href='PaulHammant.html'>PaulHammant</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+The problem is not the <a href='BusinessClasses.html'>BusinessClasses</a> providing for a listener and the servlet not using it. The problem would be the GUI trying to be a listener if there were no support for that in the <a href='BusinessClasses.html'>BusinessClasses</a>. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+I was hoping that it could be switchable via the contructor for the&nbsp;&nbsp;&nbsp; <br />
+Swing GUI. From your point of view, given that the gui and the object&nbsp;&nbsp;&nbsp; <br />
+model are tied to each other now, the only time the GUI gets a callback&nbsp;&nbsp;&nbsp; <br />
+is when the GUI has done an update on the account.&nbsp; I am not saying get&nbsp;&nbsp;&nbsp; <br />
+rid of it of course, just become dual mode. -- <a href='PaulHammant.html'>PaulHammant</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+Since we are doing <a href='InterfaceImplementationSeparation.html'>InterfaceImplementationSeparation</a>, why don't we put it to some use? @;)&nbsp;&nbsp; <br />
+The interface used by the GUI can be exactly the same: with the listener. We can provide the GUI with a "fake" implementation, though, that can delegate everything to a "real" implementation and do the polling occasionally to notify its listeners.&nbsp;&nbsp; <br />
+We would therefore have two bank demos:&nbsp;&nbsp; <br />
+ #The interface/impl separated local one, which doesn't even know about EOB; and&nbsp;&nbsp; <br />
+ #The EOB distributed one, which <i>imports</i> the local one but preserves its interfaces and impls exactly as they are.&nbsp;&nbsp; <br />
+This would also be cool to demonstrate that EOB is not an intrusive thing.&nbsp;&nbsp; <br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+I like the idea of the fake callback (that adapts the poller to callback on the client side), but cannot see why they do not have a common codebase. -- <a href='PaulHammant.html'>PaulHammant</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+I was thinking they DO HAVE the same codebase. When I say "the remote <i>imports</i> the local" I really mean <i>"imports"</i> and not "copies and pastes". Are we agreeing? (If we are, I shall refrase the above "...but preserves its interfaces and impls exactly as they are" which I agree is misleading) -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+If we pass the Bank (interface now not impl) into the constructor of the GUI (not the case now), then we are illustrating the ultimate unintrusive thing. -- <a href='PaulHammant.html'>PaulHammant</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+Yes. That is what I had in mind, or else we would not have proper interface/impl separation. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a>.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+The code in prevayler <a href='CVS.html'>CVS</a> is all local.&nbsp; In EOB <a href='CVS.html'>CVS</a>, we reimpl the Bank interface to 1) have the fake callback and 2) make it remote.&nbsp;&nbsp;&nbsp; <br />
+Could not be more <i>un</i>intrusive? -- <a href='PaulHammant.html'>PaulHammant</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+I like the idea of having the local demo in <a href='Prevayler.html'>Prevayler</a> <a href='CVS.html'>CVS</a> and the remote in <a href='EOB.html'>EOB</a> <a href='CVS.html'>CVS</a>. Let's do the following, then: You do <a href='TheSimplestThingThatCouldPossiblyDemonstratePrevayler.html'>TheSimplestThingThatCouldPossiblyDemonstratePrevayler</a>, I do the interface/impl separation and you do the EOB remote demo. OK? -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+Agreed.&nbsp; Lets do it.&nbsp; My SF is is paul-h, I promise not to make a mess.&nbsp; You'll need to rename the demo package to demos/demo1 or demos/demo2 (if new demo is simpler) --<a href='PaulHammant.html'>PaulHammant</a>&nbsp;&nbsp; <br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

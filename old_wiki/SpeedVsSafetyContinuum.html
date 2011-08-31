@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>SpeedVsSafetyContinuum (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>SpeedVsSafetyContinuum</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'><a href='JonathanCarlson.html'>JonathanCarlson</a> <br />
+ <br />
+Speed and traditional integrity guarantees don't usually go together (as <a href='MySQL.html'>MySQL</a> has proven).&nbsp; I think <a href='MySQL.html'>MySQL</a> is a good example of how a lot of people are more than willing to trade some safety for speed, but my impression is that those people usually aren't CIOs.&nbsp; But then again, even <a href='MySQL.html'>MySQL</a> allows users to choose different speed vs. safety tradeoff levels. <br />
+ <br />
+With the caveat that <a href='Prevayler.html'>Prevayler</a>'s integrity guarantee in RAM will never be better than the developer's code and testing, I'm hoping that there will be a continuum of speed vs. safety choices that can be made so people can make their own tradeoff choices.&nbsp; For example, I'm doing a web app so I'm not sure I'll ever need any more speed than what version 1.0 provides, but if I do, I'll be glad to know there are speed improvement options available, in which case I would have to be content with sacrificing some safety.&nbsp; <br />
+ <br />
+There could be a basic version of <a href='Prevayler.html'>Prevayler</a> based on v1.0 that is&nbsp; faster than any <a href='RDBMS.html'>RDBMS</a> but has *more* (not totally) traditional safety options like <a href='RollbackSupport.html'>RollbackSupport</a> (without being an ODBMS).&nbsp; And then there could be an&nbsp; <br />
+Extreme version of <a href='Prevayler.html'>Prevayler</a> that is even more blazingly fast with all of the fancy things being added (I don't know yet what they all are) for the super apps that really need that kind of performance. <br />
+ <br />
+The basic version would provide a migration path for those who want the speed increase from traditional <a href='RDBMS.html'>RDBMS</a>'s and want to do real object modeling, but who still aren't comfortable with all of the safety tradeoffs they will be forced to make in the Extreme version.&nbsp; Then once they get comfortable with <a href='Prevayler.html'>Prevayler</a>-think and find they need or want even more speed, they have the hyper-scalability options of the new, extreme version of <a href='Prevayler.html'>Prevayler</a>.&nbsp; Of course the tradeoffs would have to be amply documented so people can make the best decision for their project. <br />
+ <br />
+This would follow the Extreme Programming idea of only using software that's only as complex as you need it to be (I don't think most applications would need the Extreme <a href='Prevayler.html'>Prevayler</a> version).&nbsp; When and if more speed is needed, then users can upgrade to the new version of <a href='Prevayler.html'>Prevayler</a> with the understanding that there will be different risks and benefits.&nbsp; <br />
+<br />
+<hr />
+Prevayler version 1.01 provides greater scalability through the use of multiple log files in parallel. It does not sacrifice any safety feature from version 1.00.<br />
+<br />
+The safety vs speed trade-off comes with a new system property called org.prevayler.SafeCommandLogs which can be set to "OFF". This will make Prevayler <i>NO LONGER FLUSH</i> every single command to disk before it is executed. This can be used by systems that have a high command rate (hundreds per second) but do not have critical commands. A large Wiki server would be an example.<br />
+<br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+The default for the org.prevayler.SafeCommandLogs system property is "ON".<br />
+<br />
+Prevayler will always default to the safest mode of operation. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+See: <a href='ScalabilityTests.html'>ScalabilityTests</a>.<br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

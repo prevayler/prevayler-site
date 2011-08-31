@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>InstantaneousTransactions (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>InstantaneousTransactions</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>After being written to the log, each transaction can be run on the prevalent system in just a few microseconds.<br />
+<br />
+For 99% of all transactions, the simple ones, the system just executes the transaction. With all objects in RAM, simple transactions such as updating an object's attribute will execute in only a few microseconds anyway.<br />
+<br />
+For a complex transaction, though, like a payment batch with 100000 payments, the system just keeps it in the "pending transaction" list and returns (also a few microseconds).<br />
+<br />
+<a href='LazyEvaluation.html'>LazyEvaluation</a> is the key here. The complex transaction will be lazily evaluated, a little bit at a time, by every query that retrieves information affected by that transaction.<br />
+</div>
+        <div class='txt'>Do you assume 100% reliable hardware?&nbsp; If not, even in a single-server example, it takes time, short or not, to perform multiple changes.&nbsp; If "the lights go out" during this time, the state will be inconsistent if there is no rollback.<br />
+<br />
+In a multi-server example, the times and sync problems get larger.<br />
+<br />
+Also, serialization consumes time, and serialization of an entire object cache takes considerable time.&nbsp; The "lights can go our" at any time.&nbsp; 100% reliable hardware still costs 'way too much money.<br />
+<br />
+--Anonymous<br />
+<br />
+<br />
+No. <a href='Prevayler.html'>Prevayler</a> never assumes 100% reliable hardware. I don't believe there is such a thing. <a href='Prevayler.html'>Prevayler</a> will only execute a transaction <i>after</i> it is written to disk. I suggest you finish reading the <a href='PrevalenceSkepticalFAQ.html'>PrevalenceSkepticalFAQ</a>. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<b>"Force all system buffers to synchronize with the underlying device. This method returns after all modified data and attributes of this ^FileDescriptor have been written to the relevant device(s). In particular, if this ^FileDescriptor refers to a physical storage medium, such as a file in a file system, sync will not return until all in-memory modified copies of buffers associated with this ^FileDesecriptor have been written to the physical medium. sync is meant to be used by code that requires physical storage (such as a file) to be in a known state. For example, a class that provided a simple transaction facility might use sync to ensure that all changes to a file caused by a given transaction were recorded on a storage medium."</b> --JDK 1.3 ^FileDescriptor.sync() API documentation. @;)<br />
+<br />
+<hr />
+How will the state be inconsistent?&nbsp; Don't forget that <a href='Prevayler.html'>Prevayler</a> commands are only allowed to change the state of stuff in <a href='BusinessObjectParadise.html'>BusinessObjectParadise</a>, not on the filesystem and certainly not on other servers.&nbsp; These changes that are made in memory are totally transient; when the "lights come back on", it's the latest snapshot and command log that will determine the new state of the system. --Joe Cheng<br />
+<br />
+<hr />
+Hi Joe,<br />
+<br />
+It seems to me that the advantages that <a href='Prevayler.html'>Prevayler</a> offers are a result of the decision to only provide an in-memory, in-process "data model", that only offers an in-process, globally serialised access mechanism.&nbsp; It's no wonder that it's so much faster / simpler than "real" databases - these choices massively simplify things!<br />
+<br />
+In fact I would go so far as to ask the question as to why <a href='Prevayler.html'>Prevayler</a> is only 9000 times faster than <a href='Oracle.html'>Oracle</a> and 3000 times faster than <a href='MySQL.html'>MySQL</a>.&nbsp; After all, both of those databases provide concurrent remote access (which vastly complicates what they have to do).<br />
+<br />
+-- Peter Monks<br />
+<br />
+----</div>
+    </body>
+</html>

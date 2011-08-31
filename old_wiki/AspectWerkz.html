@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>AspectWerkz (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>AspectWerkz</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'></div>
+        <div class='txt'>From http://aspectwerkz.sourceforge.net/:<br />
+<br />
+<a href='AspectWerkz.html'>AspectWerkz</a> is a dynamic, lightweight and high-performant AOP/AOSD framework for Java.<br />
+<br />
+<a href='AspectWerkz.html'>AspectWerkz</a> supports the following features:<br />
+<br />
+ * Runtime bytecode modification (using BCEL). Hooks in and transforms classes loaded by any class loader except the bootstrap class loader. Which basically means that you can easily transform any (legacy) application or external library apart from rt.jar both in runtime or during a compilation phase.<br />
+ * The join point model supports interception of fields and methods, public, private, protected, and package protected, static and class members. It also supports exception interception.<br />
+ * Introductions (Mixins/Open Classes), i.e. the possibility to add interfaces, methods and fields to existing classes.<br />
+ * Transparent persistence for both advices and introductions.<br />
+ * Four different deployment models (scope) for both advices and introductions: perJVM (singleton), perClass, perInstance and perThread.<br />
+ * Hot deployment, advices and introductions can be dynamically deployed, undeployed or rearranged (without reloading or retransforming the target classes).<br />
+ * High-performant, an Introduction or Advice adds an overhead of only 0.0004 ms/call.<br />
+ * Meta-data additions to classes. Possibilities to add meta-data to all loaded classes.<br />
+ * Regular expressions for selecting the pointcuts.<br />
+ * Uses the same semantics as <a href='AspectJ.html'>AspectJ</a>. I.e. aspects, advices, pointcuts, join points and introductions.<br />
+ * "Offline" transformation (can be used as a pre-processor).<br />
+ * Aspects, advices and introductions are written in plain old Java code. I.e. no new language to learn, no new compilation phases, no need to tell your manager ;-)<br />
+ * The target classes can be regular POJOs (Plain Old Java Objects), i.e. do not need to have an interface.<br />
+ * External configuration using an XML config file.<br />
+ * Simple usage and configuration.<br />
+<br />
+From http://aspectwerkz.sourceforge.net/documentation.html#Persistence:<br />
+<br />
+<a href='AspectWerkz.html'>AspectWerkz</a> supports transparent persistence of both advices and introductions. If an Advice or Introduction is marked as persistent, <a href='AspectWerkz.html'>AspectWerkz</a> will transparently persist it when one of it's fields becomes "dirty". The persistence manager implementation is pluggable, so it is possible to extend it with a custom implementation (the default implementation uses <a href='Prevayler.html'>Prevayler</a> as backend).<br />
+<br />
+Congratulations for the <a href='AspectWerkz.html'>AspectWerkz</a> team (only JonasBon&#233;r, for now :) for the awesome work!<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a></div>
+    </body>
+</html>

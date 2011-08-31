@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <title>StartingPoints (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>StartingPoints</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'><a href='Prevayler.html'>Prevayler</a> is the free-software prevalence layer for Java.<br />
+<br />
+<br />
+<i>Features</i><br />
+ -<a href='TransparentPersistence.html'>TransparentPersistence</a> for native Java business objects.<br />
+ -3 to 4 <a href='OrdersOfMagnitudeFaster.html'>OrdersOfMagnitudeFaster</a> than databases via JDBC.<br />
+ -ACIDTransactions.<br />
+ -<a href='ZeroBugs.html'>ZeroBugs</a>.<br />
+<br />
+<br />
+<i>The Concept</i> - <a href='SystemPrevalence.html'>SystemPrevalence</a>.<br />
+<br />
+<br />
+<i>The Product</i><br />
+ -<a href='GettingStarted.html'>GettingStarted</a> with <a href='Prevayler.html'>Prevayler</a>.<br />
+ -<a href='CommonIssues.html'>CommonIssues</a><br />
+ -<a href='AdvancedIssues.html'>AdvancedIssues</a><br />
+ -<a href='TheCode.html'>TheCode</a> - Simplicity, Transparency and Speed<br />
+<br />
+<br />
+<i>The Community</i><br />
+ -<a href='PrevaylerPioneers.html'>PrevaylerPioneers</a><br />
+ -<a href='WikiSite.html'>WikiSite</a> - How does this site work?<br />
+ -<a href='MailingLists.html'>MailingLists</a><br />
+ -<a href='PrevaylerChat.html'>PrevaylerChat</a><br />
+ -<a href='PrevaylerPortsToOtherLanguages.html'>PrevaylerPortsToOtherLanguages</a><br />
+<br />
+<br />
+<i>The Project</i><br />
+ -<a href='PrevaylerTeam.html'>PrevaylerTeam</a><br />
+ -<a href='FeatureRequests.html'>FeatureRequests</a><br />
+<br />
+<br />
+<hr />
+From the Java2 Standard Edition 1.4 datasheet: <br />
+"64-bit support provides Java technology developers with near limitless amounts of memory for <i>high-performance, high-scalability</i> computing. While previous J2SE releases were limited to addressing 4 gigabytes of RAM, version 1.4 allows Java applications to access <i>hundreds of gigabytes</i> of RAM. [On 64bit architectures] This enables developers to drive more applications and very large datasets into memory, and avoids the performance overhead of reading data in from a disk or from a database." <br />
+<br />
+<hr />
+"After doing lots of tests we are now using <a href='Prevayler.html'>Prevayler</a> in one of our production systems. <i>And Wow! this baby flies!</i><br />
+<br />
+I'm very pleased with the simplicity of design and the performance of <a href='Prevayler.html'>Prevayler</a>.<br />
+<br />
+We've been using <a href='Oracle.html'>Oracle</a> and a persistence layer in our first project and it was _very_ painfull. Started the second marketplace with the same persistence layer and I got so fed up with it that I decided to change to <a href='Prevayler.html'>Prevayler</a> in the middle of the project. Just like that. And I love it!"<br />
+<br />
+--<a href='MarkusFix.html'>MarkusFix</a> (Head of Technology), http://www.otop.de - ^e-Health-Care Marketplace<br />
+<br />
+<hr />
+</div>
+        <div class='txt'>Want to know what's new on the Wiki? Check <a href='RecentChanges.html'>RecentChanges</a> --<a href='StefanReich.html'>StefanReich</a><br />
+<br />
+"Although I'm not using the prevayler code, I've come up with a very similar approach during design and development of a simple medical hardware application. The requirement was to keep a database of patient data consisting of personal data, test sessions and test results.<br />
+<br />
+It all ended up living in the RAM. Our average customer's office worth of data for this application fits comfortably (in text file form) on a 1.4MB diskette, so it was more than obvious not to have anything to do with files -- the whole database is read from the (hand-modifiable, if need be) text file on startup, and is then saved as a whole whenever the patient file is closed. A command log is in the works, and -- given the database's almost negligible size -- the command log will be the only and ultimate way of storing the database -- yup, without any kind of persistent snapshot.<br />
+<br />
+Internally, I ended up implementing quite a few concepts of object prevalence. Right now I'm cleaning up the client code/business command separation.<br />
+<br />
+Although I've got to know the prevayler project only as of today, I've managed to implement almost the same thing. It took me almost half a year of deep thinking about how to do that, I admit. Nicely enough, the database was the last thing to be done in that partiular app. Given enough thought, the prevalent objects idea -- to me -- seems the only clean-cut way to manage data without having a dozen layers between your client, your business logic, and your data. It's a 13k line C++ application (using Qt) that manages its data in an <a href='ACID.html'>ACID</a> clean way, talks to the hardware (about 35% of the code is the hardware interfacing code), and provides a user interface for all that. Doing it 'the obvious way' would require at least bundling a hefty embedded database library, or using <a href='MySQL.html'>MySQL</a> for simplicity's sake. After some conservative estimates I come to the conclusion that object persistence interfacing to an SQL data storage thing (<a href='RDBMS.html'>RDBMS</a>, whatever) would take more time to cleanly implement and debug, than just going with the object prevalence. I even went as far to give GigaBase a test run for about two week. Even though it was much easier to use than your typical parsed query based system, it still looked very hackish.<br />
+<br />
+All in all, it's a neat concept, it has allowed me to keep the code clean and extremely simple (even in C++ with Qt), and is something that should be taught in computer science database courses, on par with classic <a href='RDBMS.html'>RDBMS</a> theory and practice. I admit that, in fact, it may only be the lack of formal CS education on my part that gave me a clean-enough horizon to actually live happily (and without prejudice) with object prevalence."<br />
+<br />
+--<a href='KubaOber.html'>KubaOber</a>, a freelance developer<br />
+<br />
+kk<br />
+<br />
+I think it was a mistake to not have the wiki be prevalent during the Slashdot inundation a few days ago.&nbsp; Everybody on Slashdot was making fun of how quickly your own server died.<br />
+<br />
+--Carl Youngblood, computer programmer<br />
+<br />
+<br />
+Yep, quite unfortunate. Everyone assumed that the site was being run by a prevalence engine. Which was an incorrect assumption to make.<br />
+<br />
+Oh well. a lot of people on slashdot are still attached to their database.<br />
+<br />
+64 bit cpu's and hopefully a serious decrease in ram costs will see most systems using some sort of prevalence engine</div>
+    </body>
+</html>

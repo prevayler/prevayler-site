@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>HistoryLogging (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>HistoryLogging</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>What do you think of giving <a href='Prevayler.html'>Prevayler</a> hooks to make some kinds of things easier to the application writer? Here are some ideas to make <a href='CommandHistory.html'>CommandHistory</a> logging easier to the developers:<br />
+<br />
+ public interface CommandListener {<br />
+&nbsp;&nbsp; public void commandSaved(CommandSaveEvent e);<br />
+&nbsp;&nbsp; public void commandExecuted(CommandExecutedEvent e);<br />
+ }<br />
+<br />
+The programmer could register his command listeners when the application started (or any other interesting point in time) and have a very nice and practical way to log stuff.<br />
+<br />
+<a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+<br />
+<a href='AlexandreNodari.html'>AlexandreNodari</a> pointed out that having multiple listeners could help, so that we would have the following:<br />
+<br />
+ public interface CommandSaveListener {<br />
+&nbsp;&nbsp; void commandSaved(CommandSaveEvent e);<br />
+ }<br />
+<br />
+ public interface CommandExecuteListener {<br />
+&nbsp;&nbsp; void commandExecuted(CommandExecutedEvent e);<br />
+ }<br />
+<br />
+ public interface CommandListener <br />
+ extends CommandSaveListener, CommandExecuteListener {<br />
+&nbsp;&nbsp; public void commandSaved(CommandSaveEvent e);<br />
+&nbsp;&nbsp; public void commandExecuted(CommandExecutedEvent e);<br />
+ }<br />
+<br />
+I think this is flexible enough, and performatic enough to do the job. What do you think?<br />
+<br />
+<a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+<br />
+By the way, I forgot to define what are the events these listeners receive. Here they are:<br />
+<br />
+ public class CommandSaveEvent {<br />
+&nbsp;&nbsp;&nbsp; private Command command;<br />
+&nbsp;&nbsp;&nbsp; private java.util.Date savedTime;<br />
+<br />
+&nbsp;&nbsp;&nbsp; // getters and setters here<br />
+ }<br />
+<br />
+ public class CommandExecuteEvent {<br />
+&nbsp;&nbsp;&nbsp; private Command command;<br />
+&nbsp;&nbsp;&nbsp; private java.util.Date executedTime;<br />
+<br />
+&nbsp;&nbsp;&nbsp; // getters and setters here<br />
+ }<br />
+<br />
+I can't think of any more information we can add here. Any ideas?<br />
+<br />
+<a href='CarlosVillela.html'>CarlosVillela</a><br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

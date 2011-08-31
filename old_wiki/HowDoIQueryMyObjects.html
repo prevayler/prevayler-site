@@ -1,0 +1,219 @@
+<html>
+    <head>
+        <title>HowDoIQueryMyObjects (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>HowDoIQueryMyObjects</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>You are no longer stuck with the queries provided by your database.<br />
+<br />
+You can finally use any query languages, algorithms and data-structures available for Java. Prevayler does not attempt to provide any queries and, therefore, does not restrict you as traditional databases do.<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a>'s hoax-like <a href='ScalabilityTestResults.html'>ScalabilityTestResults</a> were achieved using regular collections from the Java collections API.<br />
+<br />
+See: <a href='NoMorePorridge.html'>NoMorePorridge</a>.<br />
+<br />
+<hr />
+Here are some links to other collections libraries:<br />
+ -<i>Jakarta Commons' Collections</i> (http://jakarta.apache.org/commons/collections.html)<br />
+ -<i>Java Generic Library</i> - "JGL&#174; 1.0 was offered free to the Java community in June of 1996. Since then, it has been licensed by 10 major IDE vendors and downloaded by tens of thousands of users. The estimated current user base of JGL&#174; 2.0 exceeds 100,000 users. JGL&#174; was designed from the start as a 100% Java, high-performance, full-featured, and easy-to-use extension to the basic JDK features." (http://www.recursionsw.com/products/jgl/jgl.asp)<br />
+ -<i>JUtil.org</i> (http://sourceforge.net/projects/org-jutil/)<br />
+ -<i>Waterken Abstract Data Types (ADT) library</i> (http://www.waterken.com/dev/ADT/index.html)<br />
+<br />
+Any suggestions? Please, leave a comment.<br />
+</div>
+        <div class='txt'><hr />
+<br />
+<b><i>Questions</i></b><br />
+<br />
+How about JISP? -- TieyingLiu<br />
+<br />
+I do not think JISP is in the same category as <a href='Prevayler.html'>Prevayler</a> - it is 'poor man' disk-based<br />
+BTree and/or Hash storage with no transaction/concurrency features. It could be <br />
+ideal for read-only/CDROM databases, though. Still, it is closer to <a href='RDBMS.html'>RDBMS</a> than to <a href='Prevayler.html'>Prevayler</a><br />
+<br />
+<hr />
+<br />
+Say there is a Person object that has a field to hold an Office object.<br />
+There is a collection of Person objects. There is also a collection Office objects.<br />
+The collection of Person can be queried to answer something like:<br />
+Persons with lastName &lt; "n" are associated with what Offices<br />
+But, can the Office collection be queried to answer something like:<br />
+Offices with roomNumber &lt; 200 are associated with what Persons<br />
+<br />
+A "relation" like this in a database can be queried starting from either Person or Office entity. But, is this possible in OO (Java) to get a reverse lookup (e.g., to know which Person objects reference any particular Office object)?<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> looks great! Trying to adjust from <a href='RDBMS.html'>RDBMS</a> thinking. Responses appreciated!<br />
+<br />
+-- JF<br />
+<br />
+I think you're inverting the ideas. How does a person, in the real world, hold an office? I think that the office is the one that holds one or more people. By straightening out your mapping of the real world to objects, things get easier.<br />
+<br />
+If an Office has 1..* Person, and each Person belongs to an Office, things get a lot easier to query on @:)<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+See: <a href='CreatingReportsWithPrevayler.html'>CreatingReportsWithPrevayler</a><br />
+<br />
+<hr />
+<br />
+Well that's just stupid. I know around here that offices have more than just one person in them. And all valid query ideas should be supported. This is where SQL rocks. <br />
+<br />
+And why does everyone think mapping tables to objects is impossible?<br />
+[I don't. I just think its a pain. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>]<br />
+<br />
+If object A has relation to B, then in any case, you simply associate a column entry in the table for A with the corresponding rowid for the Instance of B in the table that stores B. ( Heck with suitable column support, one could store even the source code for a given method, even the bytecodes... ).<br />
+<br />
+Objects and relational databases can have perfect 1 to 1 mappings, and it's very very easy to define all sorts of arbitrary queries. Sure, they might not be useful now, but who knows in the future?<br />
+<br />
+Given a table of employees, and a table of offices, it's very easy to find those employees who don't have offices, and those offices who don't have employees ( Maybe closed branches, or leftover cruft or unpurged DB entries, a useful query )<br />
+<br />
+How can I do this in a consistent manner in <a href='Prevayler.html'>Prevayler</a>?<br />
+<br />
+It's a no-brainer than in-memory access is fast. Serializing snapshots has been done before. Unless I can write useful, potentially arbitrary queries, why bother?<br />
+<br />
+-Daniel<br />
+<br />
+<hr />
+<br />
+To Daniel: Well said! That's the point. Relational Database are about storing data in a normal form *while allowing all possible queries*. They also standardize the query syntax and semantics.<br />
+All: Show me an SQL interface running on the top of <a href='Prevayler.html'>Prevayler</a>, then we will talk. If what I wanted was objects in memory, then why would I need a database? If you compare your performance to that of a database, then please compare with the features of a database as well. Before relational databases we had hierarchical systems. There is a reason why nobody uses these anymore. Having a hierarchical data model in RAM and comparing the access speed with <a href='Oracle.html'>Oracle</a> on simple table lookups is ridiculous.<br />
+<br />
+<hr />
+<br />
+<b>Given a table of employees, and a table of offices, it's very easy to find those employees who don't have offices, and those offices who don't have employees (Maybe closed branches, or leftover cruft or unpurged DB entries, a useful query). How can I do this in a consistent manner in <a href='Prevayler.html'>Prevayler</a>?</b><br />
+<br />
+Trivial. But how about a query over polimorphically evaluated methods based on the current millisecond? Can your database even handle that? Even object databases are notoriously better than relational databases for complex queries. For the <a href='ScalabilityTest.html'>ScalabilityTest</a> we have chosen a very simple query on purpose to handicap <a href='Prevayler.html'>Prevayler</a> and give relational databases a better chance. --Klaus Wuestefeld. <br />
+<br />
+Better defining 'trivial' above: supposing you have a List of offices, and a List of employees, you can just walk over them, using reliable and proven technology like the <b>while</b> loop, which has been around for about 50 years now. Or, if you want to get fancy, try some <a href='XPath.html'>XPath</a>:<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //offices[@employees.size()==0]<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; //employees[@office==null]<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+<br />
+Does anyone have an email address of Jonathan Carlson ? I'd like to talk with him about his indexed collection framework and how to bring it together with <a href='JXPath.html'>JXPath</a> ...<br />
+<br />
+TX<br />
+<br />
+- <a href='MarkusMenner.html'>MarkusMenner</a><br />
+<br />
+<hr />
+<br />
+<b>Does <a href='Prevayler.html'>Prevayler</a> allow SQL queries, or does it make SQL obsolete? If <a href='Prevayler.html'>Prevayler</a> allows SQL queries, will it still be 9000 times faster than <a href='Oracle.html'>Oracle</a>?</b><br />
+<br />
+<hr />
+<br />
+<b><i>Comments</i></b><br />
+<br />
+Data Warehousing (DW) modeling is going towards UML (objects), check the Common <br />
+Warehouse Model and the Gold tool, for instance. -- RogerioDeCarvalho<br />
+<br />
+<hr />
+<br />
+I have an open-source Swing-based <a href='ObjectInspector.html'>ObjectInspector</a> that I modified from something Axel Uhl wrote. It's kind of like a Smalltalk inspector. I added a <a href='BeanShell.html'>BeanShell</a>? command window so one could dynamically run methods against the object you are looking at. I have some things I want to improve on it, but it will run OK now. Feel free to ask me for it, maybe it will give me a push to make the modifications.<br />
+- <a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+<hr />
+<br />
+I also have written a pretty cool (<a href='IMHO.html'>IMHO</a>) <a href='IndexedCollectionFramework.html'>IndexedCollectionFramework</a> that is kind of like a relational database table.&nbsp; That is, it can index a collection of objects in different ways based on the value of a getter method result.&nbsp; Feel free to ask me for it.&nbsp; I keep improving on it as I have time.<br />
+- <a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+<hr />
+<br />
+I've found a very nice query language to our Java objects: <a href='XPath.html'>XPath</a>! I've been using the Jakarta Commons' <a href='JXPath.html'>JXPath</a> (http://jakarta.apache.org/commons/jxpath/index.html) to dig through my object graphs, and it's a very simple, quick-to-learn language. It fits like a glove on a prevalent project when a lot of different queries are needed. Hey, didn't you always think XML and Java were born to be together? @:)<br />
+<br />
+There's also a demo (see Demos) on how to use it. The demo does not show how to change objects using <a href='XPath.html'>XPath</a>, though. Anyone interested in implementing a full <a href='JXPath.html'>JXPath</a>+<a href='Prevayler.html'>Prevayler</a> demo? @:)<br />
+<br />
+- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+<br />
+Here's another very efficient collection library.&nbsp; The hashed collections may use more memory in some cases because it keeps the table size a prime number.&nbsp; But in the case of the primitive hashed collections, the space is reduced so much that it's often a wash.<br />
+http://trove4j.sourceforge.net/<br />
+- <a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+<hr />
+<br />
+Trove4J really impressed me! Thanks for the link, Jonathan! -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+<br />
+The SODA (Simple Object Database Access) specification looks interesting.&nbsp; I am personally happy to just use the methods on my data objects, but it could be a useful API for the <a href='IndexedCollectionFramework.html'>IndexedCollectionFramework</a> I'm working on.<br />
+http://sodaquery.sf.net<br />
+- <a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+<br />
+I am also looking for an efficient in-memory indexing framework, suitable for <a href='Prevayler.html'>Prevayler</a>. Here are<br />
+my thoughts:<br />
+1. Apache/Jakarta's Lucene engine. It looks pretty impressive and you can have in-memory indexes.<br />
+The problem is that Lucene has been designed for both disk and in-memory indexing. As a result, <br />
+the 'Document' class there is final and you can not associate objects with it.<br />
+2. <a href='JXPath.html'>JXPath</a> is just an object graph navigation language. You could use Jexl instead (see jakarta-commons), which offers better Java-like syntax and is better supported (in Jelly and Velocity). The problem is that expression languages alone like the above imply nothing for the underlying object graph and you can not have efficient 'wildcard' queries like in Lucene.<br />
+3. Different 'Collections'-like frameworks lack featured query capabilities. Ideally, what we need is a B-Tree in-memory index, where objects can be registered with their<br />
+public (bean) properties (and optionally, keywords in the content of the String properties). Than one could look up indexed objects in a simple query language in the index. Time to hack Lucene?<br />
+4. I do not think SODA comes with any Collections implementation, just interfaces.<br />
+The beauty of SODA is that it does away with queries-as-strings and the need for query parsers.<br />
+Just POJOs (plain old java objects -:))!<br />
+<br />
+I am contemplating the idea of writing something along the ideas above, but would like<br />
+to see if such projects have not been started already.<br />
+<br />
+<a href='HristoStoyanov.html'>HristoStoyanov</a><br />
+<br />
+<hr />
+<br />
+<hr />
+<br />
+<hr />
+ #I <i>can</i> run an SQL engine on Java (although I don't want too). You <i>cannot</i> make queries on ORACLE run faster.<br />
+ #Your database <i>RESTRICTS</i> you to using SQL. You might be numb/accustomed to that by now but it is not like you have an option, is it? See: <a href='NoMorePorridge.html'>NoMorePorridge</a>.<br />
+ #I don't care if you want tables, indices, triggers and procedures. I want objects.<br />
+ #<b>If what I wanted was objects in memory, then why would I need a database?</b> That's precisely the point, thanks.<br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+<br />
+<hr />
+<br />
+In anything at all, perfection is finally attained not when there is no longer anything to add but when there is no longer anything to take away, when a body has been stripped down to its nakedness.<br />
+<br />
+Antoine de Saint-Exup&#233;ry in Wind, Sand and Stars <br />
+<br />
+Klaus,&nbsp; All your responses are so biased in favor of <a href='Prevayler.html'>Prevayler</a>.&nbsp; I'm finding it dificult to determine what <a href='Prevayler.html'>Prevayler</a> can really do.&nbsp; They way you speak, <a href='Prevayler.html'>Prevayler</a> is perfect in every way unless you are too stupid to realize.&nbsp; Nothing in computing is ever that cut and dry.<br />
+Hum interesting, yeap, the thing needs some work, i really think that nobody gets a clear view of what the hell prevayler is or how can someone use it. <br />
+<br />
+<hr />
+<br />
+Some real documentation needs to be created, with implementation specs, and real working examples using the popular choices: SQL, Xpath, etc... Until then it is just another wierd and exotic open source project, among the millions that exist on this big NET. <br />
+<br />
+Best Regards, <br />
+Daniel MD<br />
+vf<br />
+<br />
+<hr />
+<br />
+<hr />
+What about OQL?<br />
+If you have *real* applications, you want fast and independent solutions to findind your objects. OQL was proposed for that.</div>
+    </body>
+</html>

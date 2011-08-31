@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>DoItYourselfTransactions (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>DoItYourselfTransactions</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>A transaction scheme that lets clients build their own atomic sets of operations. In an <a href='RDBMS.html'>RDBMS</a>, a client can use begin-commit semantics to build its own transactions.<br />
+<br />
+A way to do it in Prevayler would be to have a TransactionCommand, for example, to which a client would be able to addCommand(). When that TransactionCommand executes, it would execute all commands it contains.<br />
+<br />
+<hr />
+<br />
+I don't think this is a good thing to include with <a href='Prevayler.html'>Prevayler</a> simply because it encourages bad software design.<br />
+<br />
+This is a very subtle encapsulation issue: with begin-commit semantics or with an addCommand() function, you are allowing/encouraging client code to define new transactions, new atomic collections of operations WHICH WERE NOT NECESSARILY INTENDED TO BE ATOMICALLY COMBINED.<br />
+<br />
+i.e. You are allowing client code to bring business logic into its own hands in a very subtle way, but that will still bring you trouble.<br />
+<br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+I was thinking of maintaining a page on the <a href='PrevaylerWiki.html'>PrevaylerWiki</a> with an implementation, just to show that this is not a difficult thing to do, but I would leave a warning: "USE AT YOUR OWN PERIL" (and the explanation above). -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+</div>
+        <div class='txt'><br />
+The only case I see an addCommand() method being useful is on the creation of batches of commands. Suppose we already have a Command that changes a given field of a <a href='BusinessObject.html'>BusinessObject</a>, and the application must apply the same command, with subtle changes in its parameters, to the system. The designer may choose to implement batching in order to achieve some extra performance (by using the same instance of the command and changing its values, caching or using other optimization techniques) while still reusing the original Command's code. What do you think?<br />
+<br />
+<a href='CarlosVillela.html'>CarlosVillela</a></div>
+    </body>
+</html>

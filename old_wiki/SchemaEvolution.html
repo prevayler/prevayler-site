@@ -1,0 +1,231 @@
+<html>
+    <head>
+        <title>SchemaEvolution (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>SchemaEvolution</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'></div>
+        <div class='txt'>I'm not sure I understand how your system would handle schema evolution (changes to the business classes). How will the snapshot be read?<br />
+<br />
+<hr />
+Some changes in the code are backwards compatible and some are not. <br />
+<br />
+Sometimes it is just a question of declaring a "private static final long serialVersionUID = [any number]" (see Java serialization spec) and being prepared for uninitialized variables. <br />
+<br />
+Sometimes, though, you will have to write specific migration code. Simply load the old classes using one class loader and the new classes using another, since they will probably have the same name. <br />
+<br />
+The advantage is you are writing in Java (and not SQL ou PL) and you can use any business logic already defined in your objects. <br />
+<br />
+Another interesting approach is to have the system running with the new classes querying the old classes, when needed, and migrating the old objects on-the-fly, on demand, until all objects have been migrated. <br />
+<br />
+-- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Actually we are using a code generator to do exactly this in our most<br />
+recent web application that utilizes <a href='Prevayler.html'>Prevayler</a>. Using an XML export<br />
+of the data structure created in Rational Rose we then generate the<br />
+following code:<br />
+1. All persistent objects (serializable business objects)<br />
+&nbsp;&nbsp;&nbsp; as defined in the schema<br />
+2. Store-, Update- and Remove-commands for persistent objects<br />
+3. The Prevalent System with TreeMaps for all business objects and<br />
+&nbsp;&nbsp;&nbsp; corresponding store-, update- and remove-methods. This class<br />
+&nbsp;&nbsp;&nbsp; also has findBy Methods to query the TreeMaps.<br />
+<br />
+Using this code generator make schema changes "almost" trivial.<br />
+"Almost", because we still have to manually write the migration<br />
+code in the changed classes to convert old versions of serialized<br />
+classes on the fly. <i>But compared to using a relational database<br />
+and a persistence layer, where schema migration is a nightmare,<br />
+this is almost heaven!</i><br />
+<br />
+--<a href='MarkusFix.html'>MarkusFix</a><br />
+<br />
+<hr />
+It would be really cool if this project would integrate to a object migration framework. <br />
+<br />
+Then it would be really useful. <br />
+<br />
+I have used the same idea for an earlier project, but I got stranded on object migration. <br />
+<br />
+The thing that really was the "gotcha" on that project was that it seemed that the easiest way to make object migration would be to have data in some meta-format (like a <a href='RDBMS.html'>RDBMS</a> or XML) and then manipulate it there. So it seemed that it would have been a better approach to use a normal persistence framework like ObjectBridge in the first place. <br />
+<br />
+<hr />
+Even when working with an SQL database and persistence layer, I prefer to write migration code using my business objects instead of accessing the data directly. It avoids breaking the systems encapsulation (are ALL your consistency rules in the database? ;) and I actually find it easier. I resort to SQL or PL only when I need performance. With all objects in RAM, performance is a different story. <br />
+<br />
+-- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Could you direct me to some project / resource /examples where I can study the issues of object migration in greater detail ? <br />
+<br />
+-- LasseLindgard<br />
+<br />
+<hr />
+Sorry. I cannot point you anywhere particularly interesting. Maybe someone else can. <br />
+<br />
+It is a disgrace that people tend to use OO so weakly (client code for database apps) that this OBJECT schema evolution problem hardly ever crops up. <br />
+<br />
+-- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Yes, I find it rather odd that noone deals with Object Schema Evolution. <br />
+<br />
+I have been searching all over the web and I have not been able to find any articles that deals with it in a serious way. <br />
+<br />
+If I had more time on my hands (and a good idea on how to attack the problem) I would start a Sourceforge project aiming at solving the problem. <br />
+<br />
+-- LasseLindgard<br />
+<br />
+<hr />
+I propose the following: <br />
+<br />
+1) People post suggestions here for an "evolution" they would like to see in the <a href='Prevayler.html'>Prevayler</a> demo bank application. <br />
+<br />
+2) Someone (I, for example) writes example migration code using two approaches: traditional and on-demand (see earlier message). That can become part of the demo. Any tools/utils produced can also become part of <a href='Prevayler.html'>Prevayler</a>. <br />
+<br />
+3) We discuss how the approaches can be inproved. <br />
+<br />
+-- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Object evolution is built into Java's Serialization framework. See http://developer.java.sun.com/developer/TechTips/2000/tt0229.html for a good explanation of what to do. http://developer.java.sun.com/developer/TechTips/2000/tt0425.html talks about Externalizable objects, which are more work, but give you more power, and usually, speed. <br />
+<br />
+<hr />
+Something that has worked really well for me is to have a private int variable called classVersion (or whatever) which is originally set to 0 like this: <br />
+<br />
+private int classVersion = 0; <br />
+<br />
+When I modify the class then I ... <br />
+1) increment the hard-coded classVersion value <br />
+2) add a private readObject method (see http://developer.java.sun.com/developer/TechTips/2000/tt0229.html) that checks the classVersion number and does any needed migrations. <br />
+<br />
+private void readObject(ObjectInputStream stream) <br />
+throws IOException, <br />
+ClassNotFoundException { <br />
+&nbsp;&nbsp;&nbsp; stream.defaultReadObject(); <br />
+&nbsp;&nbsp;&nbsp; if (this.classVersion == 0) { <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // convert field values here... <br />
+&nbsp;&nbsp;&nbsp; } <br />
+} <br />
+<br />
+Once all the objects are converted the conversion code can be removed or left for historical purposes. <br />
+<br />
+<a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+<hr />
+<br />
+<br />
+&gt; odd that no one deals with Object Schema Evolution<br />
+<br />
+There's actually been tons of research on this (mainly academic), and most of it not very useful for the implementer. Years ago when I worked on this, I found that Barbara Staudt Lerner's model was fairly comprehensive and implementable. See http://citeseer.nj.nec.com/staudtlerner96model.html for one of her papers on a system that was created as part of the Arcadia project (http://www.ics.uci.edu/~arcadia/system_pages/tess.html). Some of her other papers (also on CiteSeer) describe the model better. Note that some of the assumptions made in her model result in a system that uses heuristics to judge if one data element may be the same, but had maybe it's name and type changed. <a href='IMHO.html'>IMHO</a>, with restrictions in allowable changes, you could simplify the model a lot.<br />
+<br />
+Uttam Narsu<br />
+<br />
+--<br />
+<br />
+An excellent discussion of the issues involved in maintaining serialized objects can be found in Joshua Bloch's book, "Effective Java". --<a href='MichaelPrescott.html'>MichaelPrescott</a><br />
+<br />
+<br />
+As a practical approach, you can export the essential (e.g. public) features of<br />
+objects into XML. This has been implemented in several automatic marshaling XML frameworks,<br />
+including the latest JDK1.4 (Java Beans long term persistence). Since I'd<br />
+like to have full control of what gets exported (and how) into XML, I've used Jelly (Jakarta-commons) with huge success over a very complex serialized objects graph.<br />
+My experience is that you might need to write perhaps a few<br />
+additional Jelly tags (for example if you use non-standard collections), but that is all AND IS MUCH EASIER THAN DOING IT IN SQL or any of the above <br />
+mentioned dirty tricks!<br />
+One thing to bear in mind is that Jelly tags are not recursive and you have to "flatten"<br />
+your object graph by providing "view" methods (e.g. " getEmployeeAsList()" or "getPhonesAsMap")<br />
+to make it easy for Jelly. But as a good design principle, you already have this, don't you? Also, test exportability BEFORE! you freeze the code for the next release!<br />
+<br />
+Hristo Stoyanov<br />
+<br />
+<hr />
+is it just me or anyone else can see the value of http://skaringa.sourceforge.net/doc.html#ToC18 as a nice solution for Object Schema Evolution?<br />
+<br />
+<a href='RodrigoOliveira.html'>RodrigoOliveira</a><br />
+<br />
+I have had a similar problem before, and Jonathan's solution (classVersion) worked best for me. I found two possible directions of migration: forward and backward.<br />
+ - By moving "forward" I mean that newer versions of my classes must be able to understand/deserialize older ones. This direction must be implemented in order to guarantee the evolution of your object schema.<br />
+ - "Backward" is the opposite situation (duh): older versions of my classes need to deserialize the newer ones. This scenario is not a "must" for object schema evolution, but is necessary if you have a situation where a mix of new and old classes co-exist. From what I found, there is not really a good way of implementing this case, but a possible approach is to use some meta-format like XML. Usually, you won't have a 1-to-1 mapping between both classes (otherwise you wouldn't be evolving at all), and you end up with some uninitialized members here and there that you need to handle (as mentioned before in the thread).<br />
+<br />
+BTW, I couldn't find much literature about this topic either! Maybe we are the only ones that find it a big deal, and other people think it's as a trivial problem... Or maybe not... ;-)<br />
+<br />
+ - Rafael Sagula<br />
+<br />
+--<br />
+<br />
+A few thougts....<br />
+<br />
+First the site is becoming a mess! :) How about droping wiki? Perhaps using some old fashioned "left-frame-with-links-and-right-frame-with-contents" approach would be simpler and cleaner<br />
+<br />
+Anyways...<br />
+<br />
+I'm implementing a small web application with prevayler. I've divided my code into the following layers/packages.<br />
+<br />
+app.<a href='BusinessObjects.html'>BusinessObjects</a> -&gt; Plain and simple BO's with get's and set's.<br />
+app.BusinessCommands -&gt; Commands that manipulate a given object and modify the persistence objects.<br />
+app.PersistenceObjects -&gt; A few classes that extend AbstractPrevalentSystem and hold the business objects into Collections or mere references. <br />
+app.System -&gt; The business fa&#231;ades that contain entry points to applications funcionalities, including Load() methods<br />
+app.WebBeans -&gt; the needed web tier.<br />
+<br />
+I'm very used to writing 3-tier code for plain old <a href='RDBMS.html'>RDBMS</a>. The usual DataAccess, BusinessLogic and Facade tiers. So this seems a good approach to organize the code.<br />
+<br />
+I've a question about updating objects. What is the best way to update an object fields? Having a ton of commands for each combination (object, field) ? Or duplicating my attributes into a couple of versions? Like proposed and current value in ADO.NET? I don't really know what is the best approach to follow!<br />
+For example. It's common for me to generate web editors to apply CRUD operations to a BO. If an object has 30 fields and the user updates only one how should I deal with it? Consider 30 different use cases and code 30 commands?<br />
+<br />
+Now about schema migration... It is really the worst thing um prevayler. It's a nightmare to deal with this during the development phase of an application. I've been pondering using some XML serialization framework (or java.beans.XMLEncoder, even) to put the data into a format that I can "control". Trouble is, it's a mess to unserialize a few AbstractPrevalentSystem classes and reconstruct the references between all the business objects.<br />
+<br />
+Tiago Matias<br />
+<br />
+<br />
+Use a single command for updating each of your CRUD objects (not a ton of them). Make that command know what fields to update.<br />
+<br />
+Don't do schema migration during development. Just don't. This is not just a Preavayler thing. If there is a universal truth, this is it. @:) Use automated test scripts &#224; la <a href='JUnit.html'>JUnit</a> and create all the necessary objects from scratch for every single test script. We have a system with over 5000 tests scripts here that works just that way. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Have you seen JSX?<br />
+<br />
+http://www.csse.monash.edu.au/~bren/JSX/<br />
+<br />
+It serializes Java to XML making the serialized files human readable.&nbsp; It also allows the java classes to change inbetween persistence and re-loading.&nbsp; Can prevayler do that?<br />
+<br />
+<a href='Prevayler.html'>Prevayler</a> does not do that but allows us to use any serialization framework instead os Java's native serialization, which is default. Thanks for the tip. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+JSX has a big problem, though: it's commercial software. Therefore, we cannot include uses of it in <a href='Prevayler.html'>Prevayler</a>, but we might create an adapter if there's enough need for it.<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+Actually JSX seems to be GPL (and it's on freshmeat)<br />
+http://freshmeat.net/projects/jsx/?topic_id=868%2C45%2C50%2C19%2C866<br />
+<br />
+-- Dav<br />
+<br />
+<hr />
+JSX is dually licensed GPL/commercial. It is open source, but not free (as in speech). - <a href='TalRotbart.html'>TalRotbart</a><br />
+<br />
+<hr />
+Consider the <a href='ThereCanOnlyBeOne.html'>ThereCanOnlyBeOne</a> approach to schema evolution. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+</div>
+    </body>
+</html>

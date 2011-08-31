@@ -1,0 +1,203 @@
+<html>
+    <head>
+        <title>Poquer (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Poquer</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'></div>
+        <div class='txt'>POQUER - <a href='Prevayler.html'>Prevayler</a> Object QUERy<br />
+<br />
+By <a href='CarlosVillela.html'>CarlosVillela</a> and <a href='DanielOliveira.html'>DanielOliveira</a><br />
+<br />
+1. Mission<br />
+<br />
+To design a query language capable of accessing and changing information inside prevalent business object graphs, using a simple, straight-forward and independent language that provides ad-hoc queries and manipulations.<br />
+<br />
+<br />
+2. Syntax<br />
+<br />
+<a href='Poquer.html'>Poquer</a>'s syntax somewhat resembles SQL's and Python's [x for x in y] construct, and aims to be extremely simple, yet rely on powerful collection implementations, such as the Java Collections classes.<br />
+<br />
+<br />
+2.1. Syntax Definition<br />
+<br />
+This is highly incomplete and has serious bugs for now, we are working on them. If you have experience in parsing/lexing languages, please drop us a note.<br />
+<br />
+Query:<br />
+ Expression 'foreach' AssignmentList ('where' BooleanExpression)?<br />
+<br />
+Expression:<br />
+ Assignment |<br />
+ PreIncrementExpression |<br />
+ PreDecrementExpression |<br />
+ PostIncrementExpression |<br />
+ PostDecrementExpression |<br />
+ MethodInvocation |<br />
+ ClassInstanceCreationExpression |<br />
+<br />
+Assignment:<br />
+ Variable '=' IdentifierOrLiteral<br />
+<br />
+PreIncrementExpression:<br />
+ '++' Variable<br />
+<br />
+PreDecrementExpression:<br />
+ '--' Variable<br />
+<br />
+PostIncrementExpression:<br />
+ Variable '++'<br />
+<br />
+PostDecrementExpression:<br />
+ Variable '--'<br />
+<br />
+MethodInvocation:<br />
+ Variable '.' Identifier '(' ArgumentList? ')'<br />
+<br />
+ClassInstanceCreationExpression:<br />
+ 'new' Identifier '(' ArgumentList? ')'<br />
+<br />
+ArgumentList:<br />
+ Expression | ArgumentList ',' Expression<br />
+<br />
+Identifier:<br />
+ JavaLetter JavaLetterOrDigit*<br />
+<br />
+IdentifierOrLiteral:<br />
+ Identifier | Literal<br />
+<br />
+Literal:<br />
+ IntegerLiteral | <br />
+ FloatingPointLiteral |<br />
+ BooleanLiteral |<br />
+ StringLiteral |<br />
+ NullLiteral<br />
+<br />
+Variable:<br />
+ '$' Identifier<br />
+<br />
+JavaLetter:<br />
+ 'a'..'z' | 'A'..'Z'<br />
+<br />
+JavaLetterOrDigit:<br />
+ JavaLetter | '0'..'9'<br />
+<br />
+IntegerLiteral:<br />
+ DecimalIntegerLiteral<br />
+ HexIntegerLiteral&nbsp;&nbsp;&nbsp;&nbsp;<br />
+ OctalIntegerLiteral<br />
+<br />
+DecimalIntegerLiteral:<br />
+ DecimalNumeral IntegerTypeSuffix?<br />
+<br />
+HexIntegerLiteral:<br />
+ HexNumeral IntegerTypeSuffix?<br />
+<br />
+OctalIntegerLiteral:&nbsp;&nbsp;&nbsp;&nbsp;<br />
+ OctalNumeral IntegerTypeSuffix?<br />
+<br />
+IntegerTypeSuffix:<br />
+ 'l' | 'L'<br />
+<br />
+DecimalNumeral:<br />
+ '0' | NonZeroDigit Digits?<br />
+<br />
+Digits:<br />
+ Digit | Digits Digit<br />
+<br />
+Digit:<br />
+ 0 | NonZeroDigit<br />
+<br />
+NonZeroDigit:<br />
+ '1'..'9'<br />
+<br />
+HexNumeral:<br />
+ '0' 'x' HexDigits<br />
+ '0' 'X' HexDigits<br />
+<br />
+HexDigits:<br />
+ HexDigit | HexDigit HexDigits<br />
+<br />
+HexDigit:<br />
+ '0'..'9' | 'a'..'f' | 'A'..'F'<br />
+<br />
+OctalNumeral:<br />
+ '0' OctalDigits<br />
+<br />
+OctalDigits:<br />
+ OctalDigit | OctalDigit OctalDigits<br />
+<br />
+OctalDigit:<br />
+ '0'..'7'<br />
+<br />
+FloatingPointLiteral:<br />
+ Digits '.' Digits? ExponentPart? FloatTypeSuffix? | <br />
+ '.' Digits ExponentPart? FloatTypeSuffix? |<br />
+ Digits ExponentPart FloatTypeSuffix? |<br />
+ Digits ExponentPart? FloatTypeSuffix<br />
+<br />
+ExponentPart:<br />
+ ExponentIndicator SignedInteger<br />
+<br />
+ExponentIndicator:<br />
+ 'e' | 'E'<br />
+<br />
+SignedInteger:<br />
+ Sign? Digits<br />
+<br />
+Sign:<br />
+ '+' | '-'<br />
+<br />
+FloatTypeSuffix:<br />
+ 'f' 'F' 'd' 'D'<br />
+<br />
+BooleanLiteral:<br />
+ 'true' | 'false'<br />
+<br />
+StringLiteral:<br />
+ '\<i> StringCharacters? '\</i><br />
+<br />
+StringCharacters:<br />
+ StringCharacter | StringCharacters StringCharacter<br />
+<br />
+StringCharacter:<br />
+ any character but '\<i><br />
+<br />
+NullLiteral:<br />
+ 'null'<br />
+<br />
+<br />
+3. Examples<br />
+<br />
+Here are some examples to show what <a href='Poquer.html'>Poquer</a> can (in fact, will be able to) do:<br />
+<br />
+Delete users from a collection where the user's name is equal to a parameter:<br />
+$users.delete($index) foreach $u in $users where $u.getName().equals(#1)<br />
+<br />
+Increase every expired bill's value by 2%:<br />
+$b.setValue($b.getValue()*1.02) foreach $b in $bills where $today.compareTo($b.getExpirationDate())&lt;0<br />
+<br />
+Get every car of a given model made in a specific year:<br />
+$c foreach $c in $cars where $c.getModel().equals(#1) &amp;&amp; $c.getYear().equals(#2)<br />
+<br />
+Get every employee that wasn't given a raise in the last 6 months:<br />
+$e foreach $e in $employees, $r in $raises where $r.getEmployee().equals($e) &amp;&amp; $six.compareTo($r.getDate())&lt;0</i></div>
+    </body>
+</html>

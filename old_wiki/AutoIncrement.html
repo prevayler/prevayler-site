@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>AutoIncrement (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>AutoIncrement</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>How to implement an <a href='AutoIncrement.html'>AutoIncrement</a> field (or sequence, for some) elegantly in a prevalent system. That is, I don't want to mess with that User.id, I want my system to generate it automatically every time I want to add a user. What's the best approach?<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a>, by mail<br />
+<br />
+<hr />
+<br />
+Do you really need an ID (1 by 1 incremented)?<br />
+<br />
+I ask this because if you are looking for a unique object ID you can use (or overwrite) the hashcode method.<br />
+<br />
+But if it's for another reason, I think that a good solution is having a <a href='FactoryMethod.html'>FactoryMethod</a> that knows about every user in the system and would be responsible for taking care of these IDs. And more, your <a href='PrevalentSystem.html'>PrevalentSystem</a> only needs to "know about" the factory since the factory "knows about" all users.<br />
+-- <a href='AlexandreNodari.html'>AlexandreNodari</a>, by mail<br />
+<br />
+The Account objects in the <a href='BankDemo.html'>BankDemo</a> (included with the <a href='Prevayler.html'>Prevayler</a> distribution) have unique IDs which are declared private and final. It is an example of the factory method technique. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+[Back to <a href='TipsAndTricks.html'>TipsAndTricks</a>]<br />
+</div>
+        <div class='txt'><a href='MarkusFix.html'>MarkusFix</a> also pointed out that an adaptation of this pattern might help:<br />
+Paper: http://www.ambysoft.com/mappingObjects.pdf<br />
+Implementation: http://theserverside.com/patterns/thread.jsp?thread_id=4228<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+That is OK for object-relational mapping but would be overkill for native Java objects in RAM, in my opinion. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+By the way, does anyone know why native objects would need IDs in the first place? --<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+<br />
+<hr />
+First thing that comes to mind: because you might need to render a link to your object in a web page. One could use a stringfied object reference but I think the ID idiom is clearer.<br />
+<a href='RodrigoOliveira.html'>RodrigoOliveira</a><br />
+<br />
+Because some things in the real world have id's, too. You can't always be called by your name, because&nbsp; of homonyms, and that's why you have a lot of ID's in your wallet (brazilians have RG, CPF, CNH, TE and CRMs, and all of them have different ids, and those are documents almost everyone have). -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+</div>
+    </body>
+</html>

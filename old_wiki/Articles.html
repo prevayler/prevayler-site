@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>Articles (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Articles</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'><a href='Prevalence.html'>Prevalence</a> Motivated <a href='Articles.html'>Articles</a>:<br />
+ - <i>Object <a href='Prevalence.html'>Prevalence</a></i> by <a href='KlausWuestefeld.html'>KlausWuestefeld</a> - http://www.advogato.org/article/398.html<br />
+<br />
+ - <i>3251 Times <a href='Faster.html'>Faster</a> than <a href='MySQL.html'>MySQL</a>, 9983 Times <a href='Faster.html'>Faster</a> than ORACLE</i> by <a href='KlausWuestefeld.html'>KlausWuestefeld</a> - http://www.advogato.org/article/479.html<br />
+<br />
+ - <i>Serialization Throughput</i> by <a href='WardCunningham.html'>WardCunningham</a> - http://c2.com/doc/SerializationThroughput/<br />
+<br />
+ - <i>Introduction to Object <a href='Prevalence.html'>Prevalence</a></i> (developerWorks) by <a href='CarlosVillela.html'>CarlosVillela</a> - http://www-106.ibm.com/developerworks/web/library/wa-objprev/index.html <br />
+<br />
+ - Spanish: <i>Prevalencia: otro enfoque a la persistencia</i> by Nacho Brito - http://www.tres-software.com/articulos/prevayler.htm<br />
+<br />
+ - <i>SQL to <a href='Prevayler.html'>Prevayler</a> Migration Micro-HOWTO</i> by <a href='CarlosVillela.html'>CarlosVillela</a> - http://blogs.application-servers.com/blogs/page/leecho/20030213#sql_to_prevayler_migration_micro<br />
+</div>
+        <div class='txt'>The developerWorks article is a good introductory article. The "<a href='Replication.html'>Replication</a> inside a prevalent Web application" figure is a bit misleading, though, because in the diagram, the two systems magically share the same object space. A better representation would be each system have an object space with exactly the same contents as the other. -- <a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+How can I perform replication and keep them in sync of two prevayler systems? -- RolandEttema (vigenic@netscape.net)<br />
+<br />
+Roland, take a look at Replication. -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+Is there any CORBA interface for <a href='Prevayler.html'>Prevayler</a> available? -- HerbertJanko<br />
+<br />
+Hi Herbert, I don't quite get your need. Do you want to access your application objects via CORBA or do you actually want to access <a href='Prevayler.html'>Prevayler</a> via CORBA? If you want to access your own objects via CORBA you can use any of the several CORBA ORBs for Java.<br />
+<br />
+<hr />
+<br />
+The code in the "Introduction to Object <a href='Prevalence.html'>Prevalence</a>" article has a little glitch, pointed out by several readers. In listing 2, an object called UserLogonSystem is created that extends AbstractPrevalentSystem. Then in listing 3 another object "system" is cast from <a href='PrevalentSystem.html'>PrevalentSystem</a> to UserManager (not the UserLogonSystem we created in listing 2) and a function called getUsers, much like the one on UserLogonSystem, is called. I've noticed that error, but it was just too late to fix it. Sorry guys! @:( -- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+<br />
+A basic tutorial would be nice. Some kind of "this is the minimum you need to do to get going with <a href='Prevayler.html'>Prevayler</a>. Show the CRUD pattern in <a href='Prevayler.html'>Prevayler</a>, for example, with the newest API."<br />
+</div>
+    </body>
+</html>

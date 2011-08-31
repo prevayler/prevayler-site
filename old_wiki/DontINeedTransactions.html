@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>DontINeedTransactions (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>DontINeedTransactions</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Yes, you do. <br />
+ <br />
+The prevalent design provides ACID properties without the need for explicit transaction semantics in your code. <br />
+ <br />
+ <br />
+<b><i>How is that?</i></b> <br />
+DBMSs tend to support only a few basic operations: INSERT, UPDATE and DELETE, for example. Because of this limitation, you must use transaction semantics (begin - commit) to delimit the operations in every business transaction for the benefit of your DBMS. In the prevalent design, every transaction is represented as a serializable object which is atomically written to the queue (a simple log file) and processed by the system. An object, or object graph, is enough to encapsulate the complexity of any business transaction. <br />
+<br />
+<b><i>What about rollback?</i></b><br />
+<a href='RollbackIsNeedless.html'>RollbackIsNeedless</a>.<br />
+<br />
+<hr />
+Back to: <a href='ObjectPrevalenceSkepticalFAQ.html'>ObjectPrevalenceSkepticalFAQ</a>.<br />
+</div>
+        <div class='txt'>I fail to see how the above description provides isolation. If two separate processes are updating the same collection of employees, one updating the salaries, the other totalling the salaries. How would the second transaction get repeatable results if it runs during or after the first transaction?<br />
+<br />
+See: <a href='WhatAreTheCodingRestrictionsMyClientClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyClientClassesHaveToObey</a>?<br />
+<br />
+<hr />
+With regard to <a href='ACID.html'>ACID</a> properties, I can see how prevayler provides Isolation and Durability, but not Atomicity and Consistency. As I understand it, Atomicity requires that either all changes to the object graph occur, or none of them occur.&nbsp; I can't see how <a href='Prevayler.html'>Prevayler</a> can guarantee this.&nbsp; If your Command object begins modifying the persistent graph, but an unexpected exception occurs halfway through, don't the changes you have made up till the exception remain permanent and visible?&nbsp; Doesn't this then open you up to the possibility of leaving the object graph in an inconsistent state?&nbsp; --<a href='CharlesBlaxland.html'>CharlesBlaxland</a><br />
+<br />
+<hr />
+What about including prevayler in a transaction w/ other resources? E.g. I want to publish a JMS, message, in a J2EE server like weblogic, and update my prevayler data in one XA transaction. Most <a href='RDBMS.html'>RDBMS</a>'s support XA, does (or will) prevayler? <br />
+<br />
+Although <a href='TwoPhaseCommitIsUnnecessary.html'>TwoPhaseCommitIsUnnecessary</a> it might be useful. You can add it to the <a href='FeatureRequests.html'>FeatureRequests</a> if you wish. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+Charles, I think the idea with <a href='Prevayler.html'>Prevayler</a> is that your transactions are responsible for Atomicity if this property is desired (which may not be true for every transactions). <a href='Prevayler.html'>Prevayler</a> 1.03 doesn't help you ensuring this property with a rollback facility, however you may code your transactions and domain object's methods so as to be atomic with appropriate try/catch blocks. It looks like <a href='Prevayler.html'>Prevayler</a> 2 will have a RollbackPrevayler that will do the job automatically if a transaction raise a <a href='RuntimeException.html'>RuntimeException</a> or Error. However, it will probably be less efficient than if you're ensuring atomicity yourself.<br />
+ArnaudClere</div>
+    </body>
+</html>

@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <title>WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Your <a href='BusinessClasses.html'>BusinessClasses</a> must be Serializable and Deterministic.&nbsp; <br />
+ <br />
+<b><i>Is that it?</i></b>&nbsp;&nbsp; <br />
+Yes. That's it.<br />
+<br />
+ <b><i>What is the base class my classes have to extend in order to be persisted?</i></b>&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+There is no base class.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>Do you mean I have to create or generate clumsy interfaces for each of my <a href='BusinessClasses.html'>BusinessClasses</a>?</i></b> <br />
+No.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>Oh, I know: isDirty flags!</i></b>&nbsp;&nbsp; <br />
+No flags.&nbsp;&nbsp; <br />
+ <br />
+<b><i>Isn't reflection slow for persistence?</i></b>&nbsp;&nbsp; <br />
+<a href='Prevalence.html'>Prevalence</a> does not use reflection.&nbsp;&nbsp; <br />
+ <br />
+<b><i>What does the query language look like, then?</i></b>&nbsp;&nbsp; <br />
+Java.&nbsp;&nbsp; <br />
+ <br />
+<b><i>Is it similar to Java?</i></b>&nbsp;&nbsp; <br />
+No, it is Java.&nbsp;&nbsp; <br />
+ <br />
+<b><i>Is the provided collections API any good?</i></b>&nbsp;&nbsp; <br />
+No. There is no collections API restriction. You can use the Java collections normally or any other collections API you want. See: <a href='HowDoIQueryMyObjects.html'>HowDoIQueryMyObjects</a>?&nbsp;&nbsp; <br />
+ <br />
+<b><i>How is my code pre or post-processed?</i></b><br />
+There's no pre or post-processing involved. <br />
+ <br />
+<b><i>I get it! What wierd proprietary VM must I use?</i></b>&nbsp;&nbsp; <br />
+Any ordinary Java VM will do.&nbsp;&nbsp; <br />
+&nbsp;&nbsp; <br />
+<b><i>Sorry, I can't believe it.</i></b>&nbsp;&nbsp; <br />
+Take a look at the <a href='Prevayler.html'>Prevayler</a> Demos and the <a href='ScalabilityTestResults.html'>ScalabilityTestResults</a>.<br />
+<br />
+<b><i><a href='WhatAreTheCodingRestrictionsMyClientClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyClientClassesHaveToObey</a>?</i></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+<br />
+<hr />
+See: Deterministic.<br />
+Back to: <a href='ObjectPrevalenceSkepticalFAQ.html'>ObjectPrevalenceSkepticalFAQ</a>.&nbsp; <br />
+</div>
+        <div class='txt'>Is it good practice to give every business-object a unique id and put them all in one container? This would eliminate the need to think up Primairy Keys for every class, and that would make the system more OO and even less RDB. And could this enable you to use direct references in the commands? So that every reference to an object is serialized as an id and reloaded as an object! That would be nice @:) --Wouter Schut<br />
+<br />
+You want to take a look at http://freeroller.net/page/tirsen/20030112 and get in touch with Jon about the use of Nanning with <a href='Prevayler.html'>Prevayler</a>. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+DATA MIGRATION<br />
+If I add a new field in the class of a business object and I have thousands of instances of that class without that new field how can I migrate those instances to the new class?<br />
+Giannandrea Castaldi<br />
+<br />
+CHANGES TO PERSISTED CLASSES?<br />
+What happens when changes happen to the classes?&nbsp; Usually classes persisted using the traditional java serialization method will not reload if the class changes.&nbsp; How does <a href='Prevayler.html'>Prevayler</a> handle this?<br />
+<br />
+Are you serializing HashMaps of member variables, to workaround the problem "CHANGES TO PERSISTED CLASSES", mentioned above ?<br />
+<br />
+See: <a href='SchemaEvolution.html'>SchemaEvolution</a> --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+----</div>
+    </body>
+</html>

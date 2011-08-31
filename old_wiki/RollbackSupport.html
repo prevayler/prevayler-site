@@ -1,0 +1,191 @@
+<html>
+    <head>
+        <title>RollbackSupport (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>RollbackSupport</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>What about rollback support? Is it planned or explicit declined?<br />
+I'm interested in supporting the development of <a href='Prevayler.html'>Prevayler</a>. I've some ideas how to implement JTA in <a href='Prevayler.html'>Prevayler</a>. --<a href='StefanOrtmanns.html'>StefanOrtmanns</a><br />
+<br />
+Although <a href='RollbackIsNeedless.html'>RollbackIsNeedless</a>, it might still be useful. Below are some ideas about how to implement rollback in <a href='Prevayler.html'>Prevayler</a>.<br />
+<br />
+<hr />
+If you really want to, you can even use a RAM-based object transaction mechanism with rollback support (I wrote one before there was <a href='Prevayler.html'>Prevayler</a>). I would not advise that, though. <br />
+<br />
+The <a href='Prevayler.html'>Prevayler</a> demo (org.prevayler.demo.*) is an example of rollback-free programming:<br />
+<br />
+Instead of processing speculatively and then having to undo it all in the event of a strange condition, you first check for strange conditions and then you do your processing without a care in the world. @8)<br />
+<br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+No, no, I'm not looking for a transaction manager, I'm trying to get away from all of that @;) I was just thinking you might have something like <br />
+<br />
+<b>try { <br />
+&nbsp;&nbsp; command.execute(); <br />
+} catch( Throwable t ) { <br />
+&nbsp;&nbsp; command.undo(); <br />
+}</b><br />
+<br />
+So that if a mistake was made, the system wouldn't be left in a corrupt state.&nbsp; <br />
+<br />
+<hr />
+I appreciate the sentiment that all exceptions can be checked before executing the command, but I don't think it is entirely realistic. If we're hoping to spread the use of <a href='Prevayler.html'>Prevayler</a> to more serious and corporate uses then I think that disk data integrity must be an extremely high priority. <br />
+<br />
+For those new to the discussion, commands are saved to disk first, then executed. If an exception occurs during execution the invalid command will still be on disk until the next snapshot. <br />
+<br />
+I'd like to make the case that <a href='Prevayler.html'>Prevayler</a> should be executing the command first, saving the command if no exception occured during execution, then if it can't save, inform the command to roll itself back. <br />
+<br />
+My opinion is that serious developers and administrators want a 100% guarantee that they won't have to deal with invalid data/commands on disk. No self-respecting administrator would stand for the manually editing of database files after their site crashes. <br />
+<br />
+Personally though, I have some of my model instances indexed in RAM. For unique indexes it is entirely possible that a user/thread might add something that already exists which would throw an exception. Granted, I could add code in the client to check for a duplicate before executing the command, but in a multi-threaded system it would be possible for a different thread to add the value I just checked for before my command gets processed. <br />
+If we implemented a rollback of what's on disk then there would never be a 100% guarantee of disk data integrity because the system could crash (or fill up the disk) between writing the bad command to disk and discarding it. <br />
+<br />
+I hope I've made my case well enough. Would you need/want any help in this regard? The biggest disruption would be for existing command classes that would have to add an "undo" or "rollback" method. The new "undo" method could potentially be empty because a disk error would be so major that the app would crash or need to be shut down anyways. <br />
+<br />
+Thanks, <a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+P.S. An undo method would also allow the creation of a Composite or Transaction command that would execute each sub-command in order. If one of the commands had an exception then "undo" could be called for each of the previous commands before the error is rethrown.&nbsp; <br />
+<br />
+<hr />
+I agree with <a href='JonathanCarlson.html'>JonathanCarlson</a> when he says about the complexity of dealing with all possible exceptions before executing the command, and with the high priority disk data integrity. But I also want high priority in the memory data integrity. But, to the command be executed first and stored after, prevayler should isolate the execution from the other threads/users. Does anyone have an idea to implement that and avoid the increase of restrictions to the <a href='BusinessClasses.html'>BusinessClasses</a>? (<a href='WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey.html'>WhatAreTheCodingRestrictionsMyBusinessClassesHaveToObey</a>).<br />
+<br />
+<a href='HumbertoSoares.html'>HumbertoSoares</a><br />
+<br />
+<hr />
+Something I meant to say is that one reason I think that changing the sequence of execution is important is because I can't think of a good reason why doing it the way it is currently done might be better than what I've suggested. Conversely, I can't think of why we should force developers to write exceptionless code when it's impossible. Of course, I've been wrong before so I could be wrong again about this. <br />
+<br />
+If what I'm suggesting would add a lot of complexity to <a href='Prevayler.html'>Prevayler</a> then I would think differently. <br />
+<br />
+For example, putting a JDO implementation on top of <a href='Prevayler.html'>Prevayler</a> would be silly, in my opinion, because it would be very complex and hence would *not* be the simplest thing that makes sense. Unless there was a totally compelling reason to have a really fast implementation of JDO, then it should not be done (or at least shouldn't put into the main code stream). <br />
+<br />
+I trust you will tell me if what I suggested above would have an unthinkable downside in terms of added complexity or development time. I don't have to have an answer immediately. <br />
+Thanks, If you can't tell, I am extremely excited about the simplicity of <a href='Prevayler.html'>Prevayler</a>. I just don't want to give up any maintainability if it can be done simply. <br />
+<br />
+<a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+<hr />
+See: <a href='CommandExecutionRuntimeException.html'>CommandExecutionRuntimeException</a>, <a href='RollbackIsNeedless.html'>RollbackIsNeedless</a>.<br />
+</div>
+        <div class='txt'>Did anyone think about having a child of Command, named UndoCommand, that adds support for undoing a given Command? This way, an undo operation would be just like another serialized command, passed on to the replicas. This is kinda like what Adobe Photoshop does for its infinite undoable commmand history, except Photoshop does not need to sync with other replicas.<br />
+<br />
+The programmer still gets to write the undo stuff, which can vary from simple to painful to impossible, depending on the command's complexity, and this is just <a href='EssentialDifficulty.html'>EssentialDifficulty</a>, because it depends on the BusinessRules. It's not advisable to have complex commands anyway, so I think this might be a good strategy.<br />
+<br />
+<a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+Obviously, programmers should not be forced to write undo operations, as there are solutions to the problem as mentioned above that allow the state to be restored without resorting to a specially written undo operation.&nbsp; However, in many circumstances, the undo operation would be more efficient, so supporting them seems important to me.<br />
+<br />
+<hr />
+<br />
+With respect to not writing exception-throwing Commands to the log: this should still be done, since <a href='Prevayler.html'>Prevayler</a> doesn't know that the Command didn't cause permanent changes to the model.<br />
+<br />
+A hypothetical TransferFunds command could debit account A, but throw an exception when trying to credit account B (for some unanticipated reason).&nbsp; If the programmer doesn't roll back the changes manually in his/her code, then not logging this TransferFunds command means that the current (although possibly invalid to the application) state of the model can't be restored from disk.<br />
+<br />
+<a href='MichaelPrescott.html'>MichaelPrescott</a><br />
+<br />
+In response to <a href='MichaelPrescott.html'>MichaelPrescott</a>'s post, I want to add that we need memory to disk consistency. A prevalent system should get back to the same state when restarted, what discards the possibility of not logging misbehaved Commands, I think.<br />
+<br />
+-- <a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+Another way to do rollback is to replicate the execution of commands on two different systems (possibly in the same VM). When a command is succesfully executed on the "hot" system the command is executed on the backup system. If a command fails the backup system is used as a "hot" system and a new system is restored from the snapshot and the command-log (minus the failing one of course). This assumes that a restore takes a short amount of time.<br />
+-- <a href='JonTirsen.html'>JonTirsen</a><br />
+<br />
+Would it not be possible to provide for transparent rollback by means of a dynamic proxy, that caught all calls to mutator methods, and "knew" how to reverse each mutation if asked to do so.<br />
+<br />
+<hr />
+I've implemented error recovery, not explicit rollback, using the Memento design pattern. Before a command executes it asks the objects which it is about to modify to add a memento to the memento list of the <a href='Prevayler.html'>Prevayler</a>. If a subsequent command fails, the <a href='Prevayler.html'>Prevayler</a> restores the mementos. This is currently done in LIFO order, but I think it can be done in any order.<br />
+<br />
+It does require that a command knows which objects are going to be modified so it will ask all these objects to create a memento.<br />
+<br />
+I've changed the bank example. It currently behaves like this:<br />
+- a transfer command does not ask to create mementos;<br />
+- a transfer command uses a withdrawal and a deposit command for its implementation. These commands are executed directly by the transfer command and not through the <a href='Prevayler.html'>Prevayler</a>;<br />
+- the withdrawal and deposit commands ask the accounts to create a memento.<br />
+<br />
+Suppose the withdrawal from the source accounts succeeds and the deposit to the destination account fails (at any point). The <a href='Prevayler.html'>Prevayler</a> has a single memento, from the withdrawal, in its memento list. It will ask this memento to restore itself. The balance of the source account will be restored by this memento. The system will be in a consistent state again.<br />
+<br />
+The creation of the mementos could easily be requested from the transfer command, but this example shows that very complex commands, for which it is difficult to anticipate which objects get modified, can be split up into multiple commands.<br />
+<br />
+The error recovery is performed in the execution of a single command and not afterwards or in a separate thread. This ensures that the system stays consistent. Some execution time is lost during replay of command logs, because the command is attempted again but nothing changes.<br />
+<br />
+I think this solution has the following advantages:<br />
+- only objects which are going to be changed are copied. Serializing the whole graph before a command is not desirable for multi-meg databases;<br />
+- no expensive restore from a previous snapshot replaying all the commands except the last one and then removing the last command from the logs;<br />
+- you don't have to manage two instances of <a href='Prevayler.html'>Prevayler</a> and switch the 'hot' one.<br />
+<br />
+The disadvantage is:<br />
+- you have to make sure your error recovery is complete. The system will not help here.<br />
+<br />
+The change is quite invasive. I've had to add interfaces/classes and modify existing classes. For testing purposes I've made the <a href='Prevayler.html'>Prevayler</a> transient, and dialogs are used to ask whether the withdrawal and deposit commands should fail at a specific point.<br />
+<br />
+The code I used as a basis for my code is <a href='Prevayler.html'>Prevayler</a> 1.02.001production. I will need to make it persistent again and add unit tests to make sure my error recovery works in all cases.<br />
+<br />
+If anyone is interested I can make my code available on the web. Just leave a message here or mail to: j.stuyts at javathinker dot com<br />
+<br />
+Johan Stuyts<br />
+I think that Klaus's comments really sum up the <a href='Prevayler.html'>Prevayler</a> "way" of doing rollback.&nbsp; The others are just specific implementations of it.<br />
+<br />
+There are many ways to do it, but it all essentially boils down to:<br />
+<br />
+execute() {<br />
+&nbsp; // Check preconditions here<br />
+&nbsp; //<br />
+&nbsp; // If you need to use rollback by duplicating the Prevalent system, <br />
+&nbsp; // here's where you dupe it.<br />
+&nbsp; // <br />
+&nbsp; // If you're using Mementos, here's where you create them<br />
+&nbsp; try {<br />
+&nbsp;&nbsp;&nbsp;&nbsp; // Do your work here<br />
+&nbsp; }<br />
+&nbsp; catch (Exception e) {<br />
+&nbsp;&nbsp;&nbsp; // Perform rollback or do whatever you have to do to keep a consistent state here<br />
+&nbsp; }<br />
+&nbsp; finally {<br />
+&nbsp;&nbsp;&nbsp;&nbsp; // Discard mementos if they still exist; discard unused dupe of Prevalent system<br />
+&nbsp; }<br />
+}<br />
+<br />
+Rollback using Mementos or switching Prevalent systems or whatever are all just special cases of the above.<br />
+<br />
+<hr />
+<br />
+In the current 2.0 <a href='CVS.html'>CVS</a> there is a RollbackPrevayler that implements unintrusive rollback by keeping two copies of the system in-memory, one test-system and one primary system. Each command is first executed at the test-system in order to check wheather it will rollback or not. When the transaction is rolled back the test-system is discarded and a new one is restored from the persistent state (snapshot and command-log).<br />
+<br />
+The transaction is rolled back by either returning true from RollbackTransacion.isRollbackOnly or throwing an exception from the execute() method.<br />
+<br />
+Future enhancement will increase performance of a rollback by cloning the primary system instead of restoring it from the persistent state. (Probably by using in-memory serialization.)<br />
+<br />
+Due to the performance-hit incured by issuing a rollback this should only be used in exceptional siutations. As a fallback to provide true <a href='ACID.html'>ACID</a> feature despite a failing transaction. A rollback should not occur during the normal execution of the system.<br />
+<br />
+-- <a href='JonTirsen.html'>JonTirsen</a><br />
+<br />
+Keeping two copies in memory at the same time has two consequences which would make the system less appealing to me:<br />
+1. The memory usage is doubled;<br />
+2. The processor time used by a command is doubled. The command can be executed on the copy in a separate thread so the client does not notice this.<br />
+<br />
+My implementation only copies the objects that are about to change and discards the copies after the execution of the command. The memory consumption can still be severe when collections with millions of elements have to be copied.<br />
+<br />
+My solution does require a bit more effort from the programmer and programming against a storage API. If you absolutely do not want this, then going for a rollback by using copies or restoring from the command logs is the way to go.<br />
+<br />
+Johan Stuyts</div>
+    </body>
+</html>

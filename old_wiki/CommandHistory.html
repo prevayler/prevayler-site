@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <title>CommandHistory (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>CommandHistory</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'><a href='JonathanCarlson.html'>JonathanCarlson</a>&nbsp; <br />
+&nbsp; <br />
+At some point I will want to keep all <a href='Prevayler.html'>Prevayler</a> commands as historical logs so that one can see exactly what happened to an object (Account/User/etc) since the beginning of time. Granted, the commands would have to have additional information added to them (like user, etc), but this would be a really nice "freebie" that is quite inconvenient to implement with an <a href='RDBMS.html'>RDBMS</a>.&nbsp;&nbsp;&nbsp; <br />
+&nbsp; <br />
+Keeping Commands that throw expected or unexpected exceptions would probably not be desirable since they shouldn't have changed anything, but maybe that could be beneficial information too when trying to monitor issues with the system.&nbsp; <br />
+&nbsp; <br />
+This may be a feature that each project would need to implement by themselves, but maybe there could be a reference implementation that users could download.&nbsp; <br />
+&nbsp; <br />
+See <a href='GelernterArticle.html'>GelernterArticle</a>&nbsp; <br />
+ <br />
+---- <br />
+Another thing to consider in this vein of thought: if commands are to store the old values as well as new values, this would require an option to execute the command _before_ storing it. <br />
+ <br />
+Granted, it would sometimes be possible to index the commands in such a way that you can easily find the old value in a previous command, but that won't work when accessing data that was loaded en-masse by one big huge command.&nbsp; <br />
+ <br />
+---- <br />
+Executing commands before they are written to disk would require us to block all queries while the command is executing AND while it is being written to disk. @:( <br />
+ <br />
+Today, queries to the <a href='PrevalentSystem.html'>PrevalentSystem</a> are never blocked by Prevayler. It is up to the <a href='BusinessObjects.html'>BusinessObjects</a> to take care of fine-grained synchronization. Their task is greatly simplified by the fact that Prevayler guarantees the execution of only one command at a time.&nbsp;&nbsp; @;) <br />
+ <br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a> <br />
+ <br />
+---- <br />
+ <br />
+Do you not have enough RAM to keep all your commands as <a href='BusinessObjects.html'>BusinessObjects</a> in your <a href='PrevalentSystem.html'>PrevalentSystem</a>, instead of just in history logs? <br />
+ <br />
+Even if you don't, I think I have a design solution for your need and I agree: <br />
+<b>"This may be a feature that each project would need to implement..."</b> <br />
+and certainly: <br />
+<b>"...there could be a reference implementation that users could download."</b> <br />
+ <br />
+Please describe your application a little more. <br />
+ <br />
+<a href='KlausWuestefeld.html'>KlausWuestefeld</a> <br />
+ <br />
+---- <br />
+See: <a href='BreakthroughsInMemoryTechnology.html'>BreakthroughsInMemoryTechnology</a>. <br />
+<br />
+<hr />
+<br />
+I don't think that you need to pre-execute the command to store the old values. Before any commando your system is empty, and any change will appear just after a command, so you just have to save the state of your objects after the command.<br />
+I read the <a href='GelernterArticle.html'>GelernterArticle</a> and thought it very interesting. I will post here the ideas that I am having to implement that. One thing that <a href='KlausWuestefeld.html'>KlausWuestefeld</a>, <a href='EmilioFrancesquini.html'>EmilioFrancesquini</a> and I were discussing is that the command could implement the interface of the objects that it is changing, so you would have a stack of commands that you could navigate through and having the values in any time.<br />
+<br />
+<a href='HumbertoSoares.html'>HumbertoSoares</a><br />
+<br />
+<br />
+----</div>
+        <div class='txt'>I'd like to point out that <a href='HistoryLogging.html'>HistoryLogging</a> can be a quite nice feature in <a href='Prevayler.html'>Prevayler</a>, but I think that it was not given good attention, yet. Does anyone want to experiment with me in that area?<br />
+<br />
+<a href='CarlosVillela.html'>CarlosVillela</a><br />
+<br />
+<hr />
+<br />
+Describing an implementation of some concepts from the <a href='GelernterArticle.html'>GelernterArticle</a>.<br />
+I couldn't figure out a good name for this concept. So, by now I will call it <a href='CommandHistoryObject.html'>CommandHistoryObject</a>. Please, read the description and help me with a better name.<br />
+<br />
+<a href='HumbertoSoares.html'>HumbertoSoares</a></div>
+    </body>
+</html>

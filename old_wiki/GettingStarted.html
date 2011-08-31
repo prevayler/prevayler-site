@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>GettingStarted (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>GettingStarted</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'> #Read the <a href='PrevalenceSkepticalFAQ.html'>PrevalenceSkepticalFAQ</a>.<br />
+ #Download <a href='Prevayler.html'>Prevayler</a>.<br />
+ #Take a look at the Demos included.<br />
+ #Take a look at the javadoc included.<br />
+ #Read a few Articles (optional).<br />
+ #Write your own Prevalent System.<br />
+ #Take a look at the code (optional). It is minimal.<br />
+ #Browse this site and leave your questions and comments. See: <a href='StartingPoints.html'>StartingPoints</a>.<br />
+ #Sign the <a href='PrevalentManifesto.html'>PrevalentManifesto</a>.<br />
+ #Join the <a href='Prevayler.html'>Prevayler</a> news <a href='MailingList.html'>MailingList</a>.<br />
+ #Join the <a href='Prevayler.html'>Prevayler</a> discussion <a href='MailingList.html'>MailingList</a> (optional).<br />
+ #Shutdown your database. @8)<br />
+<br />
+<br />
+<hr />
+@:o <i>Please make sure you have read the <a href='PrevalenceSkepticalFAQ.html'>PrevalenceSkepticalFAQ</a> to avoid asking redundant questions below. Thanks. --<a href='PrevaylerTeam.html'>PrevaylerTeam</a></i><br />
+<hr />
+<br />
+</div>
+        <div class='txt'>You need a tutorial of some sort.<br />
+<br />
+I shall ask the Presto team to write a tutorial, as if they were implementing it from scratch. <a href='Presto.html'>Presto</a>'s <a href='CVS.html'>CVS</a> is a good place to look for a CRUD web app example. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Why does org.prevayler.demos.demo1NumberStorageCommand.execute() return null?<br />
+<br />
+Because it has to return something. In <a href='Prevayler.html'>Prevayler</a> 2.0 (<a href='CVS.html'>CVS</a> only) that is no longer necessary.<br />
+<br />
+<hr />
+What's a "system" in this context:&nbsp; 'A system that implements this interface can be made transparently persistent with <a href='Prevayler.html'>Prevayler</a>.'?<br />
+<br />
+A determistic business system, a "root" business object referencing only other <a href='BusinessObjects.html'>BusinessObjects</a>.<br />
+<br />
+<hr />
+What are the memory requirements, and general hardware requirements for an efficient use of such technique?<br />
+<br />
+Memory requirements: enought to hold all your <a href='BusinessObjects.html'>BusinessObjects</a> plus a little for your VM and <a href='CommunicationObjects.html'>CommunicationObjects</a>.<br />
+General hardware requirements: Typically a third to a fourth of the processing power required for your database + appserver configuration. That depends on the application, though, and on what else will be running on your system's VM: RMI? CORBA? JSPs? Servlets?<br />
+<br />
+<hr />
+</div>
+    </body>
+</html>

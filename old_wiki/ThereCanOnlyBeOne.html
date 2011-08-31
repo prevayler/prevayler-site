@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>ThereCanOnlyBeOne (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ThereCanOnlyBeOne</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'>Instead of changing the Person class, for example, you write a new Person2 class. Person2 then has the code to migrate from Person. You can even do lazy migration which is pretty cool. The old Person objects will simply be garbage collected when they are all converted. Another interesting property is that the compiler will catch all the references to the old class for you. No more: "I changed the class and forgot about that obscure referencing class over there." If the new class is backward compatible it can extend the old and all references to the old will still be OK.<br />
+<br />
+In other words, <a href='ThereCanOnlyBeOne.html'>ThereCanOnlyBeOne</a> refers to the fact that there can only be one VERSION of a class with a given name.<br />
+<br />
+"This makes version control and our code much more complex" someone will say. This actually just explicits complexity which already exists but is currently hidden in our version control systems and in our code.<br />
+<br />
+As you can see, it is a pretty unusual approach so I avoid talking much about it not to scare people more that they already are.&nbsp; @:)<br />
+<br />
+--<a href='KlausWuestefeld.html'>KlausWuestefeld</a>.<br />
+</div>
+        <div class='txt'></div>
+    </body>
+</html>

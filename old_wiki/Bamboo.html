@@ -1,0 +1,194 @@
+<html>
+    <head>
+        <title>Bamboo (old wiki)</title>
+        <style type='text/css'>
+            body {
+                background-color: #ddd;
+            }
+            .rtxt {
+                padding: 10px;
+                margin: 10px 10px 5px 10px;
+                border: 1px solid black;
+                background-color: #fff;
+            }
+            .txt {
+                padding: 10px;
+                margin: 5px 10px 10px 10px;
+                border: 1px solid black;
+                background-color: #eee;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Bamboo</h1>
+        <p><i>This is a rough rendering of a page from the old Prevayler wiki. Please see <a href='http://www.prevayler.org/'>the new wiki</a> for current documentation.</i></p>
+        <div class='rtxt'></div>
+        <div class='txt'><a href='Bamboo.html'>Bamboo</a>.<a href='Prevalence.html'>Prevalence</a>, a .NET object prevalence engine.<br />
+http://bbooprevalence.sourceforge.net<br />
+Language: C#<br />
+<br />
+One thing I would like to point out is the introduction of query objects: entities that model queries to the system's state. Query objects are very similar to command objects with the following notable differences:<br />
+ # query objects don't change the state of the system<br />
+ # and because of 1) - query objects don't need to be serializable (there's no need to write them to the command log)<br />
+ <br />
+Since the engine knows that query objects will not change the state of the system during execution it can use a more performant locking strategy - the reader/writer lock idiom - thus allowing multiple query objects to execute in paralel. The process is really simple and goes like this:<br />
+ * before a query object is allowed to execute the engine must acquire a reader lock on the system<br />
+ * before a command object is allowed to execute the engine must acquire a writer lock on the system<br />
+ <br />
+Thoughts?<br />
+ <br />
+Rodrigo B. de Oliveira<br />
+<br />
+<hr />
+It is cool to have other people experiment with different prevalence styles. Diversity is life. --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+<hr />
+Does the writer lock wait for all reader locks to be returned, then holds them until done writing?&nbsp; I'd like to see that in the Java version.<br />
+<a href='JonathanCarlson.html'>JonathanCarlson</a><br />
+<br />
+That's exactly how it works.<br />
+<a href='RodrigoOliveira.html'>RodrigoOliveira</a><br />
+<br />
+<hr />
+I thought you would like to know that the latest release of<br />
+<a href='Bamboo.html'>Bamboo</a>.<a href='Prevalence.html'>Prevalence</a> includes a totally transparent prevalence engine. What<br />
+I mean by that is: you don't need to write command and/or query objects anymore if you don't want to. The engine can intercept the calls to your system class and automagically transform them in command/query calls. Of course, there's a <br />
+performance penalty here but I didn't measure it just yet.<br />
+<br />
+Follows the code for the AddingSystem class with transparent prevalence:<br />
+<br />
+[Serializable]<br />
+public AddingSystem : System.MarshalByRefObject<br />
+{<br />
+&nbsp;&nbsp;&nbsp; private int _total;<br />
+<br />
+&nbsp;&nbsp;&nbsp; public int Total<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return _total;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; public void Add(int amount)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _total += amount;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+Yep, that's pretty much it. Property accessor are treated as if being query<br />
+objects and public method calls are treated as commands (you can use<br />
+attributes to change the default behavior though). The secret lies in the<br />
+client code:<br />
+<br />
+PrevalenceEngine engine =<br />
+PrevalenceActivator.CreateTransparentEngine(typeof(AddingSystem), "data");<br />
+AddingSystem system = (AddingSystem)engine.<a href='PrevalentSystem.html'>PrevalentSystem</a>;<br />
+system.Add(10);<br />
+Console.WriteLine(system.Total);<br />
+<br />
+A similar feature could be added to prevayler by using java.lang.reflect.Proxy.<br />
+<br />
+<a href='RodrigoOliveira.html'>RodrigoOliveira</a><br />
+<br />
+I've implemented exactly this thing as a sample in Nanning. I'm using it successfully at two of my projects, it's really the most transparent and performant persistence solution I've seen.<br />
+<a href='JonTirsen.html'>JonTirsen</a><br />
+<br />
+<hr />
+I presume the wrapping is done recursively, not only at the first level. How do you guys deal with object identities? If I query for the same object twice, will I get the same wrapper or will I get two different wrappers containing the same delegate? --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+In <a href='Bamboo.html'>Bamboo</a>.<a href='Prevalence.html'>Prevalence</a> only the first level, the <a href='PrevalentSystem.html'>PrevalentSystem</a> itself, is wrapped by a proxy. This is intentional and it's similar to the design pattern Remote Facade (document by Martin Fowler somewhere). It's just a way to save some typing on creating all those command and query objects. --<a href='RodrigoOliveira.html'>RodrigoOliveira</a><br />
+<br />
+How do commands find the objects they operate on? Is every business object given an ID? --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+Every business object is given an ID at instantiation. (In <a href='Nanning.html'>Nanning</a> you can intercept/advise an object-instantiation.) The <a href='PrevalentSystem.html'>PrevalentSystem</a> must implement IdentifyingSystem (extends <a href='PrevalentSystem.html'>PrevalentSystem</a>) which has methods like: registerOID, getObjectWithID and getIDForObject. The object must either be advisable according to <a href='Nanning.html'>Nanning</a> (all public methods in an interface and instantiated via factory) or must extend a base-class. Only objects that is used as arguments to commands needs to be identifiable. Which methods are supposed to be <a href='Prevayler.html'>Prevayler</a>-commands are indicated so with runtime attributes (also a feature of <a href='Nanning.html'>Nanning</a>).<br />
+--<a href='JonTirsen.html'>JonTirsen</a><br />
+<br />
+For the systems I've written, yes, a GUID (System.Guid) is given to each top level object. --<a href='RodrigoOliveira.html'>RodrigoOliveira</a><br />
+<br />
+What is a "top level" object? What is a GUID? Is that ID transaparently given to the object? Does its class have to extend a specific class? --<a href='KlausWuestefeld.html'>KlausWuestefeld</a><br />
+<br />
+Hmmm... Maybe top level object is not a good description, sorry. What I mean by top level object is: any object that the application might need to find directly. Maybe some code will make clearer:<br />
+<br />
+class Enquete<br />
+{<br />
+&nbsp;&nbsp; private System.Guid _id;<br />
+<br />
+&nbsp;&nbsp; private string _text;<br />
+<br />
+&nbsp;&nbsp; private ArrayList _choices;<br />
+<br />
+&nbsp;&nbsp; public Enquete(string text)<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _id = System.Guid.NewGuid(); // this wil create a new UUID<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _text = text;<br />
+&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; public System.Guid ID<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get { return _id; }<br />
+&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; pubic string Text<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get { return _text; }<br />
+&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; public EnqueteChoice[] Choices<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get { return (EnqueteChoice[])_choices.ToArray(typeof(EnqueteChoice)); }<br />
+&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; public void AddChoice(EnqueteChoice choice)<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _choices.Add(choice);<br />
+&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; public void Vote(int choice)<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ((EnqueteChoice)_choices[choice]).Vote();<br />
+&nbsp;&nbsp; }<br />
+}<br />
+<br />
+class EnqueteChoice<br />
+{<br />
+&nbsp;&nbsp; private string _text;<br />
+<br />
+&nbsp;&nbsp; private int _votes;<br />
+<br />
+&nbsp;&nbsp; public EnqueteChoice(string text)<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _text = text;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _votes = 0;<br />
+&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; public string Text<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get { return _text; }<br />
+&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; public int Votes<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; get { return _votes; }<br />
+&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; public void Vote()<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ++_votes;<br />
+&nbsp;&nbsp; }<br />
+}<br />
+<br />
+<br />
+Enquete objects are the ones the UI operate on... So they need a ID. EnqueteChoice objects are dependent objects, they don't need an ID.<br />
+<br />
+The prevalent system would include operations such as:<br />
+<br />
+public void AddEnquete(Enquete enquete);<br />
+<br />
+public Enquete GetEnquete(System.Guid enqueteID);<br />
+<br />
+pubic void Vote(System.Guid enqueteID, int choice);<br />
+<br />
+Does it make it clear? Thoughts?</div>
+    </body>
+</html>
