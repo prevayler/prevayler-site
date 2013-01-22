@@ -66,7 +66,7 @@ prevayler.execute(new MyChange());
 prevayler.execute(new MyChange(new MyArgument()));
 </PRE>
 
-<P>via one or more instance variables in the Transaction:</P>
+<P>via one or more instance variables in your Transaction:</P>
 
 <PRE class="prettyprint">
 class MyChange implements Transaction&lt;MyData&gt;{
@@ -99,7 +99,7 @@ class MyChangeAndQuery implements TransactionWithQuery&lt;MyData, MyReturnType&g
 </PRE>
 
 <PRE class="prettyprint">
-//perform the TransactionWithQuery
+//perform a "MyChangeAndQuery" and get the result
 MyReturnType queryResult = prevayler.execute(new MyChangeAndQuery());
 </PRE>
 
