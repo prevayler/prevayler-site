@@ -1,6 +1,7 @@
 <HTML>
   <HEAD>
     <TITLE>Prevayler</TITLE>
+	<LINK rel="icon" href="favicon.ico" type="image/x-icon" />
     <STYLE type="text/css">
 		BODY { background-color:rgb(249,249,249); }
 		P, H3, H4 { font-family: arial, sans-serif; }
@@ -9,9 +10,8 @@
 		H4 { margin-bottom: 12px; }
 		TD { vertical-align:top; padding:31px; }
     </STYLE>
-	<link href="prettify.css" type="text/css" rel="stylesheet" />
-	<link rel="icon" href="favicon.ico" type="image/x-icon" /> 
-	<script type="text/javascript" src="prettify.js" ></script>
+	<LINK href="prettify.css" type="text/css" rel="stylesheet" /> 
+	<SCRIPT type="text/javascript" src="prettify.js"></SCRIPT>
   </HEAD>
   <BODY onload="prettyPrint()">
     <CENTER>
@@ -32,20 +32,22 @@
 				</TD>
 				<TD>
 				
-<H4>Prevayler Usage</H4>
-<P>To persist an instance of<P>
+					<H4>Prevayler Usage</H4>
+					
+					<P>To persist an instance of<P>
+					
 <PRE class="prettyprint">
 class MyData implements Serializable{
 	//...
 }
 </PRE>
-<P>create a Prevayler for it:</P>
-
+					<P>create a Prevayler for it:</P>
+					
 <PRE class="prettyprint">
 Prevayer&lt;MyData&gt; prevayler = PrevaylerFactory.createPrevayler(new MyData());
 </PRE>
 
-<P>and ensure any changes to it are made via the local variable in Transactions:</P>
+					<P>and ensure any changes to it are made via the local variable in Transactions:</P>
 
 <PRE class="prettyprint">
 class MyChange implements org.prevayler.Transaction&lt;MyData&gt;{
@@ -60,14 +62,14 @@ class MyChange implements org.prevayler.Transaction&lt;MyData&gt;{
 prevayler.execute(new MyChange());
 </PRE>
 
-<P>You can pass arguments into a Transaction:</P>
+					<P>You can pass arguments into a Transaction:</P>
 
 <PRE class="prettyprint">
 //execute a "MyChange"
 prevayler.execute(new MyChange(new MyArgument()));
 </PRE>
 
-<P>via one or more instance variables in your Transaction:</P>
+					<P>via one or more instance variables in your Transaction:</P>
 
 <PRE class="prettyprint">
 class MyChange implements Transaction&lt;MyData&gt;{
@@ -87,7 +89,7 @@ class MyChange implements Transaction&lt;MyData&gt;{
 }
 </PRE>
 
-<P>To perform a Transaction with a query, implement TransactionWithQuery and set the second type parameter to your desired return type:</P>
+					<P>To perform a Transaction with a query, implement TransactionWithQuery and set the second type parameter to your desired return type:</P>
 
 <PRE class="prettyprint">
 class MyChangeAndQuery implements TransactionWithQuery&lt;MyData, MyReturnType&gt;{
@@ -104,9 +106,9 @@ class MyChangeAndQuery implements TransactionWithQuery&lt;MyData, MyReturnType&g
 MyReturnType queryResult = prevayler.execute(new MyChangeAndQuery());
 </PRE>
 
-<P>You can also perform a straightforward Query (which won't write any transaction to disk) or a SureTransactionWithQuery (which doesn't throw Exception). </P>
+					<P>You can also perform a straightforward Query (which won't write any transaction to disk) or a SureTransactionWithQuery (which doesn't throw Exception). </P>
 
-<P>You may want to write a snapshot of your persistent object to disk from time to time, to shorten recovery time upon system restart:</P>
+					<P>You may want to write a snapshot of your persistent object to disk from time to time, to shorten recovery time upon system restart:</P>
 
 <PRE class="prettyprint">
 prevayler.takeSnapshot();
