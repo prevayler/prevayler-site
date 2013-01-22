@@ -104,7 +104,7 @@ class MyChangeAndQuery implements TransactionWithQuery&lt;MyData, MyReturnType&g
 MyReturnType queryResult = prevayler.execute(new MyChangeAndQuery());
 </PRE>
 
-<P>You can also perform a straightforward Query (which won't write any transaction to the journal) or a SureTransactionWithQuery (which doesn't throw Exception). </P>
+<P>You can also perform a straightforward Query (which won't write any transaction to disk) or a SureTransactionWithQuery (which doesn't throw Exception). </P>
 
 <P>You may want to write a snapshot of your persistent object to disk from time to time, to shorten recovery time upon system restart:</P>
 
