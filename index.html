@@ -2,24 +2,117 @@
   <HEAD>
     <TITLE>Prevayler</TITLE>
     <STYLE type="text/css">
-      * { font-family: arial, sans-serif; }
-      P { width: 628px; text-align: left; margin-top: 0; }
+	  BODY { background-color:rgb(249,249,249); }
+      P, H3, H4 { font-family: arial, sans-serif; }
+      P,PRE { width: 628px; text-align: left;}
       H4 { margin-bottom: 0; }
+	  TD { vertical-align:top; padding-left:20px; padding-right:20px; padding-top:14px; }
     </STYLE>
+	<link href="prettify.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="prettify.js" ></script>
   </HEAD>
-  <BODY>
+  <BODY onload="prettyPrint()">
     <CENTER>
-      <H1><IMG alt="Prevayler" src="prevayler.png"></H1>
-      <H3>Version 2.6 was released at 2013-01-15</H3>
-      <H3><A href="http://search.maven.org/#artifactdetails%7Corg.prevayler%7Cprevayler%7C2.6%7Cpom">Prevayler jars is distributed via Apache Maven</A></H3>
-      <H3><A href="apidocs/2.6/index.html">Browse the API documentation</A></H3>
-      <H3><A href="http://github.com/jsampson/prevayler/tree/master">Explore our Git repository</A></H3>
-      <H3><A href="https://lists.sourceforge.net/lists/listinfo/prevayler-discussion">Join our discussion mailing list</A></H3>
-      <H3><A href="http://github.com/jsampson/prevayler/tree/master/demos/prevayler-maven-archetype">Need help setting up a Maven project?</A></H3>
-      <H4>What is Prevayler?</H4>
-      <P>Prevayler is an open source object persistence library for Java. It is an implementation of the Prevalent System design pattern, in which business objects are kept live in memory and transactions are journaled for system recovery. <B><I>Prevayler is the simplest and fastest way to provide ACID persistence for your "plain old Java objects".</I></B></P>
-      <H4><A href="old_wiki/Welcome.html">Learn more</A></H4>
-      <H3><A href="http://www.ddj.com/architect/184415149?pgno=14"><IMG alt="Jolt Productivity Award" src="jolt_productivity_award.gif" border="0"></A></H3>
-    </CENTER>
+		<H1><IMG alt="Prevayler" src="prevayler.png"></H1>
+		<H4>What is Prevayler?</H4>
+		<P>Prevayler is an open source object persistence library for Java. It is an implementation of the Prevalent System design pattern, in which business objects are kept live in memory and transactions are journaled for system recovery. <B><I>Prevayler is the simplest and fastest way to provide ACID persistence for your "plain old Java objects".</I></B></P>
+		<TABLE>
+			<TR>
+				<TD style="text-align:center">
+					<H4><A href="old_wiki/Welcome.html">Learn more</A></H4>
+					<H3><A href="http://www.ddj.com/architect/184415149?pgno=14"><IMG alt="Jolt Productivity Award" src="jolt_productivity_award.gif" border="0"></A></H3>
+					<H3>Version 2.6 was released at 2013-01-15</H3>
+					<H3><A href="http://search.maven.org/#artifactdetails%7Corg.prevayler%7Cprevayler%7C2.6%7Cpom">Prevayler jars is distributed via Apache Maven</A></H3>
+					<H3><A href="apidocs/2.6/index.html">Browse the API documentation</A></H3>
+					<H3><A href="http://github.com/jsampson/prevayler/tree/master">Explore our Git repository</A></H3>
+					<H3><A href="https://lists.sourceforge.net/lists/listinfo/prevayler-discussion">Join our discussion mailing list</A></H3>
+					<H3><A href="http://github.com/jsampson/prevayler/tree/master/demos/prevayler-maven-archetype">Need help setting up a Maven project?</A></H3>	
+				</TD>
+				<TD>
+				
+<H4>Prevayler Usage</H4>
+<P>To persist an instance of<P>
+<PRE class="prettyprint">
+class MyData implements Serializable{
+	//...
+}
+</PRE>
+<P>create a Prevayler for it:</P>
+
+<PRE class="prettyprint">
+Prevayer&lt;MyData&gt; prevayler = PrevaylerFactory.createPrevayler(new MyData());
+</PRE>
+
+<P>and ensure any changes to it are made via the local variable in Transactions:</P>
+
+<PRE class="prettyprint">
+class MyChange implements org.prevayler.Transaction&lt;MyData&gt;{
+	public void executeOn(MyData myData, Date date){
+		//make any changes via "myData" here
+	}
+}
+</PRE>
+
+<PRE class="prettyprint">
+//execute a "MyChange":
+prevayler.execute(new MyChange());
+</PRE>
+
+<P>You can pass arguments into a Transaction:</P>
+
+<PRE class="prettyprint">
+//execute a "MyChange"
+prevayler.execute(new MyChange(new MyArgument()));
+</PRE>
+
+<P>via one or more instance variables in the Transaction:</P>
+
+<PRE class="prettyprint">
+class MyChange implements Transaction&lt;MyData&gt;{
+	
+	MyArgument myArgument;
+	
+	public MyChange(MyArgument myArgument){
+		this.myArgument = myArgument;
+	}
+
+	public void executeOn(MyData myData, Date date){
+		//You can use "myArgument" here, but upon
+		//recovery execution it'll be a freshly
+		//deserialized copy, so it won't reference
+		//anything in "myData"
+	}
+}
+</PRE>
+
+<P>To perform a Transaction with a query, implement TransactionWithQuery and set the second type parameter to your desired return type:</P>
+
+<PRE class="prettyprint">
+class MyChangeAndQuery implements TransactionWithQuery&lt;MyData, MyReturnType&gt;{
+	public MyReturnType executeOn(MyData myData, Date date){
+		MyReturnType queryResult;
+		//...
+		return queryResult;
+	}
+}
+</PRE>
+
+<PRE class="prettyprint">
+//perform the TransactionWithQuery
+MyReturnType queryResult = prevayler.execute(new MyChangeAndQuery());
+</PRE>
+
+<P>You can also perform a straightforward Query (which won't write any transaction to the journal) or a SureTransactionWithQuery (which doesn't throw Exception). </P>
+
+<P>You may want to write a snapshot of your persistent object to disk from time to time, to shorten recovery time upon system restart:</P>
+
+<PRE class="prettyprint">
+prevayler.takeSnapshot();
+</PRE>
+
+				</TD>
+			</TR>
+		</TABLE>
+	</CENTER>
   </BODY>
 </HTML>
