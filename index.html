@@ -2,12 +2,13 @@
   <HEAD>
     <TITLE>Prevayler</TITLE>
 	<LINK rel="icon" href="favicon.ico" type="image/x-icon" />
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <STYLE type="text/css">
-		BODY { background-color:rgb(249,249,249); }
-		P, H3, H4 { font-family: arial, sans-serif; }
-		H3 {text-align:right; }
+		BODY { background-color:rgb(249,249,249); font-family: Arial, sans-serif; }
+		.heading { font-weight:bold; font-size:18px; margin-top:0px; margin-bottom:12px; }
+		DIV {text-align:right; font-size:18px; margin-bottom: 12px; font-weight:bold}
+		P { font-size: 16px; }
 		P,PRE { width: 628px; text-align: left; margin-top:7px; margin-bottom:7px; }
-		H4 { margin-bottom: 12px; }
 		TD { vertical-align:top; padding:31px; }
     </STYLE>
 	<LINK href="prettify.css" type="text/css" rel="stylesheet" /> 
@@ -16,23 +17,23 @@
   <BODY onload="prettyPrint()">
     <CENTER>
 		<H1><IMG alt="Prevayler" src="prevayler.png"></H1>
-		<H4>What is Prevayler?</H4>
+		<P class="heading" style="text-align:center">What is Prevayler?</P>
 		<P>Prevayler is an open source object persistence library for Java. It is an implementation of the Prevalent System design pattern, in which business objects are kept live in memory and transactions are journaled for system recovery. <B><I>Prevayler is the simplest and fastest way to provide ACID persistence for your "plain old Java objects".</I></B></P>
 		<TABLE>
 			<TR>
 				<TD style="text-align:center">
-					<H4 style="text-align:right"><A href="old_wiki/Welcome.html">Learn more</A></H4>
-					<H3><A href="http://www.ddj.com/architect/184415149?pgno=14"><IMG alt="Jolt Productivity Award" src="jolt_productivity_award.gif" border="0"></A></H3>
-					<H3>Version 2.6 was released at 2013-01-15</H3>
-					<H3><A href="http://search.maven.org/#artifactdetails%7Corg.prevayler%7Cprevayler%7C2.6%7Cpom">Prevayler jars is distributed via Apache Maven</A></H3>
-					<H3><A href="apidocs/2.6/index.html">Browse the API documentation</A></H3>
-					<H3><A href="http://github.com/jsampson/prevayler/tree/master">Explore our Git repository</A></H3>
-					<H3><A href="https://lists.sourceforge.net/lists/listinfo/prevayler-discussion">Join our discussion mailing list</A></H3>
-					<H3><A href="http://github.com/jsampson/prevayler/tree/master/demos/prevayler-maven-archetype">Need help setting up a Maven project?</A></H3>	
+					<DIV style="font-size:16px"><A href="old_wiki/Welcome.html">Learn more</A></DIV>
+					<DIV><A href="http://www.ddj.com/architect/184415149?pgno=14"><IMG alt="Jolt Productivity Award" src="jolt_productivity_award.gif" border="0"></A></DIV>
+					<DIV>Version 2.6 was released on 2013-01-15</DIV>
+					<DIV><A href="http://search.maven.org/#artifactdetails%7Corg.prevayler%7Cprevayler%7C2.6%7Cpom">Prevayler jars are distributed via Apache Maven</A></DIV>
+					<DIV><A href="apidocs/2.6/index.html">Browse the API documentation</A></DIV>
+					<DIV><A href="http://github.com/jsampson/prevayler/tree/master">Explore our Git repository</A></DIV>
+					<DIV><A href="https://lists.sourceforge.net/lists/listinfo/prevayler-discussion">Join our discussion mailing list</A></DIV>
+					<DIV><A href="http://github.com/jsampson/prevayler/tree/master/demos/prevayler-maven-archetype">Need help setting up a Maven project?</A></DIV>	
 				</TD>
 				<TD>
 				
-					<H4>Prevayler Usage</H4>
+					<P class="heading">Prevayler Usage</P>
 					
 					<P>To persist an instance of<P>
 					
