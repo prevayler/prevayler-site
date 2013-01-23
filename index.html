@@ -93,7 +93,7 @@ class MyChange implements Transaction&lt;MyData&gt;{
 
 <PRE class="prettyprint">
 class MyChangeAndQuery implements TransactionWithQuery&lt;MyData, MyReturnType&gt;{
-	public MyReturnType executeOn(MyData myData, Date date){
+	public MyReturnType executeAndQuery(MyData myData, Date date){
 		MyReturnType queryResult;
 		//...
 		return queryResult;
