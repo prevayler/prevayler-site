@@ -11,8 +11,19 @@
 		</STYLE>
 		<LINK href="prettify.css" type="text/css" rel="stylesheet" /> 
 		<SCRIPT type="text/javascript" src="prettify.js"></SCRIPT>
+		<SCRIPT>
+			function onLoad(){
+				var elements = document.body.getElementsByTagName("*");
+				for(var i=0, max=elements.length; i<max; i++){
+					var elem = elements[i];
+					if (elem.tagName == "PRE" && "outerHTML" in elem){
+						elem.outerHTML = "<PRE class='prettyprint'>" + elem.innerHTML + "</PRE>";
+					}
+				}
+			}
+		</SCRIPT>
 	</HEAD>
-	<BODY onload="prettyPrint()">
+	<BODY onload="prettyPrint();onLoad();">
 		<CENTER>
 			<H1><IMG alt="Prevayler" src="prevayler.png"></H1>
 			<DIV>What is Prevayler?</DIV>
@@ -31,21 +42,17 @@
 						<DIV><A href="https://lists.sourceforge.net/lists/listinfo/prevayler-discussion">Join our discussion mailing list</A></DIV>						
 					</TD>
 					<TD>
-						<DIV>Prevayler Usage</DIV>
-					
-						<P>To persist an instance of<P>
-					
+						<DIV style="text-align:left">Prevayler Usage</DIV>
+						<P>To persist an instance of<P>		
 <PRE class="prettyprint">
 class MyData implements Serializable{
 	//...
 }
 </PRE>
 						<P>create a Prevayler for it:</P>
-					
 <PRE class="prettyprint">
 Prevayer&lt;MyData&gt; prevayler = PrevaylerFactory.createPrevayler(new MyData());
 </PRE>
-
 						<P>and ensure any changes to it are made via the local variable in Transactions:</P>
 
 <PRE class="prettyprint">
@@ -55,7 +62,6 @@ class MyChange implements org.prevayler.Transaction&lt;MyData&gt;{
 	}
 }
 </PRE>
-
 <PRE class="prettyprint">
 //execute a "MyChange":
 prevayler.execute(new MyChange());
